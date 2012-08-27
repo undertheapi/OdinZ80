@@ -43,6 +43,13 @@
 */
 #define CHARACTER unsigned char
 
+/*
+	CHARACTER value: This is the value of the character.
+	unsigned int lineNumber: This is the line number that the character is on in the file.
+	char* fileName: A pointer to the file name in cstring format in memory.
+	CharNode* next: The typical Singly Linked List next value. Points to the next CharaNode
+	structure in memory.
+*/
 struct CharNode {
 	CHARACTER value;
 	unsigned int lineNumber;

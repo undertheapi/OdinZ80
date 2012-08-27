@@ -28,14 +28,15 @@
 */
 
 /*
-	file name: charnode.hpp
-	date created: 27/08/2012
-	date updated: 27/08/2012
-	author: Gareth Richardson
-	description: This is the data structure for the CharNode struct. Use this with the
-	CharacterList class to store characters from a file in a Singly Linked List. The
-	data type of the characters stored here can alter depending on the situation. So if
-	we choose to do it in ASCII or Unicode character sets, it will not matter.
+	file name:	charnode.hpp
+	date created:	27/08/2012
+	date updated:	27/08/2012
+	author:		Gareth Richardson
+	description:	This is the data structure for the CharNode struct. Use this with the
+			CharacterList class to store characters from a file in a Singly Linked 
+			List. The data type of the characters stored here can alter depending
+			on the situation. So if we choose to do it in ASCII or Unicode character
+			sets, it will not matter.
 */
 
 /*

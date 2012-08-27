@@ -26,3 +26,8 @@
 	of the authors and should not be interpreted as representing official policies, 
 	either expressed or implied, of the FreeBSD Project.
 */
+
+/*
+	file name: charnode.hpp
+	date created: 27/08/2012
+*/

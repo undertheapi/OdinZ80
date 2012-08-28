@@ -41,6 +41,7 @@
 
 struct TokenNode {
 	TOKEN_TYPE type;
+	string value;
 	int lineNumber;
 	char* fileName;
 	TokenNode* next;

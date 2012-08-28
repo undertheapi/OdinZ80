@@ -52,5 +52,11 @@ class TokenList {
 		
 		void pop();
 		
+		TOKEN_TYPE peekTokenType();
 		
+		string peekValue();
+		
+		int peekLineNumber();
+		
+		char* peekFileName();
 };

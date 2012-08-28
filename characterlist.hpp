@@ -42,15 +42,55 @@
 
 class CharacterList {
 	private:
+	
+		/*
+			To store the characters in this class, we are using a Singly Linked
+			List data structure rather than an array of characters. These two
+			pointers are the standard "head" and "tail" values to make a Singly
+			Linked List.
+		*/
 		CharNodePtr head;
 		CharNodePtr tail;
+		
+		/*
+			This method will check if a character to be put into this class is a valid
+			character or not. Used in the push method.
+		*/
 		bool isValidCharacter(CHARACTER value);
+		
+		/*
+			init(): This is called when the constructor is created. Put all the initial
+			code here.
+		*/
+		void init();
 	public:
+		/*
+			An empty constructor. MUST call up init().
+		*/
 		CharacterList();
+		
+		/*
+			isEmpty(): checks the Singly Linked List if it is empty. True if it is
+			empty and false if is has at least one node in the data structure still.
+		*/
 		bool isEmpty();
-		void push(CHARACTER charValue, int line, char* file);
+		
+		/*
+			push(): pushes a CharNode into the CharacterList. It will return a false if
+			there was an error or if it was an invalid character.
+		*/
+		bool push(CHARACTER charValue, int line, char* file);
+		
+		/*
+			these peek functions show the values for the top node in the Singly Linked List.
+			These do not remove the top node.
+		*/
 		CHARACTER peekValue();
 		int peekLineNumber();
 		char* peekFileName();
+		
+		/*
+			pop(): removes the top node from the Singly Linked List.
+		*/
 		void pop();
 };

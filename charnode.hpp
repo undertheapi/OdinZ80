@@ -57,3 +57,5 @@ struct CharNode {
 	char* fileName;
 	CharNode* next;
 };
+
+typedef CharNode* CharNodePtr;

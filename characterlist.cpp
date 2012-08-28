@@ -38,6 +38,50 @@
 
 #include "characterlist.hpp"
 
+/*
+	defien the NULL value here. We are not including any c standard libraries here. 
+*/
+#define NULL 0
+
 bool CharacterList::isValidCharacter(CHARACTER value) {
-	return value == '\n' || value == '\t' || 
+	/*
+		so far these are the only valid characters the Odin Assembler can deal with.
+	*/
+	return value == '\n' || value == '\t' || (value >= 32 && value <= 126);
+}
+
+void CharacterList::init() {
+	CharacterList::head = NULL;
+	CharacterList::tail = NULL;
+}
+
+CharacterList::CharacterList() {
+	CharacterList::init();
+}
+
+bool CharacterList::isEmpty() {
+	return CharacterList::head == NULL;
+}
+
+bool CharacterList::push(CHARACTER charValue, int line, char* file) {
+	if (!CharacterList::isValidCharacter(charValue)) {
+		return false;
+	} else {
+		CharNodePtr newNode = new CharNode;
+		newNode->value = charValue;
+		newNode->lineNumber = line;
+		newNode->fileName = file;
+		newNode->next = NULL;
+		if (CharacterList::isEmpty()) {
+			CharacterList::head = newNode;
+			CharacterList::tail = newNode;
+		} else if (CharacterList::head == CharacterList::tail) {
+			CharacterList::head->next = newNode;
+			CharacterList::tail = newNode;
+		} else {
+			CharacterList::tail->next = newNode;
+			CharacterList::tail = newNode;
+		}
+		return true;
+	}
 }

@@ -30,15 +30,17 @@
 /*
 	file name: tokennode.hpp
 	date created: 28/08/2012
-	date updated: 28/08/2012
+	date updated: 29/08/2012
 	author: Gareth Richardson
 	description: This is the data structure for the TokenNode in the TokenList class. The
 	TokenList class is an implementation of a Singly Linked List, this will show in this
 	structure.
 */
 
+#define TOKEN_TYPE unsigned char
+
 struct TokenNode {
-	unsigned char type;
+	TOKEN_TYPE type;
 	int lineNumber;
 	char* fileName;
 	TokenNode* next;

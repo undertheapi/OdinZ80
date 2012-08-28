@@ -99,6 +99,10 @@ char* CharacterList::peekFile() {
 }
 
 void CharacterList::pop() {
+	/*
+		should only run this if the list is not empty. So we are
+		not throwing any errors.
+	*/
 	if (!CharacterList::isEmpty()) {
 		CharacterList::head = CharacterList::head->next;
 	}

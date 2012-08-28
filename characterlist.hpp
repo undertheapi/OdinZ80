@@ -26,3 +26,31 @@
 	of the authors and should not be interpreted as representing official policies, 
 	either expressed or implied, of the FreeBSD Project.
 */
+
+/*
+	file name: characterlist.hpp
+	date craeted: 28/8/2012
+	date updated: 28/8/2012
+	author: Gareth Richardson
+	description: This is the header file for the class CharacterList. This stores a
+	Singly Linked List of characters using the data structure CharNode. We use this to
+	store the characters from a file. This class also does character validation to make
+	sure that there are no invalid characters going into the Linked List.
+*/
+
+#include "charnode.hpp"
+
+class CharacterList {
+	private:
+		CharNodePtr head;
+		CharNodePtr tail;
+		bool isValidCharacter(CHARACTER value);
+	public:
+		CharacterList();
+		bool isEmpty();
+		void push(CHARACTER charValue, int line, char* file);
+		CHARACTER peekValue();
+		int peekLineNumber();
+		char* peekFileName();
+		void pop();
+};

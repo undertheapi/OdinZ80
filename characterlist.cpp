@@ -85,3 +85,21 @@ bool CharacterList::push(CHARACTER charValue, int line, char* file) {
 		return true;
 	}
 }
+
+CHARACTER CharacterList::peekValue() {
+	return CharacterList::head->value;
+}
+
+int CharacterList::peekLine() {
+	return CharacterList::head->lineNumber;
+}
+
+char* CharacterList::peekFile() {
+	return CharacterList::head->fileName;
+}
+
+void CharacterList::pop() {
+	if (!CharacterList::isEmpty()) {
+		CharacterList::head = CharacterList::head->next;
+	}
+}

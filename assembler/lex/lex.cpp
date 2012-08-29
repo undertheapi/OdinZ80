@@ -38,5 +38,24 @@
 #include "lex.hpp"
 
 TokenNode Lex::getToken() {
+	/*
+		this is getting rid of the space characters from the CharacterList class.
+	*/
+	while (!Lex::cList->isEmpty() && Lex::cList->peekValue() == '\t' && Lex::peekValue() == ' ') {
+		Lex::cList->pop();
+	}
 	
+	if (Lex::isEmpty()) {
+		//send end of file state back.
+	}
+	
+	/*
+		This is the string that collects the token value.
+	*/
+	string retValue = "";
+	
+	if (Lex::cList->peekValue() >= 'a' && Lex::cList->peekValue <= 'z' || Lex::cList->peekValue() >= 'A' && Lex::cList->peekValue() <= 'Z') {
+		retValue += Lex::cList->peekValue();
+		while (Lex::cList->peekValue() >= 'a' && Lex::cList->peekValue() <= 'z' || Lex::cList->peekValue() >= 'A')
+	}
 }

@@ -55,7 +55,12 @@ TokenNode Lex::getToken() {
 	string retValue = "";
 	
 	if (Lex::cList->peekValue() >= 'a' && Lex::cList->peekValue <= 'z' || Lex::cList->peekValue() >= 'A' && Lex::cList->peekValue() <= 'Z') {
-		retValue += Lex::cList->peekValue();
-		while (Lex::cList->peekValue() >= 'a' && Lex::cList->peekValue() <= 'z' || Lex::cList->peekValue() >= 'A')
+		while (Lex::cList->peekValue() >= 'a' && Lex::cList->peekValue() <= 'z' || Lex::cList->peekValue() >= 'A' && Lex::cList->peekValue() <= 'Z') {
+			retValue += Lex::cList->peekValue();
+			Lex::cList->pop();
+		}
+		/*
+			**here have some sort of token type checking to check for keywords.
+		*/
 	}
 }

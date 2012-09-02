@@ -47,4 +47,4 @@ struct TokenNode {
 	TokenNode* next;
 };
 
-typedef TokenNode* TOkenNodePtr;
+typedef TokenNode* TokenNodePtr;

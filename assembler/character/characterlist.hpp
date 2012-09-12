@@ -70,6 +70,11 @@ class CharacterList {
 		CharacterList();
 		
 		/*
+			The deconstructor empties the CharNodes in the list.
+		*/
+		~CharacterList();
+		
+		/*
 			isEmpty(): checks the Singly Linked List if it is empty. True if it is
 			empty and false if is has at least one node in the data structure still.
 		*/

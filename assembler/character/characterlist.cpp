@@ -59,6 +59,12 @@ CharacterList::CharacterList() {
 	CharacterList::init();
 }
 
+~CharacterList::CharacterList() {
+	while (!CharacterList::isEmpty()) {
+		CharacterList::pop();
+	}
+}
+
 bool CharacterList::isEmpty() {
 	return CharacterList::head == NULL;
 }
@@ -104,6 +110,8 @@ void CharacterList::pop() {
 		not throwing any errors.
 	*/
 	if (!CharacterList::isEmpty()) {
+		CharNodePtr node = CharacterList::head;
 		CharacterList::head = CharacterList::head->next;
+		delete node;
 	}
 }

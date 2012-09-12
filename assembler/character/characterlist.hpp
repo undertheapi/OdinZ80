@@ -30,7 +30,7 @@
 /*
 	file name: characterlist.hpp
 	date craeted: 28/8/2012
-	date updated: 28/8/2012
+	date updated: 12/9/2012
 	author: Gareth Richardson
 	description: This is the header file for the class CharacterList. This stores a
 	Singly Linked List of characters using the data structure CharNode. We use this to

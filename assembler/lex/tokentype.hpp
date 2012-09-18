@@ -30,7 +30,7 @@
 /*
 	file name: tokentype.hpp
 	date created: 3/09/2012
-	date updated: 3/09/2012
+	date updated: 12/09/2012
 	author: Gareth Richardson
 	description: This is a file of definitions for the types of tokens that are valid
 	in the assembler. The TOkenNode data structure stores the type as an unsigned char,
@@ -43,34 +43,81 @@
 #define ADC 0
 #define ADD 1
 #define AND 2
+#define BIT 3
+#define CALL 4
+#define CCF 5
+#define CPL 6
+#define DAA 7
+#define DEC 8
+#define DI 9
+#define EI 10
+#define EXX 11
+#define HALT 12
+#defein IM 13
+#define IN 14
+#define INC 15
+#define JP 16
+#define LD 17
+#define NEG 18
+#define NOP 19
+#define OUT 20
+#define POP 21
+#define PUSH 22
+#define RES 23
+#define RET 24
+#define RETI 25
+#define RETN 26
+#define RLA 27
+#define RLCA 28
+#define RLD 29
+#define RRA 30
+#define RRCA 31
+#define RRD 32
+#define RST 33
+#define SBC 34
+#define SCF 35
+#define SET 36
 
 /*
 	these are registers:
 */
-#define A
-#define F
-#define B 35
-#define C 36
-#define D 37
-#define E 38
-#define H 39
-#define L 40
-#define BC 41
-#define DE 42
-#define HL 43
-#define I 44
-#define R 45
-#define IX 46
-#define IY 47
-#define SP 48
-#define PC 49
+#define A 37
+#define F 38
+#define B 39
+#define C 40
+#define D 41
+#define E 42
+#define H 43
+#define L 44
+#define BC 45
+#define DE 46
+#define HL 47
+#define I 48
+#define R 49
+#define IX 50
+#define IY 51
+#define SP 52
+#define PC 53
 
 /*
 	these are assembler instructions:
 */
-#define CPU
-#define DB
-#define DW
-#define ORG
-#define REP
-#define SPECREP
+#define CPU 54
+#define DB 55
+#define DW 56
+#define ORG 57
+#define REP 58
+#define SPECREP 59
+
+/*
+	grammar:
+*/
+#define ATOM 60
+#define COLON 61
+#define COMMA 62
+#define NEW_LINE 63
+
+/*
+	an end of file token type:
+*/
+#define EOF 255

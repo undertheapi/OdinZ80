@@ -53,7 +53,7 @@
 #define EI 10
 #define EXX 11
 #define HALT 12
-#defein IM 13
+#define IM 13
 #define IN 14
 #define INC 15
 #define JP 16

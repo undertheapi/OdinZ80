@@ -115,14 +115,77 @@ TokenNodePtr Lex::getToken() {
 		*/
 		if (retValue.compare("ADC") || retValue.compare("Adc") || retValue.compare("adc")) {
 			newNode->type = ADC;
-			newNode->lineNumber = line;
-			newNode->fileName = file;
-			newNode->next = NULL;
 		} else if (retValue.compare("ADD") || retValue.compare("Add") || retValue.compare("add")) {
-			
+			newNode->type = ADD;
 		} else if (retValue.compare("AND") || retValue.compare("And") || retValue.compare("and")) {
-			
+			newNode->type = AND;
+		} else if (retValue.compare("BIT") || retValue.compare("Bit") || retValue.compare("bit") || retValue.compare("BT") || retValue.compare("Bt") || retValue.compare("bt")) {
+			newNode->type = BIT;
+		} else if (retValue.compare("CALL") || retValue.compare("Call") || retValue.compare("call")) {
+			newNode->type = CALL;
+		} else if (retValue.compare("CCF") || retValue.compare("Ccf") || retValue.compare("ccf")) {
+			newNode->type = CCF;
+		} else if (retValue.compare("CPL") || retValue.compare("Cpl") || retValue.compare("cpl")) {
+			newNode->type = CPL;
+		} else if (retValue.compare("DAA") || retValue.compare("Daa") || retValue.compare("daa")) {
+			newNode->type = DAA;
+		} else if (retValue.compare("DEC") || retValue.compare("Dec") || retValue.compare("dec")) {
+			newNode->type = DEC;
+		} else if (retValue.compare("DI") || retValue.compare("Di") || retValue.compare("di")) {
+			newNode->type = DI;
+		} else if (retValue.compare("EI") || retValue.compare("Ei") || retValue.compare("ei")) {
+			newNode->type = EI;
+		} else if (retValue.compare("EXX") || retValue.compare("Exx") || retValue.compare("exx") || retValue.compare("EX") || retValue.compare("Ex") || retValue.compare("ex")) {
+			newNode->type = EXX;
+		} else if (retValue.compare("HALT") || retValue.compare("Halt") || retValue.compare("halt") || retValue.compare("HLT") || retValue.compare("Hlt") || retValue.compare("hlt")) {
+			newNode->type = HALT;
+		} else if (retValue.compare("IM") || retValue.compare("Im") || retValue.compare("im")) {
+			newNode->type = IM;
+		} else if (retValue.compare("IN") || retValue.compare("In") || retValue.compare("in")) {
+			newNode->type = IN;
+		} else if (retValue.compare("INC") || retValue.compare("Inc") || retValue.compare("inc")) {
+			newNode->type = INC;
+		} else if (retValue.compare("JP") || retValue.compare("Jp") || retValue.compare("jp") || retValue.compare("JMP") || retValue.compare("Jmp") || retValue.compare("jmp")) {
+			newNode->type = JP;
+		} else if (retValue.compare("LD") || retValue.compare("Ld") || retValue.compare("ld")) {
+			newNode->type = LD;
+		} else if (retValue.compare("NEG") || retValue.compare("Neg") || retValue.compare("neg")) {
+			newNode->type = NEG;
+		} else if (retValue.compare("NOP") || retValue.compare("Nop") || retValue.compare("nop")) {
+			newNode->type = NOP;
+		} else if (retValue.compare("OUT") || retValue.compare("Out") || retValue.compare("out")) {
+			newNode->type = OUT;
+		} else if (retValue.compare("POP") || retValue.compare("Pop") || retValue.compare("pop")) {
+			newNode->type = POP;
+		} else if (retValue.compare("PUSH") || retValue.compare("Push") || retValue.compare("push")) {
+			newNode->type = PUSH;
+		} else if (retValue.compare("RES") || retValue.compare("Res") || retValue.compare("res")) {
+			newNode->type = RES;
+		} else if (retValue.compare("RET") || retValue.compare("Ret") || retValue.compare("ret")) {
+			newNode->type = RET;
+		} else if (retValue.compare("RETI") || retValue.compare("Reti") || retValue.compare("reti")) {
+			newNode->type = RETI;
+		} else if (retValue.compare("RETN") || retValue.compare("Retn") || retValue.compare("retn")) {
+			newNode->type = RETN;
+		} else if (retValue.compare("RLA") || retValue.compare("Rla") || retValue.compare("rla")) {
+			newNode->type = RLA;
+		} else if (retValue.compare("RLCA") || retValue.compare("Rlca") || retValue.compare("rlca")) {
+			newNode->type = RLCA;
+		} else if (retValue.compare("RLD") || retValue.compare("Rld") || retValue.compare("rld")) {
+			newNode->type = RLD;
+		} else if (retValue.compare("RRA") || retValue.compare("Rra") || retValue.compare("rra")) {
+			newNode->type = RRA;
+		} else if (retValue.compare("RRCA") || retValue.compare("Rrca") || retValue.compare("rrca")) {
+			newNode->type = RRCA;
+		} else if (retValue.compare("RRD") || retValue.compare("Rrd") || retValue.compare("rrd")) {
+			newNode->type = RRD;
+		} else if (retValue.compare("RST") || retValue.compare("Rst") || retValue.compare("rst")) {
+			newNode->type = RST;
 		}
+		//Adding the rest of the values for the TokenNode:
+		newNode->lineNumber = line;
+		newNode->fileName = file;
+		newNode->next = NULL;
 	} else if (isNumerical(Lex::cList->peekValue())) {
 		while (!Lex::cList->isEmpty() && (isNumerical(Lex::cList->peekValue()) || isAlphabetical(Lex::cList->peekValue()))) {
 			retValue += Lex::cList->peekValue();

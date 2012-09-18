@@ -35,9 +35,13 @@
 	description: THe implementation of the TokenList class.
 */
 
+#include <string>
+
+using namespace std;
+
 #include "tokenlist.hpp"
 
-#define NULL 0
+//#define NULL 0
 
 void TokenList::init() {
 	TokenList::head = NULL;
@@ -56,7 +60,7 @@ void TokenList::push(TokenNodePtr obj) {
 	if (TokenList::isEmpty()) {
 		TokenList::head = obj;
 		TokenList::tail = obj;
-	} else if (TokenList::head == TokenList.tail) {
+	} else if (TokenList::head == TokenList::tail) {
 		TokenList::head->next = obj;
 		TokenList::tail = obj;
 	} else {

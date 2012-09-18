@@ -30,23 +30,55 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 29/08/2012
+	date updated: 12/09/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
 
+#include <string>
+
+using namespace std;
+
 #include "lex.hpp"
 
-TokenNode Lex::getToken() {
+#include "tokentype.hpp"
+
+bool isAlphabetical(CHARACTER value) {
+	return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
+}
+
+bool isNumerical(CHARACTER value) {
+	return value >= '0' && value <= '9';
+}
+
+TokenNodePtr Lex::getToken() {
+	TokenNodePtr newNode = new TokenNode;
 	/*
 		this is getting rid of the space characters from the CharacterList class.
 	*/
-	while (!Lex::cList->isEmpty() && Lex::cList->peekValue() == '\t' && Lex::peekValue() == ' ') {
+	while (!Lex::cList->isEmpty() && Lex::cList->peekValue() == '\t' && Lex::cList->peekValue() == ' ') {
 		Lex::cList->pop();
 	}
 	
-	if (Lex::isEmpty()) {
+	/*
+		for getting rid of the comments. Comments are only single line, so we read from a ';' to a
+		new line character.
+	*/
+	if (!Lex::cList->isEmpty() && Lex::cList->peekValue() == ';') {
+		Lex::cList->pop();
+		while (!Lex::cList->isEmpty() && Lex::cList->peekValue() != '\n') {
+			Lex::cList->pop();
+		}
+	}
+	
+	if (Lex::cList->isEmpty()) {
 		//send end of file state back.
+		newNode->type = EOF;
+		newNode->value = "";
+		newNode->lineNumber = -1;
+		newNode->fileName = NULL;
+		newNode->next = NULL;
+		return newNode;
 	}
 	
 	/*
@@ -54,13 +86,45 @@ TokenNode Lex::getToken() {
 	*/
 	string retValue = "";
 	
-	if (Lex::cList->peekValue() >= 'a' && Lex::cList->peekValue <= 'z' || Lex::cList->peekValue() >= 'A' && Lex::cList->peekValue() <= 'Z') {
+	if (isAlphabetical(Lex::cList->peekValue())) {
+		/*
 		while (Lex::cList->peekValue() >= 'a' && Lex::cList->peekValue() <= 'z' || Lex::cList->peekValue() >= 'A' && Lex::cList->peekValue() <= 'Z') {
 			retValue += Lex::cList->peekValue();
+			Lex::cList->pop();
+		}
+		*/
+		int line;
+		char* file;
+		
+		while (!Lex::cList->isEmpty() && (isAlphabetical(Lex::cList->peekValue()) || isNumerical(Lex::cList->peekValue()))) {
+			retValue += Lex::cList->peekValue();
+			line = Lex::cList->peekLineNumber();
+			file = Lex::cList->peekFileName();
 			Lex::cList->pop();
 		}
 		/*
 			**here have some sort of token type checking to check for keywords.
 		*/
+		if (retValue.compare("ADC") || retValue.compare("Adc") || retValue.compare("adc")) {
+			newNode->type = ADC;
+			newNode->lineNumber = line;
+			newNode->fileName = file;
+			newNode->next = NULL;
+		} else if (retValue.compare("ADD") || retValue.compare("Add") || retValue.compare("add")) {
+			
+		} else if (retValue.compare("AND") || retValue.compare("And") || retValue.compare("and")) {
+			
+		}
+	} else if (isNumerical(Lex::cList->peekValue())) {
+		while (!Lex::cList->isEmpty() && (isNumerical(Lex::cList->peekValue()) || isAlphabetical(Lex::cList->peekValue()))) {
+			retValue += Lex::cList->peekValue();
+			Lex::cList->pop();
+		}
+	} else if (Lex::cList->peekValue() == '\"') {
+		Lex::cList->pop();
+		while (Lex::cList->peekValue() != '\"') {
+			retValue += Lex::cList->peekValue();
+		}
+		Lex::cList->pop();
 	}
 }

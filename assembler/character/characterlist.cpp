@@ -59,7 +59,7 @@ CharacterList::CharacterList() {
 	CharacterList::init();
 }
 
-~CharacterList::CharacterList() {
+CharacterList::~CharacterList() {
 	while (!CharacterList::isEmpty()) {
 		CharacterList::pop();
 	}
@@ -96,11 +96,11 @@ CHARACTER CharacterList::peekValue() {
 	return CharacterList::head->value;
 }
 
-int CharacterList::peekLine() {
+int CharacterList::peekLineNumber() {
 	return CharacterList::head->lineNumber;
 }
 
-char* CharacterList::peekFile() {
+char* CharacterList::peekFileName() {
 	return CharacterList::head->fileName;
 }
 

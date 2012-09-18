@@ -43,10 +43,18 @@ using namespace std;
 
 #include "tokentype.hpp"
 
+/*
+	This is a custom method that checks that a CHARACTER is an alphabetical character.
+	That is a character between A and Z or a and z.
+*/
 bool isAlphabetical(CHARACTER value) {
 	return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
 }
 
+/*
+	This is another custom method class that checks that a character is numerical in
+	the decimal sense. Between 0 and 9.
+*/
 bool isNumerical(CHARACTER value) {
 	return value >= '0' && value <= '9';
 }

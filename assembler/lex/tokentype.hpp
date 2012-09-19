@@ -30,7 +30,7 @@
 /*
 	file name: tokentype.hpp
 	date created: 3/09/2012
-	date updated: 12/09/2012
+	date updated: 19/09/2012
 	author: Gareth Richardson
 	description: This is a file of definitions for the types of tokens that are valid
 	in the assembler. The TOkenNode data structure stores the type as an unsigned char,
@@ -40,82 +40,124 @@
 /*
 	these are the opcode types:
 */
-#define ADC 0
-#define ADD 1
-#define AND 2
-#define BIT 3
-#define CALL 4
-#define CCF 5
-#define CPL 6
-#define DAA 7
-#define DEC 8
-#define DI 9
-#define EI 10
-#define EXX 11
-#define HALT 12
-#define IM 13
-#define IN 14
-#define INC 15
-#define JP 16
-#define LD 17
-#define NEG 18
-#define NOP 19
-#define OUT 20
-#define POP 21
-#define PUSH 22
-#define RES 23
-#define RET 24
-#define RETI 25
-#define RETN 26
-#define RLA 27
-#define RLCA 28
-#define RLD 29
-#define RRA 30
-#define RRCA 31
-#define RRD 32
-#define RST 33
-#define SBC 34
-#define SCF 35
-#define SET 36
+#define ADC 0 //
+#define ADD 1 //
+#define AND 2 //
+#define BIT 3 //
+#define CALL 4 //
+#define CCF 5 //
+#define CP 6 //
+#define CPD 7 //
+#define CPDR 8 //
+#define CPI 9 //
+#define CPIR 10 //
+#define CPL 11 //
+#define DAA 12 //
+#define DEC 13 //
+#define DI 14 //
+#define DJNZ 15
+#define EI 16 //
+#define EX 17 //
+#define EXX 18 //
+#define HALT 19 //
+#define IM 20 //
+#define IN 21 //
+#define INC 22  //
+#define IND 23
+#define INDR 24
+#define INI 25
+#define INIR 26
+#define JP 27 //
+#define JR 28
+#define LD 29 //
+#define LDD 30
+#define LDDR 31
+#define LDI 32
+#define LDIR 33
+#define NEG 34 //
+#define NOP 35 //
+#define OR 36
+#define OTDR 37
+#define OTIR 38
+#define OUT 39 //
+#define OUTD 40
+#define OUTI 41
+#define POP 42 //
+#define PUSH 43 //
+#define RES 44 //
+#define RET 45 //
+#define RETI 46 //
+#define RETN 47 //
+#define RL 48
+#define RLA 49
+#define RLCA 50
+#define RLD 51
+#define RR 52
+#define RRA 53
+#define RRC 54
+#define RRCA 55
+#define RRD 56
+#define RST 57
+#define SBC 58
+#define SCF 59
+#define SET 60
+#define SLA 61
+#define SRA 62
+#define SRL 63
+#define SUB 64
+#define XOR 65
 
 /*
 	these are registers:
 */
-#define A 37
-#define F 38
-#define B 39
-#define C 40
-#define D 41
-#define E 42
-#define H 43
-#define L 44
-#define BC 45
-#define DE 46
-#define HL 47
-#define I 48
-#define R 49
-#define IX 50
-#define IY 51
-#define SP 52
-#define PC 53
+#define A 66
+#define F 67
+#define B 68
+#define C 69	//Also the Carry token as well
+#define D 70
+#define E 71
+#define H 72
+#define L 73
+#define BC 74
+#define DE 75
+#define HL 76
+#define I 77
+#define R 78
+#define IX 79
+#define IY 80
+#define SP 81
+#define PC 82
 
 /*
 	these are assembler instructions:
 */
-#define CPU 54
-#define DB 55
-#define DW 56
-#define ORG 57
-#define REP 58
-#define SPECREP 59
+#define CPU 83
+#define DB 84
+#define DW 85
+#define ORG 86
+#define REP 87
+#define SPECREP 88
 
 /*
 	grammar:
 */
-#define ATOM 60
-#define COLON 61
-#define COMMA 62
-#define NEW_LINE 63
+#define ATOM 89
+#define COLON 90
+#define COMMA 91
+#define NEW_LINE 92
+#define LEFT_BRACKET 93
+#define RIGHT_BRACKET 94
+
+/*
+	This are the JMP condition Tokens:
+*/
+#define M 95
+#define NC 96
+#define NZ 97
+#define P 98
+#define PE 99
+#define PO 100
+#define Z 101
 
 /*
 	an end of file token type:

@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 12/09/2012
+	date updated: 19/09/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -125,6 +125,16 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = CALL;
 		} else if (retValue.compare("CCF") || retValue.compare("Ccf") || retValue.compare("ccf")) {
 			newNode->type = CCF;
+		} else if (retValue.compare("CP") || retValue.compare("Cp") || retValue.compare("cp")) {
+			newNode->type = CP;
+		} else if (retValue.compare("CPD") || retValue.compare("Cpd") || retValue.compare("cpd")) {
+			newNode->type = CPD;
+		}  else if (retValue.compare("CPDR") || retValue.compare("Cpdr") || retValue.compare("cpdr")) {
+			newNode->type = CPDR;
+		} else if (retValue.compare("CPI") || retValue.compare("Cpi") || retValue.compare("cpi")) {
+			newNode->type = CPI;
+		} else if (retValue.compare("CPIR") || retValue.compare("Cpir") || retValue.compare("cpir")) {
+			newNode->type = CPIR;
 		} else if (retValue.compare("CPL") || retValue.compare("Cpl") || retValue.compare("cpl")) {
 			newNode->type = CPL;
 		} else if (retValue.compare("DAA") || retValue.compare("Daa") || retValue.compare("daa")) {
@@ -135,7 +145,9 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = DI;
 		} else if (retValue.compare("EI") || retValue.compare("Ei") || retValue.compare("ei")) {
 			newNode->type = EI;
-		} else if (retValue.compare("EXX") || retValue.compare("Exx") || retValue.compare("exx") || retValue.compare("EX") || retValue.compare("Ex") || retValue.compare("ex")) {
+		} else if (retValue.compare("EX") || retValue.compare("Ex") || retValue.compare("ex")) {
+			newNode->type = EX;
+		} else if (retValue.compare("EXX") || retValue.compare("Exx") || retValue.compare("exx")) {
 			newNode->type = EXX;
 		} else if (retValue.compare("HALT") || retValue.compare("Halt") || retValue.compare("halt") || retValue.compare("HLT") || retValue.compare("Hlt") || retValue.compare("hlt")) {
 			newNode->type = HALT;
@@ -181,7 +193,13 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = RRD;
 		} else if (retValue.compare("RST") || retValue.compare("Rst") || retValue.compare("rst")) {
 			newNode->type = RST;
-		}
+		} else if (retValue.compare("SBC") || retValue.compare("Sbc") || retValue.compare("sbc")) {
+			newNode->type = SBC;
+		} else if (retValue.compare("SCF") || retValue.compare("Scf") || retValue.compare("scf")) {
+			newNode->type = SCF;
+		} else if (retValue.compare("SET") || retValue.compare("Set") || retValue.compare("set")) {
+			newNode->type = SET;
+		} 
 		//Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = line;
 		newNode->fileName = file;

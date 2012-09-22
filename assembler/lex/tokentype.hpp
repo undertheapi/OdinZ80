@@ -30,7 +30,7 @@
 /*
 	file name: tokentype.hpp
 	date created: 3/09/2012
-	date updated: 19/09/2012
+	date updated: 23/09/2012
 	author: Gareth Richardson
 	description: This is a file of definitions for the types of tokens that are valid
 	in the assembler. The TOkenNode data structure stores the type as an unsigned char,
@@ -40,54 +40,54 @@
 /*
 	these are the opcode types:
 */
-#define ADC 0 //
-#define ADD 1 //
-#define AND 2 //
-#define BIT 3 //
-#define CALL 4 //
-#define CCF 5 //
-#define CP 6 //
-#define CPD 7 //
-#define CPDR 8 //
-#define CPI 9 //
-#define CPIR 10 //
-#define CPL 11 //
-#define DAA 12 //
-#define DEC 13 //
-#define DI 14 //
+#define ADC 0
+#define ADD 1
+#define AND 2
+#define BIT 3
+#define CALL 4
+#define CCF 5
+#define CP 6
+#define CPD 7
+#define CPDR 8
+#define CPI 9
+#define CPIR 10
+#define CPL 11
+#define DAA 12
+#define DEC 13
+#define DI 14
 #define DJNZ 15
-#define EI 16 //
-#define EX 17 //
-#define EXX 18 //
-#define HALT 19 //
-#define IM 20 //
-#define IN 21 //
-#define INC 22  //
+#define EI 16
+#define EX 17
+#define EXX 18
+#define HALT 19
+#define IM 20
+#define IN 21
+#define INC 22 
 #define IND 23
 #define INDR 24
 #define INI 25
 #define INIR 26
-#define JP 27 //
+#define JP 27
 #define JR 28
-#define LD 29 //
+#define LD 29
 #define LDD 30
 #define LDDR 31
 #define LDI 32
 #define LDIR 33
-#define NEG 34 //
-#define NOP 35 //
+#define NEG 34
+#define NOP 35
 #define OR 36
 #define OTDR 37
 #define OTIR 38
-#define OUT 39 //
+#define OUT 39
 #define OUTD 40
 #define OUTI 41
-#define POP 42 //
-#define PUSH 43 //
-#define RES 44 //
-#define RET 45 //
-#define RETI 46 //
-#define RETN 47 //
+#define POP 42
+#define PUSH 43
+#define RES 44
+#define RET 45
+#define RETI 46
+#define RETN 47
 #define RL 48
 #define RLA 49
 #define RLCA 50
@@ -113,7 +113,7 @@
 #define A 66
 #define F 67
 #define B 68
-#define C 69	//Also the Carry token as well
+#define C 69	// Also the Carry token as well
 #define D 70
 #define E 71
 #define H 72
@@ -131,12 +131,12 @@
 /*
 	these are assembler instructions:
 */
-#define CPU 83
-#define DB 84
-#define DW 85
-#define ORG 86
-#define REP 87
-#define SPECREP 88
+#define CPU 83	// CPU type (for future compatibility).
+#define DB 84	// Declare a byte in the output machine code.
+#define DW 85	// Declare a word in the output machine code.
+#define ORG 86	// The address the byte code will be executed from.
+#define REP 87	// Repeats a byte a specified amount of times.
+#define SPECREP 88	//A custom repeat command. Repeats a set of bytes instead of one.
 
 /*
 	grammar:

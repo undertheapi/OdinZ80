@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 19/09/2012
+	date updated: 23/09/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -111,7 +111,8 @@ TokenNodePtr Lex::getToken() {
 			Lex::cList->pop();
 		}
 		/*
-			**here have some sort of token type checking to check for keywords.
+			Here have some sort of token type checking to check for keywords. There has to be a more "effective" way
+			of doing this.
 		*/
 		if (retValue.compare("ADC") || retValue.compare("Adc") || retValue.compare("adc")) {
 			newNode->type = ADC;
@@ -157,16 +158,44 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = IN;
 		} else if (retValue.compare("INC") || retValue.compare("Inc") || retValue.compare("inc")) {
 			newNode->type = INC;
+		} else if (retValue.compare("IND") || retValue.compare("Ind") || retValue.compare("ind")) {
+			newNode->type = IND;
+		} else if (retValue.compare("INDR") || retValue.compare("Indr") || retValue.compare("indr")) {
+			newNode->type = INDR;
+		} else if (retValue.compare("INI") || retValue.compare("Ini") || retValue.compare("ini")) {
+			newNode->type = INI;
+		} else if (retValue.compare("INIR") || retValue.compare("Inir") || retValue.compare("inir")) {
+			newNode->type = INIR;
 		} else if (retValue.compare("JP") || retValue.compare("Jp") || retValue.compare("jp") || retValue.compare("JMP") || retValue.compare("Jmp") || retValue.compare("jmp")) {
 			newNode->type = JP;
+		} else if (retValue.compare("JR") || retValue.compare("Jr") || retValue.compare("jr")) {
+			newNode->type = JR;
 		} else if (retValue.compare("LD") || retValue.compare("Ld") || retValue.compare("ld")) {
 			newNode->type = LD;
+		} else if (retValue.compare("LDD") || retValue.compare("Ldd") || retValue.compare("ldd")) {
+			newNode->type = LDD;
+		} else if (retValue.compare("LDDR") || retValue.compare("Lddr") || retValue.compare("lddr")) {
+			newNode->type = LDDR;
+		} else if (retValue.compare("LDI") || retValue.compare("Ldi") || retValue.compare("ldi")) {
+			newNode->type = LDI;
+		} else if (retValue.compare("LDIR") || retValue.compare("Ldir") || retValue.compare("ldir")) {
+			newNode->type = LDIR;
 		} else if (retValue.compare("NEG") || retValue.compare("Neg") || retValue.compare("neg")) {
 			newNode->type = NEG;
 		} else if (retValue.compare("NOP") || retValue.compare("Nop") || retValue.compare("nop")) {
 			newNode->type = NOP;
+		} else if (retValue.compare("OR") || retValue.compare("or") || retValue.compare("or")) {
+			newNode->type = OR;
+		} else if (retValue.compare("OTDR") || retValue.compare("OTDR") || retValue.compare("otdr")) {
+			newNode->type = OTDR;
+		} else if (retValue.compare("OTIR") || retValue.compare("OTiR") || retValue.compare("otir")) {
+			newNode->type = OTIR;
 		} else if (retValue.compare("OUT") || retValue.compare("Out") || retValue.compare("out")) {
 			newNode->type = OUT;
+		} else if (retValue.compare("OUTD") || retValue.compare("Outd") || retValue.compare("outd")) {
+			newNode->type = OUTD;
+		} else if (retValue.compare("OUTI") || retValue.compare("Outi") || retValue.compare("outi")) {
+			newNode->type = OUTI;
 		} else if (retValue.compare("POP") || retValue.compare("Pop") || retValue.compare("pop")) {
 			newNode->type = POP;
 		} else if (retValue.compare("PUSH") || retValue.compare("Push") || retValue.compare("push")) {
@@ -179,14 +208,20 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = RETI;
 		} else if (retValue.compare("RETN") || retValue.compare("Retn") || retValue.compare("retn")) {
 			newNode->type = RETN;
+		} else if (retValue.compare("RL") || retValue.compare("rl") || retValue.compare("rl")) {
+			newNode->type = RL;
 		} else if (retValue.compare("RLA") || retValue.compare("Rla") || retValue.compare("rla")) {
 			newNode->type = RLA;
 		} else if (retValue.compare("RLCA") || retValue.compare("Rlca") || retValue.compare("rlca")) {
 			newNode->type = RLCA;
 		} else if (retValue.compare("RLD") || retValue.compare("Rld") || retValue.compare("rld")) {
 			newNode->type = RLD;
+		} else if (retValue.compare("RR") || retValue.compare("rr") || retValue.compare("rr")) {
+			newNode->type = RR;
 		} else if (retValue.compare("RRA") || retValue.compare("Rra") || retValue.compare("rra")) {
 			newNode->type = RRA;
+		} else if (retValue.compare("RRC") || retValue.compare("Rrc") || retValue.compare("rrc")) {
+			newNode->type = RRC;
 		} else if (retValue.compare("RRCA") || retValue.compare("Rrca") || retValue.compare("rrca")) {
 			newNode->type = RRCA;
 		} else if (retValue.compare("RRD") || retValue.compare("Rrd") || retValue.compare("rrd")) {
@@ -199,7 +234,21 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = SCF;
 		} else if (retValue.compare("SET") || retValue.compare("Set") || retValue.compare("set")) {
 			newNode->type = SET;
-		} 
+		} else if (retValue.compare("SLA") || retValue.compare("Sla") || retValue.compare("sla")) {
+			newNode->type = SLA;
+		} else if (retValue.compare("SRA") || retValue.compare("Sra") || retValue.compare("sra")) {
+			newNode->type = SRA;
+		} else if (retValue.compare("SRL") || retValue.compare("Srl") || retValue.compare("srl")) {
+			newNode->type = SRL;
+		} else if (retValue.compare("SUB") || retValue.compare("Sub") || retValue.compare("sub")) {
+			newNode->type = SUB;
+		} else if (retValue.compare("XOR") || retValue.compare("Xor") || retValue.compare("xor")) {
+			newNode->type = XOR;
+		} else if (retValue.compare("A") || retValue.compare("a")) {
+			newNode->type = A;
+		} else if (retValue.compare("F") || retValue.compare("f")) {
+			newNode->type = F;
+		}
 		//Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = line;
 		newNode->fileName = file;

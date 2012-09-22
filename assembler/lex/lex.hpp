@@ -30,12 +30,12 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 29/08/2012
+	date updated: 23/09/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
 
-#include "../characters/characterlist.hpp"
+#include "../character/characterlist.hpp"
 #include "tokenlist.hpp"
 
 class Lex {

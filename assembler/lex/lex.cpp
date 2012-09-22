@@ -59,6 +59,14 @@ bool isNumerical(CHARACTER value) {
 	return value >= '0' && value <= '9';
 }
 
+/*
+	This method checks if the character value is a printable character. That is, it is not
+	the first 32 ASCII values AND not the DEL character.
+*/
+bool isPrintable(CHARACTER value) {
+	return value >= 32 && value <= 126;
+}
+
 TokenNodePtr Lex::getToken() {
 	TokenNodePtr newNode = new TokenNode;
 	/*
@@ -79,6 +87,9 @@ TokenNodePtr Lex::getToken() {
 		}
 	}
 	
+	/*
+		This is here to stop ANY errors happening.
+	*/
 	if (Lex::cList->isEmpty()) {
 		//send end of file state back.
 		newNode->type = EOF;
@@ -113,6 +124,7 @@ TokenNodePtr Lex::getToken() {
 		/*
 			Here have some sort of token type checking to check for keywords. There has to be a more "effective" way
 			of doing this.
+			If the string does not match anything here, it will return a Token Type of ATOM.
 		*/
 		if (retValue.compare("ADC") || retValue.compare("Adc") || retValue.compare("adc")) {
 			newNode->type = ADC;
@@ -248,21 +260,156 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = A;
 		} else if (retValue.compare("F") || retValue.compare("f")) {
 			newNode->type = F;
+		} else if (retValue.compare("B") || retValue.compare("b")) {
+			newNode->type = B;
+		} else if (retValue.compare("C") || retValue.compare("c")) {
+			newNode->type = C;
+		} else if (retValue.compare("D") || retValue.compare("d")) {
+			newNode->type = D;
+		} else if (retValue.compare("E") || retValue.compare("e")) {
+			newNode->type = E;
+		} else if (retValue.compare("H") || retValue.compare("h")) {
+			newNode->type = H;
+		} else if (retValue.compare("L") || retValue.compare("l")) {
+			newNode->type = L;
+		} else if (retValue.compare("BC") || retValue.compare("bc")) {
+			newNode->type = BC;
+		} else if (retValue.compare("DE") || retValue.compare("de")) {
+			newNode->type = DE;
+		} else if (retValue.compare("HL") || retValue.compare("hl")) {
+			newNode->type = HL;
+		} else if (retValue.compare("I") || retValue.compare("i")) {
+			newNode->type = I;
+		} else if (retValue.compare("R") || retValue.compare("r")) {
+			newNode->type = R;
+		} else if (retValue.compare("IX") || retValue.compare("ix")) {
+			newNode->type = IX;
+		} else if (retValue.compare("IY") || retValue.compare("iy")) {
+			newNode->type = IY;
+		} else if (retValue.compare("PC") || retValue.compare("pc")) {
+			newNode->type = PC;
+		} else if (retValue.compare("SP") || retValue.compare("sp")) {
+			newNode->type = SP;
+		} else if (retValue.compare("CPU") || retValue.compare("Cpu") || retValue.compare("cpu")) {
+			newNode->type = CPU;
+		} else if (retValue.compare("DB") || retValue.compare("Db") || retValue.compare("db") || retValue.compare("BYTE") || retValue.compare("Byte") || retValue.compare("byte")) {
+			newNode->type = DB;
+		} else if (retValue.compare("DW") || retValue.compare("Dw") || retValue.compare("dw") || retValue.compare("WORD") || retValue.compare("Word") || retValue.compare("word")) {
+			newNode->type = DW;
+		} else if (retValue.compare("ORG") || retValue.compare("Org") || retValue.compare("org")) {
+			newNode->type = ORG;
+		} else if (retValue.compare("REP") || retValue.compare("Rep") || retValue.compare("rep")) {
+			newNode->type = REP;
+		} else if (retValue.compare("SPECREP") || retValue.compare("SPECREP") || retValue.compare("SPECREP")) {
+			newNode->type = SPECREP;
+		} else if (retValue.compare("M") || retValue.compare("m")) {
+			newNode->type = M;
+		} else if (retValue.compare("NC") || retValue.compare("nc")) {
+			newNode->type = NC;
+		} else if (retValue.compare("NZ") || retValue.compare("nz")) {
+			newNode->type = NZ;
+		} else if (retValue.compare("P") || retValue.compare("p")) {
+			newNode->type = P;
+		} else if (retValue.compare("PE") || retValue.compare("pe")) {
+			newNode->type = PE;
+		} else if (retValue.compare("PO") || retValue.compare("po")) {
+			newNode->type = PO;
+		} else if (retValue.compare("Z") || retValue.compare("z")) {
+			newNode->type = Z;
 		}
-		//Adding the rest of the values for the TokenNode:
+		// Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = line;
 		newNode->fileName = file;
 		newNode->next = NULL;
 	} else if (isNumerical(Lex::cList->peekValue())) {
 		while (!Lex::cList->isEmpty() && (isNumerical(Lex::cList->peekValue()) || isAlphabetical(Lex::cList->peekValue()))) {
 			retValue += Lex::cList->peekValue();
+			newNode->lineNumber = Lex::cList->peekLineNumber();
+			newNode->fileName = Lex::cList->peekFileName();;
 			Lex::cList->pop();
 		}
+		newNode->type = ATOM;
+		newNode->value = retValue;
+		newNode->next = NULL;
 	} else if (Lex::cList->peekValue() == '\"') {
 		Lex::cList->pop();
-		while (Lex::cList->peekValue() != '\"') {
-			retValue += Lex::cList->peekValue();
+		while (Lex::cList->peekValue() != '\"' && !Lex::errorState) {
+			if (isPrintable(Lex::cList->peekValue())) {
+				retValue += Lex::cList->peekValue();
+			} else if (Lex::cList->isEmpty()) {
+				/*
+					incase we reach no more character in the file,
+					obviously, a string left open and not closed.
+					Sets error state accordingly.
+				*/
+				Lex::errorState = true;
+				Lex::errorString = "A string has been left open!";
+			} else {
+				/*
+					found a bad character in the string, now set
+					the error state.
+				*/
+				Lex::errorState = true;
+				Lex::errorString = "Found an invalid character within a string at ";
+				
+			}
+			Lex::cList->pop();
 		}
+		// This is here to pop the end quotation on the string.
 		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == ':') {
+		newNode->type = COLON;
+		newNode->lineNumber = Lex::cList->peekLineNumber();
+		newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == ',') {
+		newNode->type = COMMA;
+		newNode->lineNumber = Lex::cList->peekLineNumber();
+		newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == '\n') {
+		newNode->type = NEW_LINE;
+		newNode->lineNumber = Lex::cList->peekLineNumber();
+		newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == '[' || Lex::cList->peekValue() == '(') {
+		newNode->type = LEFT_BRACKET;
+		newNode->lineNumber = Lex::cList->peekLineNumber();
+		newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == ']' || Lex::cList->peekValue() == ')') {
+		newNode->type = RIGHT_BRACKET;
+		newNode->lineNumber = Lex::cList->peekLineNumber();
+		newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else {
+		/*
+			if the program gets to this point, there is an obvious error. The error is most
+			likely an invalid character in the source code. For example: # @ etc.
+		*/
+		Lex::errorState = true;
+		Lex::errorString = "An invalid character is in the sourcecode at ";
+	}
+	
+	return newNode;
+}
+
+void Lex::run() {
+	while (!Lex::errorState && !Lex::cList->isEmpty()) {
+		TokenNodePtr newPtr = Lex::getToken();
+		if (!Lex::errorState()) {
+			Lex::tList->push(newPtr);
+		}
+	}
+	
+	if (Lex::errorState) {
+		/*
+			display errors here?
+		*/
 	}
 }

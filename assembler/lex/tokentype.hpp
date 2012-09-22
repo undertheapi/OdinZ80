@@ -125,31 +125,33 @@
 #define R 78
 #define IX 79
 #define IY 80
-#define SP 81
-#define PC 82
+#define PC 81
+#define SP 82
 
 /*
 	these are assembler instructions:
 */
-#define CPU 83	// CPU type (for future compatibility).
-#define DB 84	// Declare a byte in the output machine code.
-#define DW 85	// Declare a word in the output machine code.
-#define ORG 86	// The address the byte code will be executed from.
-#define REP 87	// Repeats a byte a specified amount of times.
-#define SPECREP 88	//A custom repeat command. Repeats a set of bytes instead of one.
+#define CPU 83		// CPU type (for future compatibility).
+#define DB 84		// Declare a byte in the output machine code.
+#define DW 85		// Declare a word in the output machine code.
+#define ORG 86		// The address the byte code will be executed from.
+#define REP 87		// Repeats a byte a specified amount of times.
+#define SPECREP 88	// A custom repeat command. Repeats a set of bytes instead of one.
 
 /*
 	grammar:
 */
-#define ATOM 89
-#define COLON 90
-#define COMMA 91
+#define ATOM 89			// A none reserved word in the source code, includes numbers as well.
+#define COLON 90		// A ":" character, used for labels and addresses.
+#define COMMA 91		// A ',' character.
 #define NEW_LINE 92
 #define LEFT_BRACKET 93
 #define RIGHT_BRACKET 94
 
 /*
 	This are the JMP condition Tokens:
+	(Note that the C "Carry" condition type is also the same as the C register,
+	so, it has been declared above in the Register section of this file).
 */
 #define M 95
 #define NC 96

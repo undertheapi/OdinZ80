@@ -44,7 +44,7 @@ class TokenList {
 		
 		void init();
 	public:
-		TokenList()
+		TokenList();
 		
 		bool isEmpty();
 		

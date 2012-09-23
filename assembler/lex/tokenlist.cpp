@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.cpp
 	date created: 29/08/2012
-	date updated: 29/08/2012
+	date updated: 23/09/2012
 	author: Garth Richardson
 	description: THe implementation of the TokenList class.
 */
@@ -75,4 +75,12 @@ void TokenList::pop() {
 		TokenList::head = TokenList::head->next;
 		delete pointer;
 	}
+}
+
+TOKEN_TYPE TokenList::peekTokenType() {
+	return TokenList::head->type;
+}
+
+string TokenList::peekValue() {
+	return TokenList::head->value;
 }

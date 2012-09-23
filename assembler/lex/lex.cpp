@@ -67,8 +67,14 @@ bool isPrintable(CHARACTER value) {
 	return value >= 32 && value <= 126;
 }
 
+Lex::Lex(CharacterList* cList, TokenList* tList) {
+	Lex::cList = cList;
+	Lex::tList = tList;
+}
+
 TokenNodePtr Lex::getToken() {
 	TokenNodePtr newNode = new TokenNode;
+	newNode->value = "";
 	/*
 		this is getting rid of the space characters from the CharacterList class.
 	*/
@@ -92,7 +98,7 @@ TokenNodePtr Lex::getToken() {
 	*/
 	if (Lex::cList->isEmpty()) {
 		//send end of file state back.
-		newNode->type = EOF;
+		newNode->type = END_OF_FILE;
 		newNode->value = "";
 		newNode->lineNumber = -1;
 		newNode->fileName = NULL;
@@ -106,12 +112,6 @@ TokenNodePtr Lex::getToken() {
 	string retValue = "";
 	
 	if (isAlphabetical(Lex::cList->peekValue())) {
-		/*
-		while (Lex::cList->peekValue() >= 'a' && Lex::cList->peekValue() <= 'z' || Lex::cList->peekValue() >= 'A' && Lex::cList->peekValue() <= 'Z') {
-			retValue += Lex::cList->peekValue();
-			Lex::cList->pop();
-		}
-		*/
 		int line;
 		char* file;
 		
@@ -316,6 +316,12 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = PO;
 		} else if (retValue.compare("Z") || retValue.compare("z")) {
 			newNode->type = Z;
+		} else {
+			/*
+				if it is not a reserved word, it is an ATOM:
+			*/
+			newNode->type = ATOM;
+			newNode->value = retValue;
 		}
 		// Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = line;
@@ -393,7 +399,9 @@ TokenNodePtr Lex::getToken() {
 			likely an invalid character in the source code. For example: # @ etc.
 		*/
 		Lex::errorState = true;
-		Lex::errorString = "An invalid character is in the sourcecode at ";
+		Lex::errorString = "An invalid character is in the source code at ";
+		int ineNumber = Lex::cList->peekLineNumber();
+		
 	}
 	
 	return newNode;
@@ -402,14 +410,16 @@ TokenNodePtr Lex::getToken() {
 void Lex::run() {
 	while (!Lex::errorState && !Lex::cList->isEmpty()) {
 		TokenNodePtr newPtr = Lex::getToken();
-		if (!Lex::errorState()) {
+		if (!Lex::errorState) {
 			Lex::tList->push(newPtr);
 		}
 	}
-	
-	if (Lex::errorState) {
-		/*
-			display errors here?
-		*/
-	}
+}
+
+bool Lex::checkForError() {
+	return Lex::errorState;
+}
+
+string Lex::getError() {
+	return Lex::errorString;
 }

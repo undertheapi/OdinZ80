@@ -46,7 +46,8 @@ class Lex {
 		bool errorState;
 		TokenNodePtr getToken();
 	public:
-		Lex(CharacterList& cList, TokenList* tList);
+		Lex(CharacterList* cList, TokenList* tList);
 		void run();
 		bool checkForError();
+		string getError();
 };

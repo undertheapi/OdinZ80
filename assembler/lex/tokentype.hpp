@@ -164,4 +164,4 @@
 /*
 	an end of file token type:
 */
-#define EOF 255
+#define END_OF_FILE 255

@@ -54,7 +54,8 @@ class CharacterList {
 		
 		/*
 			This method will check if a character to be put into this class is a valid
-			character or not. Used in the push method.
+			character or not. Used in the push method. So, it will check for a New Line
+			character, Tab character and all printable ascii characters.
 		*/
 		bool isValidCharacter(CHARACTER value);
 		
@@ -91,7 +92,17 @@ class CharacterList {
 			These do not remove the top node.
 		*/
 		CHARACTER peekValue();
+		
+		/*
+			This gets the line number the character is on. Used for the error handling and
+			displaying.
+		*/
 		int peekLineNumber();
+		
+		/*
+			This gets the file name the character is in. If the project that is being assembled
+			is going to have more than one file, this comes in handy.
+		*/
 		char* peekFileName();
 		
 		/*

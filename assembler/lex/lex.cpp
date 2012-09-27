@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 23/09/2012
+	date updated: 26/09/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -67,20 +67,102 @@ bool isPrintable(CHARACTER value) {
 	return value >= 32 && value <= 126;
 }
 
+/*
+	This method checks if a CHARACTER value is a hexidecimal value:
+*/
+bool isHex(CHARACTER value) {
+	return (value >= '0' && value <= '9') || (value >= 'a' && value <= 'f') || (value >= 'A' && value <= 'F');
+}
+
+bool isBinary(CHARACTER value) {
+	return value == '0' || value == '1';
+}
+
+bool isDecimalString(string value) {
+	bool valid = true;
+	int index = 0;
+	while (valid && index < value.size()) {
+		if (!isNumerical(value.at(index))) {
+			valid = false;
+		}
+		index++;
+	}
+	return valid;
+}
+
+bool isHexString(string value) {
+	bool valid = true;
+	int index = 0;
+	while (valid && index < value.size()) {
+		if (!isHex(value.at(index))) {
+			valid = false;
+		}
+		index++;
+	}
+	return valid;
+}
+
+bool isBinaryString(string value) {
+	bool valid = true;
+	int index = 0;
+	while (valid && index < value.size()) {
+		if (!isBinary(value.at(index))) {
+			valid = false;
+		}
+		index++;
+	}
+	return valid;
+}
+
+string integerToString(int value) {
+	//cannot use this in release!!!!!!
+	if (value == 0) {
+		return "0";
+	} else {
+		string retValue = "";
+		
+		while (value > 0) {
+			retValue += (value % 10) + 48;
+			value /= 10;
+		}
+		
+		return retValue;
+	}
+     /*   
+    string temp="";
+    string returnvalue="";
+    while (number>0)
+    {
+        temp+=number%10+48;
+        number/=10;
+    }
+    for (int i=0;i<temp.length();i++)
+        returnvalue+=temp[temp.length()-i-1];
+    return returnvalue;
+	*/
+}
+
+string convertHex(char value) {
+	string retString = "";
+	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	retString += hexArray[(int)((value >> 4) & 0x000f)];
+	retString += hexArray[(int)((value) & 0x000f)];
+	return retString;
+}
+
 Lex::Lex(CharacterList* cList, TokenList* tList) {
 	Lex::cList = cList;
 	Lex::tList = tList;
+	/*
+		there are no errors to begin with, so do not
+		set the errorState.
+	*/
+	Lex::errorState = false;
 }
 
 TokenNodePtr Lex::getToken() {
 	TokenNodePtr newNode = new TokenNode;
 	newNode->value = "";
-	/*
-		this is getting rid of the space characters from the CharacterList class.
-	*/
-	while (!Lex::cList->isEmpty() && Lex::cList->peekValue() == '\t' && Lex::cList->peekValue() == ' ') {
-		Lex::cList->pop();
-	}
 	
 	/*
 		for getting rid of the comments. Comments are only single line, so we read from a ';' to a
@@ -91,6 +173,13 @@ TokenNodePtr Lex::getToken() {
 		while (!Lex::cList->isEmpty() && Lex::cList->peekValue() != '\n') {
 			Lex::cList->pop();
 		}
+	}
+	
+	/*
+		this is getting rid of the space characters from the CharacterList class.
+	*/
+	while (!Lex::cList->isEmpty() && (Lex::cList->peekValue() == '\t' || Lex::cList->peekValue() == ' ')) {
+		Lex::cList->pop();
 	}
 	
 	/*
@@ -126,195 +215,195 @@ TokenNodePtr Lex::getToken() {
 			of doing this.
 			If the string does not match anything here, it will return a Token Type of ATOM.
 		*/
-		if (retValue.compare("ADC") || retValue.compare("Adc") || retValue.compare("adc")) {
+		if (retValue.compare("ADC") == 0 || retValue.compare("Adc") == 0 || retValue.compare("adc") == 0) {
 			newNode->type = ADC;
-		} else if (retValue.compare("ADD") || retValue.compare("Add") || retValue.compare("add")) {
+		} else if (retValue.compare("ADD") == 0 || retValue.compare("Add") == 0 || retValue.compare("add") == 0) {
 			newNode->type = ADD;
-		} else if (retValue.compare("AND") || retValue.compare("And") || retValue.compare("and")) {
+		} else if (retValue.compare("AND") == 0 || retValue.compare("And") == 0 || retValue.compare("and") == 0) {
 			newNode->type = AND;
-		} else if (retValue.compare("BIT") || retValue.compare("Bit") || retValue.compare("bit") || retValue.compare("BT") || retValue.compare("Bt") || retValue.compare("bt")) {
+		} else if (retValue.compare("BIT") == 0 || retValue.compare("Bit") == 0 || retValue.compare("bit") == 0 || retValue.compare("BT") == 0 || retValue.compare("Bt") == 0 || retValue.compare("bt") == 0) {
 			newNode->type = BIT;
-		} else if (retValue.compare("CALL") || retValue.compare("Call") || retValue.compare("call")) {
+		} else if (retValue.compare("CALL") == 0 || retValue.compare("Call") == 0 || retValue.compare("call") == 0) {
 			newNode->type = CALL;
-		} else if (retValue.compare("CCF") || retValue.compare("Ccf") || retValue.compare("ccf")) {
+		} else if (retValue.compare("CCF") == 0 || retValue.compare("Ccf") == 0 || retValue.compare("ccf") == 0) {
 			newNode->type = CCF;
-		} else if (retValue.compare("CP") || retValue.compare("Cp") || retValue.compare("cp")) {
+		} else if (retValue.compare("CP") == 0 || retValue.compare("Cp") == 0 || retValue.compare("cp") == 0) {
 			newNode->type = CP;
-		} else if (retValue.compare("CPD") || retValue.compare("Cpd") || retValue.compare("cpd")) {
+		} else if (retValue.compare("CPD") == 0 || retValue.compare("Cpd") == 0 || retValue.compare("cpd") == 0) {
 			newNode->type = CPD;
-		}  else if (retValue.compare("CPDR") || retValue.compare("Cpdr") || retValue.compare("cpdr")) {
+		}  else if (retValue.compare("CPDR") == 0 || retValue.compare("Cpdr") == 0 || retValue.compare("cpdr") == 0) {
 			newNode->type = CPDR;
-		} else if (retValue.compare("CPI") || retValue.compare("Cpi") || retValue.compare("cpi")) {
+		} else if (retValue.compare("CPI") == 0 || retValue.compare("Cpi") == 0 || retValue.compare("cpi") == 0) {
 			newNode->type = CPI;
-		} else if (retValue.compare("CPIR") || retValue.compare("Cpir") || retValue.compare("cpir")) {
+		} else if (retValue.compare("CPIR") == 0 || retValue.compare("Cpir") == 0 || retValue.compare("cpir") == 0) {
 			newNode->type = CPIR;
-		} else if (retValue.compare("CPL") || retValue.compare("Cpl") || retValue.compare("cpl")) {
+		} else if (retValue.compare("CPL") == 0 || retValue.compare("Cpl") == 0 || retValue.compare("cpl") == 0) {
 			newNode->type = CPL;
-		} else if (retValue.compare("DAA") || retValue.compare("Daa") || retValue.compare("daa")) {
+		} else if (retValue.compare("DAA") == 0 || retValue.compare("Daa") == 0 || retValue.compare("daa") == 0) {
 			newNode->type = DAA;
-		} else if (retValue.compare("DEC") || retValue.compare("Dec") || retValue.compare("dec")) {
+		} else if (retValue.compare("DEC") == 0 || retValue.compare("Dec") == 0 || retValue.compare("dec") == 0) {
 			newNode->type = DEC;
-		} else if (retValue.compare("DI") || retValue.compare("Di") || retValue.compare("di")) {
+		} else if (retValue.compare("DI") == 0 || retValue.compare("Di") == 0 || retValue.compare("di") == 0) {
 			newNode->type = DI;
-		} else if (retValue.compare("EI") || retValue.compare("Ei") || retValue.compare("ei")) {
+		} else if (retValue.compare("EI") == 0 || retValue.compare("Ei") == 0 || retValue.compare("ei") == 0) {
 			newNode->type = EI;
-		} else if (retValue.compare("EX") || retValue.compare("Ex") || retValue.compare("ex")) {
+		} else if (retValue.compare("EX") == 0 || retValue.compare("Ex") == 0 || retValue.compare("ex") == 0) {
 			newNode->type = EX;
-		} else if (retValue.compare("EXX") || retValue.compare("Exx") || retValue.compare("exx")) {
+		} else if (retValue.compare("EXX") == 0 || retValue.compare("Exx") == 0 || retValue.compare("exx") == 0) {
 			newNode->type = EXX;
-		} else if (retValue.compare("HALT") || retValue.compare("Halt") || retValue.compare("halt") || retValue.compare("HLT") || retValue.compare("Hlt") || retValue.compare("hlt")) {
+		} else if (retValue.compare("HALT") == 0 || retValue.compare("Halt") == 0 || retValue.compare("halt") == 0 || retValue.compare("HLT") == 0 || retValue.compare("Hlt") == 0 || retValue.compare("hlt") == 0) {
 			newNode->type = HALT;
-		} else if (retValue.compare("IM") || retValue.compare("Im") || retValue.compare("im")) {
+		} else if (retValue.compare("IM") == 0 || retValue.compare("Im") == 0 || retValue.compare("im") == 0) {
 			newNode->type = IM;
-		} else if (retValue.compare("IN") || retValue.compare("In") || retValue.compare("in")) {
+		} else if (retValue.compare("IN") == 0 || retValue.compare("In") == 0 || retValue.compare("in") == 0) {
 			newNode->type = IN;
-		} else if (retValue.compare("INC") || retValue.compare("Inc") || retValue.compare("inc")) {
+		} else if (retValue.compare("INC") == 0 || retValue.compare("Inc") == 0 || retValue.compare("inc") == 0) {
 			newNode->type = INC;
-		} else if (retValue.compare("IND") || retValue.compare("Ind") || retValue.compare("ind")) {
+		} else if (retValue.compare("IND") == 0 || retValue.compare("Ind") == 0 || retValue.compare("ind") == 0) {
 			newNode->type = IND;
-		} else if (retValue.compare("INDR") || retValue.compare("Indr") || retValue.compare("indr")) {
+		} else if (retValue.compare("INDR") == 0 || retValue.compare("Indr") == 0 || retValue.compare("indr") == 0) {
 			newNode->type = INDR;
-		} else if (retValue.compare("INI") || retValue.compare("Ini") || retValue.compare("ini")) {
+		} else if (retValue.compare("INI") == 0 || retValue.compare("Ini") == 0 || retValue.compare("ini") == 0) {
 			newNode->type = INI;
-		} else if (retValue.compare("INIR") || retValue.compare("Inir") || retValue.compare("inir")) {
+		} else if (retValue.compare("INIR") == 0 || retValue.compare("Inir") == 0 || retValue.compare("inir") == 0) {
 			newNode->type = INIR;
-		} else if (retValue.compare("JP") || retValue.compare("Jp") || retValue.compare("jp") || retValue.compare("JMP") || retValue.compare("Jmp") || retValue.compare("jmp")) {
+		} else if (retValue.compare("JP") == 0 || retValue.compare("Jp") == 0 || retValue.compare("jp") == 0 || retValue.compare("JMP") == 0 || retValue.compare("Jmp") == 0 || retValue.compare("jmp") == 0) {
 			newNode->type = JP;
-		} else if (retValue.compare("JR") || retValue.compare("Jr") || retValue.compare("jr")) {
+		} else if (retValue.compare("JR") == 0 || retValue.compare("Jr") == 0 || retValue.compare("jr") == 0) {
 			newNode->type = JR;
-		} else if (retValue.compare("LD") || retValue.compare("Ld") || retValue.compare("ld")) {
+		} else if (retValue.compare("LD") == 0 || retValue.compare("Ld") == 0 || retValue.compare("ld") == 0) {
 			newNode->type = LD;
-		} else if (retValue.compare("LDD") || retValue.compare("Ldd") || retValue.compare("ldd")) {
+		} else if (retValue.compare("LDD") == 0 || retValue.compare("Ldd") == 0 || retValue.compare("ldd") == 0) {
 			newNode->type = LDD;
-		} else if (retValue.compare("LDDR") || retValue.compare("Lddr") || retValue.compare("lddr")) {
+		} else if (retValue.compare("LDDR") == 0 || retValue.compare("Lddr") == 0 || retValue.compare("lddr") == 0) {
 			newNode->type = LDDR;
-		} else if (retValue.compare("LDI") || retValue.compare("Ldi") || retValue.compare("ldi")) {
+		} else if (retValue.compare("LDI") == 0 || retValue.compare("Ldi") == 0 || retValue.compare("ldi") == 0) {
 			newNode->type = LDI;
-		} else if (retValue.compare("LDIR") || retValue.compare("Ldir") || retValue.compare("ldir")) {
+		} else if (retValue.compare("LDIR") == 0 || retValue.compare("Ldir") == 0 || retValue.compare("ldir") == 0) {
 			newNode->type = LDIR;
-		} else if (retValue.compare("NEG") || retValue.compare("Neg") || retValue.compare("neg")) {
+		} else if (retValue.compare("NEG") == 0 || retValue.compare("Neg") == 0 || retValue.compare("neg") == 0) {
 			newNode->type = NEG;
-		} else if (retValue.compare("NOP") || retValue.compare("Nop") || retValue.compare("nop")) {
+		} else if (retValue.compare("NOP") == 0 || retValue.compare("Nop") == 0 || retValue.compare("nop") == 0) {
 			newNode->type = NOP;
-		} else if (retValue.compare("OR") || retValue.compare("or") || retValue.compare("or")) {
+		} else if (retValue.compare("OR") == 0 || retValue.compare("or") == 0 || retValue.compare("or") == 0) {
 			newNode->type = OR;
-		} else if (retValue.compare("OTDR") || retValue.compare("OTDR") || retValue.compare("otdr")) {
+		} else if (retValue.compare("OTDR") == 0 || retValue.compare("OTDR") == 0 || retValue.compare("otdr") == 0) {
 			newNode->type = OTDR;
-		} else if (retValue.compare("OTIR") || retValue.compare("OTiR") || retValue.compare("otir")) {
+		} else if (retValue.compare("OTIR") == 0 || retValue.compare("OTiR") == 0 || retValue.compare("otir") == 0) {
 			newNode->type = OTIR;
-		} else if (retValue.compare("OUT") || retValue.compare("Out") || retValue.compare("out")) {
+		} else if (retValue.compare("OUT") == 0 || retValue.compare("Out") == 0 || retValue.compare("out") == 0) {
 			newNode->type = OUT;
-		} else if (retValue.compare("OUTD") || retValue.compare("Outd") || retValue.compare("outd")) {
+		} else if (retValue.compare("OUTD") == 0 || retValue.compare("Outd") == 0 || retValue.compare("outd") == 0) {
 			newNode->type = OUTD;
-		} else if (retValue.compare("OUTI") || retValue.compare("Outi") || retValue.compare("outi")) {
+		} else if (retValue.compare("OUTI") == 0 || retValue.compare("Outi") == 0 || retValue.compare("outi") == 0) {
 			newNode->type = OUTI;
-		} else if (retValue.compare("POP") || retValue.compare("Pop") || retValue.compare("pop")) {
+		} else if (retValue.compare("POP") == 0 || retValue.compare("Pop") == 0 || retValue.compare("pop") == 0) {
 			newNode->type = POP;
-		} else if (retValue.compare("PUSH") || retValue.compare("Push") || retValue.compare("push")) {
+		} else if (retValue.compare("PUSH") == 0 || retValue.compare("Push") == 0 || retValue.compare("push") == 0) {
 			newNode->type = PUSH;
-		} else if (retValue.compare("RES") || retValue.compare("Res") || retValue.compare("res")) {
+		} else if (retValue.compare("RES") == 0 || retValue.compare("Res") == 0 || retValue.compare("res") == 0) {
 			newNode->type = RES;
-		} else if (retValue.compare("RET") || retValue.compare("Ret") || retValue.compare("ret")) {
+		} else if (retValue.compare("RET") == 0 || retValue.compare("Ret") == 0 || retValue.compare("ret") == 0) {
 			newNode->type = RET;
-		} else if (retValue.compare("RETI") || retValue.compare("Reti") || retValue.compare("reti")) {
+		} else if (retValue.compare("RETI") == 0 || retValue.compare("Reti") == 0 || retValue.compare("reti") == 0) {
 			newNode->type = RETI;
-		} else if (retValue.compare("RETN") || retValue.compare("Retn") || retValue.compare("retn")) {
+		} else if (retValue.compare("RETN") == 0 || retValue.compare("Retn") == 0 || retValue.compare("retn") == 0) {
 			newNode->type = RETN;
-		} else if (retValue.compare("RL") || retValue.compare("rl") || retValue.compare("rl")) {
+		} else if (retValue.compare("RL") == 0 || retValue.compare("rl") == 0 || retValue.compare("rl") == 0) {
 			newNode->type = RL;
-		} else if (retValue.compare("RLA") || retValue.compare("Rla") || retValue.compare("rla")) {
+		} else if (retValue.compare("RLA") == 0 || retValue.compare("Rla") == 0 || retValue.compare("rla") == 0) {
 			newNode->type = RLA;
-		} else if (retValue.compare("RLCA") || retValue.compare("Rlca") || retValue.compare("rlca")) {
+		} else if (retValue.compare("RLCA") == 0 || retValue.compare("Rlca") == 0 || retValue.compare("rlca") == 0) {
 			newNode->type = RLCA;
-		} else if (retValue.compare("RLD") || retValue.compare("Rld") || retValue.compare("rld")) {
+		} else if (retValue.compare("RLD") == 0 || retValue.compare("Rld") == 0 || retValue.compare("rld") == 0) {
 			newNode->type = RLD;
-		} else if (retValue.compare("RR") || retValue.compare("rr") || retValue.compare("rr")) {
+		} else if (retValue.compare("RR") == 0 || retValue.compare("rr") == 0 || retValue.compare("rr") == 0) {
 			newNode->type = RR;
-		} else if (retValue.compare("RRA") || retValue.compare("Rra") || retValue.compare("rra")) {
+		} else if (retValue.compare("RRA") == 0 || retValue.compare("Rra") == 0 || retValue.compare("rra") == 0) {
 			newNode->type = RRA;
-		} else if (retValue.compare("RRC") || retValue.compare("Rrc") || retValue.compare("rrc")) {
+		} else if (retValue.compare("RRC") == 0 || retValue.compare("Rrc") == 0 || retValue.compare("rrc") == 0) {
 			newNode->type = RRC;
-		} else if (retValue.compare("RRCA") || retValue.compare("Rrca") || retValue.compare("rrca")) {
+		} else if (retValue.compare("RRCA") == 0 || retValue.compare("Rrca") == 0 || retValue.compare("rrca") == 0) {
 			newNode->type = RRCA;
-		} else if (retValue.compare("RRD") || retValue.compare("Rrd") || retValue.compare("rrd")) {
+		} else if (retValue.compare("RRD") == 0 || retValue.compare("Rrd") == 0 || retValue.compare("rrd") == 0) {
 			newNode->type = RRD;
-		} else if (retValue.compare("RST") || retValue.compare("Rst") || retValue.compare("rst")) {
+		} else if (retValue.compare("RST") == 0 || retValue.compare("Rst") == 0 || retValue.compare("rst") == 0) {
 			newNode->type = RST;
-		} else if (retValue.compare("SBC") || retValue.compare("Sbc") || retValue.compare("sbc")) {
+		} else if (retValue.compare("SBC") == 0 || retValue.compare("Sbc") == 0 || retValue.compare("sbc") == 0) {
 			newNode->type = SBC;
-		} else if (retValue.compare("SCF") || retValue.compare("Scf") || retValue.compare("scf")) {
+		} else if (retValue.compare("SCF") == 0 || retValue.compare("Scf") == 0 || retValue.compare("scf") == 0) {
 			newNode->type = SCF;
-		} else if (retValue.compare("SET") || retValue.compare("Set") || retValue.compare("set")) {
+		} else if (retValue.compare("SET") == 0 || retValue.compare("Set") == 0 || retValue.compare("set") == 0) {
 			newNode->type = SET;
-		} else if (retValue.compare("SLA") || retValue.compare("Sla") || retValue.compare("sla")) {
+		} else if (retValue.compare("SLA") == 0 || retValue.compare("Sla") == 0 || retValue.compare("sla") == 0) {
 			newNode->type = SLA;
-		} else if (retValue.compare("SRA") || retValue.compare("Sra") || retValue.compare("sra")) {
+		} else if (retValue.compare("SRA") == 0 || retValue.compare("Sra") == 0 || retValue.compare("sra") == 0) {
 			newNode->type = SRA;
-		} else if (retValue.compare("SRL") || retValue.compare("Srl") || retValue.compare("srl")) {
+		} else if (retValue.compare("SRL") == 0 || retValue.compare("Srl") == 0 || retValue.compare("srl") == 0) {
 			newNode->type = SRL;
-		} else if (retValue.compare("SUB") || retValue.compare("Sub") || retValue.compare("sub")) {
+		} else if (retValue.compare("SUB") == 0 || retValue.compare("Sub") == 0 || retValue.compare("sub") == 0) {
 			newNode->type = SUB;
-		} else if (retValue.compare("XOR") || retValue.compare("Xor") || retValue.compare("xor")) {
+		} else if (retValue.compare("XOR") == 0 || retValue.compare("Xor") == 0 || retValue.compare("xor") == 0) {
 			newNode->type = XOR;
-		} else if (retValue.compare("A") || retValue.compare("a")) {
+		} else if (retValue.compare("A") == 0 || retValue.compare("a") == 0) {
 			newNode->type = A;
-		} else if (retValue.compare("F") || retValue.compare("f")) {
+		} else if (retValue.compare("F") == 0 || retValue.compare("f") == 0) {
 			newNode->type = F;
-		} else if (retValue.compare("B") || retValue.compare("b")) {
+		} else if (retValue.compare("B") == 0 || retValue.compare("b") == 0) {
 			newNode->type = B;
-		} else if (retValue.compare("C") || retValue.compare("c")) {
+		} else if (retValue.compare("C") == 0 || retValue.compare("c") == 0) {
 			newNode->type = C;
-		} else if (retValue.compare("D") || retValue.compare("d")) {
+		} else if (retValue.compare("D") == 0 || retValue.compare("d") == 0) {
 			newNode->type = D;
-		} else if (retValue.compare("E") || retValue.compare("e")) {
+		} else if (retValue.compare("E") == 0 || retValue.compare("e") == 0) {
 			newNode->type = E;
-		} else if (retValue.compare("H") || retValue.compare("h")) {
+		} else if (retValue.compare("H") == 0 || retValue.compare("h") == 0) {
 			newNode->type = H;
-		} else if (retValue.compare("L") || retValue.compare("l")) {
+		} else if (retValue.compare("L") == 0 || retValue.compare("l") == 0) {
 			newNode->type = L;
-		} else if (retValue.compare("BC") || retValue.compare("bc")) {
+		} else if (retValue.compare("BC") == 0 || retValue.compare("bc") == 0) {
 			newNode->type = BC;
-		} else if (retValue.compare("DE") || retValue.compare("de")) {
+		} else if (retValue.compare("DE") == 0 || retValue.compare("de") == 0) {
 			newNode->type = DE;
-		} else if (retValue.compare("HL") || retValue.compare("hl")) {
+		} else if (retValue.compare("HL") == 0 || retValue.compare("hl") == 0) {
 			newNode->type = HL;
-		} else if (retValue.compare("I") || retValue.compare("i")) {
+		} else if (retValue.compare("I") == 0 || retValue.compare("i") == 0) {
 			newNode->type = I;
-		} else if (retValue.compare("R") || retValue.compare("r")) {
+		} else if (retValue.compare("R") == 0 || retValue.compare("r") == 0) {
 			newNode->type = R;
-		} else if (retValue.compare("IX") || retValue.compare("ix")) {
+		} else if (retValue.compare("IX") == 0 || retValue.compare("ix") == 0) {
 			newNode->type = IX;
-		} else if (retValue.compare("IY") || retValue.compare("iy")) {
+		} else if (retValue.compare("IY") == 0 || retValue.compare("iy") == 0) {
 			newNode->type = IY;
-		} else if (retValue.compare("PC") || retValue.compare("pc")) {
+		} else if (retValue.compare("PC") == 0 || retValue.compare("pc") == 0) {
 			newNode->type = PC;
-		} else if (retValue.compare("SP") || retValue.compare("sp")) {
+		} else if (retValue.compare("SP") == 0 || retValue.compare("sp") == 0) {
 			newNode->type = SP;
-		} else if (retValue.compare("CPU") || retValue.compare("Cpu") || retValue.compare("cpu")) {
+		} else if (retValue.compare("CPU") == 0 || retValue.compare("Cpu") == 0 || retValue.compare("cpu") == 0) {
 			newNode->type = CPU;
-		} else if (retValue.compare("DB") || retValue.compare("Db") || retValue.compare("db") || retValue.compare("BYTE") || retValue.compare("Byte") || retValue.compare("byte")) {
+		} else if (retValue.compare("DB") == 0 || retValue.compare("Db") == 0 || retValue.compare("db") == 0 || retValue.compare("BYTE") == 0 || retValue.compare("Byte") == 0 || retValue.compare("byte") == 0) {
 			newNode->type = DB;
-		} else if (retValue.compare("DW") || retValue.compare("Dw") || retValue.compare("dw") || retValue.compare("WORD") || retValue.compare("Word") || retValue.compare("word")) {
+		} else if (retValue.compare("DW") == 0 || retValue.compare("Dw") == 0 || retValue.compare("dw") == 0 || retValue.compare("WORD") == 0 || retValue.compare("Word") == 0 || retValue.compare("word") == 0) {
 			newNode->type = DW;
-		} else if (retValue.compare("ORG") || retValue.compare("Org") || retValue.compare("org")) {
+		} else if (retValue.compare("ORG") == 0 || retValue.compare("Org") == 0 || retValue.compare("org") == 0) {
 			newNode->type = ORG;
-		} else if (retValue.compare("REP") || retValue.compare("Rep") || retValue.compare("rep")) {
+		} else if (retValue.compare("REP") == 0 || retValue.compare("Rep") == 0 || retValue.compare("rep") == 0) {
 			newNode->type = REP;
-		} else if (retValue.compare("SPECREP") || retValue.compare("SPECREP") || retValue.compare("SPECREP")) {
+		} else if (retValue.compare("SPECREP") == 0 || retValue.compare("SPECREP") == 0 || retValue.compare("SPECREP") == 0) {
 			newNode->type = SPECREP;
-		} else if (retValue.compare("M") || retValue.compare("m")) {
+		} else if (retValue.compare("M") == 0 || retValue.compare("m") == 0) {
 			newNode->type = M;
-		} else if (retValue.compare("NC") || retValue.compare("nc")) {
+		} else if (retValue.compare("NC") == 0 || retValue.compare("nc") == 0) {
 			newNode->type = NC;
-		} else if (retValue.compare("NZ") || retValue.compare("nz")) {
+		} else if (retValue.compare("NZ") == 0 || retValue.compare("nz") == 0) {
 			newNode->type = NZ;
-		} else if (retValue.compare("P") || retValue.compare("p")) {
+		} else if (retValue.compare("P") == 0 || retValue.compare("p") == 0) {
 			newNode->type = P;
-		} else if (retValue.compare("PE") || retValue.compare("pe")) {
+		} else if (retValue.compare("PE") == 0 || retValue.compare("pe") == 0) {
 			newNode->type = PE;
-		} else if (retValue.compare("PO") || retValue.compare("po")) {
+		} else if (retValue.compare("PO") == 0 || retValue.compare("po") == 0) {
 			newNode->type = PO;
-		} else if (retValue.compare("Z") || retValue.compare("z")) {
+		} else if (retValue.compare("Z") == 0 || retValue.compare("z") == 0) {
 			newNode->type = Z;
 		} else {
 			/*
@@ -327,16 +416,131 @@ TokenNodePtr Lex::getToken() {
 		newNode->lineNumber = line;
 		newNode->fileName = file;
 		newNode->next = NULL;
+	} else if (Lex::cList->peekValue() == '0') {
+		//So, we have a token starting with 0.
+		Lex::cList->pop();
+		if (!Lex::cList->isEmpty()) {
+			string numberValue = "";
+			if (Lex::cList->peekValue() == 'd') {
+				Lex::cList->pop();
+				//we have a decimal number:
+				while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
+					numberValue += Lex::cList->peekValue();
+					newNode->lineNumber = Lex::cList->peekLineNumber();
+					newNode->fileName = Lex::cList->peekFileName();
+					Lex::cList->pop();
+				}
+				
+				if (numberValue.empty()) {
+					Lex::errorState = true;
+					Lex::errorString = "There is a 0d without any number after it. Every 0d must have a number following it.";
+				} else {
+					newNode->type = NUMBER;
+					newNode->value = "d";
+					newNode->value += numberValue;
+					newNode->next = NULL;
+				}
+				
+			} else if (Lex::cList->peekValue() == 'x' || Lex::cList->peekValue() == 'h') {
+				Lex::cList->pop();
+				//we have a hex number:
+				while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+					numberValue += Lex::cList->peekValue();
+					newNode->lineNumber = Lex::cList->peekLineNumber();
+					newNode->fileName = Lex::cList->peekFileName();
+					Lex::cList->pop();
+				}
+				
+				if (numberValue.empty()) {
+					Lex::errorState = true;
+					Lex::errorString = "There is a 0d or 0x without any number after it. Every 0d or 0x must have a number following it.";
+				} else {
+					newNode->type = NUMBER;
+					newNode->value = "h";
+					newNode->value += numberValue;
+					newNode->next = NULL;
+				}
+				
+			} else if (Lex::cList->peekValue() == 'b') {
+				Lex::cList->pop();
+				//we have a binary number:
+				while (!Lex::cList->isEmpty() && isBinary(Lex::cList->peekValue())) {
+					numberValue += Lex::cList->peekValue();
+					newNode->lineNumber = Lex::cList->peekLineNumber();
+					newNode->fileName = Lex::cList->peekFileName();
+					Lex::cList->pop();
+				}
+				
+				if (numberValue.empty()) {
+					Lex::errorState = true;
+					Lex::errorString = "There is a 0b without any number after it. Every 0b must have a number following it.";
+				} else {
+					newNode->type = NUMBER;
+					newNode->value = "b";
+					newNode->value += numberValue;
+					newNode->next = NULL;
+				}
+				
+			} else if (isNumerical(Lex::cList->peekValue())) {
+				Lex::cList->pop();
+				//we have a decimal number:
+				numberValue += "0";
+				while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
+					numberValue += Lex::cList->peekValue();
+					newNode->lineNumber = Lex::cList->peekLineNumber();
+					newNode->fileName = Lex::cList->peekFileName();
+					Lex::cList->pop();
+				}
+				
+				newNode->type = NUMBER;
+				newNode->value = "d";
+				newNode->value += numberValue;
+				newNode->next = NULL;
+			}
+			// ********************* Need to add an else!
+		} else {
+			newNode->type = NUMBER;
+			newNode->value = "d0";
+			newNode->next = NULL;
+		}
 	} else if (isNumerical(Lex::cList->peekValue())) {
-		while (!Lex::cList->isEmpty() && (isNumerical(Lex::cList->peekValue()) || isAlphabetical(Lex::cList->peekValue()))) {
-			retValue += Lex::cList->peekValue();
+		//So if the character is NOT 0, it will be a decimal number:
+		string numberValue = "";
+		
+		while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
+			numberValue += Lex::cList->peekValue();
 			newNode->lineNumber = Lex::cList->peekLineNumber();
-			newNode->fileName = Lex::cList->peekFileName();;
+			newNode->fileName = Lex::cList->peekFileName();
 			Lex::cList->pop();
 		}
-		newNode->type = ATOM;
-		newNode->value = retValue;
+		
+		newNode->type = NUMBER;
+		newNode->value = "d";
+		newNode->value += numberValue;
 		newNode->next = NULL;
+	} else if (Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#') {
+		//We have a hex value:
+		Lex::cList->pop();
+		
+		string hexValue = "";
+		while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+			hexValue += Lex::cList->peekValue();
+			newNode->lineNumber = Lex::cList->peekLineNumber();
+			newNode->fileName = Lex::cList->peekFileName();
+			Lex::cList->pop();
+		}
+		
+		if (hexValue.size() == 0) {
+			Lex::errorState = true;
+			Lex::errorString = "There is a $ with no hexidecimal number after it. There should always be a number after a $.";
+			Lex::errorString += hexValue;
+		} else {
+			newNode->type = NUMBER;
+			newNode->value = "h";
+			newNode->value += hexValue;
+			newNode->next = NULL;
+		}
+		
 	} else if (Lex::cList->peekValue() == '\"') {
 		Lex::cList->pop();
 		while (Lex::cList->peekValue() != '\"' && !Lex::errorState) {
@@ -357,7 +561,7 @@ TokenNodePtr Lex::getToken() {
 				*/
 				Lex::errorState = true;
 				Lex::errorString = "Found an invalid character within a string at ";
-				
+				Lex::errorString += integerToString(Lex::cList->peekLineNumber());
 			}
 			Lex::cList->pop();
 		}
@@ -393,6 +597,24 @@ TokenNodePtr Lex::getToken() {
 		newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == '+') {
+		newNode->type = PLUS;
+		newNode->lineNumber = Lex::cList->peekLineNumber();
+		newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == '-') {
+		newNode->type = MINUS;
+		newNode->lineNumber = Lex::cList->peekLineNumber();
+		newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == '*') {
+		newNode->type = MULTIPLY;
+		newNode->lineNumber = Lex::cList->peekLineNumber();
+		newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
 	} else {
 		/*
 			if the program gets to this point, there is an obvious error. The error is most
@@ -400,8 +622,11 @@ TokenNodePtr Lex::getToken() {
 		*/
 		Lex::errorState = true;
 		Lex::errorString = "An invalid character is in the source code at ";
-		int ineNumber = Lex::cList->peekLineNumber();
-		
+		int lineNumber = Lex::cList->peekLineNumber();
+		Lex::errorString += integerToString(lineNumber);
+		Lex::errorString += " ";
+		Lex::errorString += convertHex(Lex::cList->peekValue());
+		Lex::cList->pop();
 	}
 	
 	return newNode;

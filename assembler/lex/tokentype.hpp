@@ -30,7 +30,7 @@
 /*
 	file name: tokentype.hpp
 	date created: 3/09/2012
-	date updated: 23/09/2012
+	date updated: 26/09/2012
 	author: Gareth Richardson
 	description: This is a file of definitions for the types of tokens that are valid
 	in the assembler. The TOkenNode data structure stores the type as an unsigned char,
@@ -147,19 +147,24 @@
 #define NEW_LINE 92
 #define LEFT_BRACKET 93
 #define RIGHT_BRACKET 94
+#define PLUS 95
+#define MINUS 96
+#define MULTIPLY 97
 
 /*
 	This are the JMP condition Tokens:
 	(Note that the C "Carry" condition type is also the same as the C register,
 	so, it has been declared above in the Register section of this file).
 */
-#define M 95
-#define NC 96
-#define NZ 97
-#define P 98
-#define PE 99
-#define PO 100
-#define Z 101
+#define M 98
+#define NC 99
+#define NZ 100
+#define P 101
+#define PE 102
+#define PO 103
+#define Z 104
+
+#define NUMBER 160
 
 /*
 	an end of file token type:

@@ -28,17 +28,26 @@
 */
 
 /*
-	file name: bytenode.hpp
-	date created: 27/09/2012
+	file name: parser.hpp
+	date created: 28/09/2012
 	date updated: 28/09/2012
 	author: Gareth Richardson
-	description: We store bytes for the machine code here. The ByteCode class holds
-	a linked list of these ByteNodes.
+	description: This is the Z80 parser. Give it a TokenList object and it will
+	parse it and output the machine code for it.
 */
 
-struct ByteNode {
-	unsigned char byte;
-	ByteNode* next;
+class Z80Parser {
+	private:
+		TokenList* tList;
+		ByteCode* bCode;
+		bool errorState;
+		string errorString;
+		void init();
+		
+		int address;
+	public:
+		Z80Parser(TokenList* tPointer, ByteCode* bPointer);
+		void run();
+		bool checkState();
+		string getError();
 };
-
-typedef ByteNode* ByteNodePtr;

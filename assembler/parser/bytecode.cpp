@@ -28,17 +28,68 @@
 */
 
 /*
-	file name: bytenode.hpp
-	date created: 27/09/2012
+	file name: bytecode.cpp
+	date created: 28/09/2012
 	date updated: 28/09/2012
 	author: Gareth Richardson
-	description: We store bytes for the machine code here. The ByteCode class holds
-	a linked list of these ByteNodes.
+	description: This is the machine code, the output of the assembler.
 */
 
-struct ByteNode {
-	unsigned char byte;
-	ByteNode* next;
-};
+#include "bytecode.hpp"
 
-typedef ByteNode* ByteNodePtr;
+/*
+	we make out own NULL definition so we do not have to include any standard c libraries.
+*/
+#define NULL 0
+
+void ByteCode::init() {
+	ByteCode::head = NULL;
+	ByteCode::tail = NULL;
+	ByteCode::size = 0;
+}
+
+ByteCode::ByteCode() {
+	ByteCode::init();
+}
+
+void ByteCode::pushElement(unsigned char value) {
+	ByteNodePtr newNode = new ByteNode;
+	newNode->byte = value;
+	newNode->byte = NULL;
+	if (ByteCode::size == 0) {
+		ByteCode::head = newNode;
+		ByteCode::tail = newNode;
+	} else if (ByteCode::head == ByteCode::tail) {
+		ByteCode::head->next = newNode;
+		ByteCode::tail = newNode;
+	} else {
+		ByteCode::tail->next = newNode;
+		ByteCode::tail = newNode;
+	}
+	ByteCode::size++;
+}
+
+void ByteCode::setElement(int index, unsigned char value) {
+	/*
+		checks if the index is in range:
+	*/
+	if (index >= 0 && index < ByteCode::size) {
+		int counter = 0;
+		ByteNodePtr tempNode = ByteCode::head;
+		while (counter != index) {
+			tempNode = tempNode->next;
+			counter++;
+		}
+		tempNode->byte = value;
+	}
+}
+
+unsigned char ByteCode::getElement(int index) {
+	int counter = 0;
+	ByteNodePtr tempNode = ByteCode::head;
+	while (counter != index) {
+		tempNode = tempNode->next;
+		counter++;
+	}
+	return tempNode->byte;
+}

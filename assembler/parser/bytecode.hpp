@@ -30,7 +30,7 @@
 /*
 	file name: bytecode.hpp
 	date created: 27/09/2012
-	date updated: 27/09/2012
+	date updated: 28/09/2012
 	author: Gareth Richardson
 	description: This is the machine code, the output of the assembler.
 */
@@ -41,4 +41,32 @@ class ByteCode {
 	private:
 		ByteNodePtr head;
 		ByteNodePtr tail;
+		
+		/*
+			stores the size of the byte code here:
+		*/
+		int size;
+		
+		/*
+			initialises the class. Call this method in all the constructors.
+		*/
+		void init();
+	public:
+		ByteCode();
+		int getSize();
+		
+		/*
+			pushed an element to the end of this Linked List.
+		*/
+		void pushElement(unsigned char value);
+		
+		/*
+			Sets a byte within the Linked List at a specified position.
+		*/
+		void setElement(int index, unsigned char value);
+		
+		/*
+			gets an element at a specified position:
+		*/
+		unsigned char getElement(int index);
 };

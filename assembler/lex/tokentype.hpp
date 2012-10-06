@@ -165,6 +165,7 @@
 #define Z 104
 
 #define NUMBER 160
+#define STRING 161
 
 /*
 	an end of file token type:

@@ -36,6 +36,7 @@
 */
 
 #include "tokennode.hpp"
+#include "tokentype.hpp"
 
 class TokenList {
 	private:

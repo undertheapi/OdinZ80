@@ -35,9 +35,6 @@
 	description: This is the Lexical Analysis for the Odin assembler.
 */
 
-#include "../character/characterlist.hpp"
-#include "tokenlist.hpp"
-
 class Lex {
 	private:
 		CharacterList* cList;

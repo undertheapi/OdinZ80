@@ -39,9 +39,10 @@
 
 using namespace std;
 
-#include "lex.hpp"
-
+#include "../character/characterlist.hpp"
 #include "tokentype.hpp"
+#include "tokenlist.hpp"
+#include "lex.hpp"
 
 /*
 	This is a custom method that checks that a CHARACTER is an alphabetical character.

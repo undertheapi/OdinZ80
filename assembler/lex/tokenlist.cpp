@@ -30,9 +30,9 @@
 /*
 	file name: tokenlist.cpp
 	date created: 29/08/2012
-	date updated: 23/09/2012
+	date updated: 5/10/2012
 	author: Garth Richardson
-	description: THe implementation of the TokenList class.
+	description: The implementation of the TokenList class.
 */
 
 #include <string>
@@ -72,7 +72,7 @@ void TokenList::push(TokenNodePtr obj) {
 void TokenList::pop() {
 	if (!TokenList::isEmpty()) {
 		TokenNodePtr pointer = TokenList::head;
-		TokenList::head = TokenList::head->next;
+		TokenList::head = pointer->next;
 		delete pointer;
 	}
 }

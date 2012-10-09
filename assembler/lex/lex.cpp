@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 26/09/2012
+	date updated: 9/10/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -410,7 +410,8 @@ TokenNodePtr Lex::getToken() {
 			/*
 				if it is not a reserved word, it is an ATOM:
 			*/
-			newNode->type = ATOM, newNode->value = retValue;
+			newNode->type = ATOM;
+			newNode->value = retValue;
 		}
 		// Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = line;

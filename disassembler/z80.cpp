@@ -442,20 +442,29 @@ string runZ80(ByteFile &obj) {
 		case 0x3f:
 			retString += "\t\tCCF\n";
 			break;
-		case 0x4a:
-			retString += "\t\tADC HL, BC\n";
-			break;
-		case 0x5a:
-			retString += "\t\tADC HL, DE\n";
-			break;
-		case 0x6a:
-			retString += "\t\tADC HL, HL\n";
-			break;
 		case 0x76:
 			retString += "\t\tHALT\n";
 			break;
+		case 0x78:
+			retString += "\t\tLD A, B\n";
+			break;
+		case 0x79:
+			retString += "\t\tLD A, C\n";
+			break;
 		case 0x7a:
-			retString += "\t\tADC HL, SP\n";
+			retString += "\t\tLD A, D\n";
+			break;
+		case 0x7b:
+			retString += "\t\tLD A, E\n";
+			break;
+		case 0x7c:
+			retString += "\t\tLD A, H\n";
+			break;
+		case 0x7d:
+			retString += "\t\tLD A, L\n";
+			break;
+		case 0x7f:
+			retString += "\t\tLD A, A\n";
 			break;
 		case 0x80:
 			retString += "\t\tADD A, B\n";
@@ -1555,6 +1564,11 @@ string runZ80(ByteFile &obj) {
 						retString += convertHex(value);
 						retString += "\t\tIN C, [C]\n";
 						break;
+					case 0x4a:
+						retString += " ";
+						retString += convertHex(value);
+						retString += "\t\tADC HL, BC\n";
+						break;
 					case 0x4b:
 						if (!obj.isEmpty()) {
 							value = obj.pop();
@@ -1591,6 +1605,11 @@ string runZ80(ByteFile &obj) {
 						retString += " ";
 						retString += convertHex(value);
 						retString += "\t\tIN E, [C]\n";
+						break;
+					case 0x5a:
+						retString += " ";
+						retString += convertHex(value);
+						retString += "\t\tADC HL, DE\n";
 						break;
 					case 0x5b:
 						if (!obj.isEmpty()) {
@@ -1629,6 +1648,11 @@ string runZ80(ByteFile &obj) {
 						retString += convertHex(value);
 						retString += "\t\tIN L, [C]\n";
 						break;
+					case 0x6a:
+						retString += " ";
+						retString += convertHex(value);
+						retString += "\t\tADC HL, HL\n";
+						break;
 					case 0x6b:
 						if (!obj.isEmpty()) {
 							value = obj.pop();
@@ -1655,6 +1679,11 @@ string runZ80(ByteFile &obj) {
 						retString += " ";
 						retString += convertHex(value);
 						retString += "\t\tIN A, [C]\n";
+						break;
+					case 0x7a:
+						retString += " ";
+						retString += convertHex(value);
+						retString += "\t\tADC HL, SP\n";
 						break;
 					case 0x7b:
 						if (!obj.isEmpty()) {

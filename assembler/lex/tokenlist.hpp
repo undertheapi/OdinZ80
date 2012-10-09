@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.hpp
 	date created: 29/08/2012
-	date updated: 29/08/2012
+	date updated: 9/10/2012
 	author: Gareth Richardson
 	description: Were all the Tokens fron the Lex class will be stored.
 */
@@ -42,6 +42,11 @@ class TokenList {
 	private:
 		TokenNodePtr head;
 		TokenNodePtr tail;
+
+		/*
+			The indexed pointer for the parser.
+		*/
+		TokenNodePtr indexed;
 		
 		void init();
 	public:
@@ -60,4 +65,8 @@ class TokenList {
 		int peekLineNumber();
 		
 		char* peekFileName();
+
+		TokenNodePtr peekIndexed();
+
+		void popTillIndexed();
 };

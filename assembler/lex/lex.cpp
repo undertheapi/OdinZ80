@@ -216,202 +216,201 @@ TokenNodePtr Lex::getToken() {
 			of doing this.
 			If the string does not match anything here, it will return a Token Type of ATOM.
 		*/
-		if (retValue.compare("ADC") == 0 || retValue.compare("Adc") == 0 || retValue.compare("adc") == 0) {
+		if (!retValue.compare("ADC") || !retValue.compare("Adc") || !retValue.compare("adc")) {
 			newNode->type = ADC;
-		} else if (retValue.compare("ADD") == 0 || retValue.compare("Add") == 0 || retValue.compare("add") == 0) {
+		} else if (!retValue.compare("ADD") || !retValue.compare("Add") || !retValue.compare("add")) {
 			newNode->type = ADD;
-		} else if (retValue.compare("AND") == 0 || retValue.compare("And") == 0 || retValue.compare("and") == 0) {
+		} else if (!retValue.compare("AND") || !retValue.compare("And") || !retValue.compare("and")) {
 			newNode->type = AND;
-		} else if (retValue.compare("BIT") == 0 || retValue.compare("Bit") == 0 || retValue.compare("bit") == 0 || retValue.compare("BT") == 0 || retValue.compare("Bt") == 0 || retValue.compare("bt") == 0) {
+		} else if (!retValue.compare("BIT") || !retValue.compare("Bit") || !retValue.compare("bit") || !retValue.compare("BT") || !retValue.compare("Bt") || !retValue.compare("bt")) {
 			newNode->type = BIT;
-		} else if (retValue.compare("CALL") == 0 || retValue.compare("Call") == 0 || retValue.compare("call") == 0) {
+		} else if (!retValue.compare("CALL") || !retValue.compare("Call") || !retValue.compare("call")) {
 			newNode->type = CALL;
-		} else if (retValue.compare("CCF") == 0 || retValue.compare("Ccf") == 0 || retValue.compare("ccf") == 0) {
+		} else if (!retValue.compare("CCF") || !retValue.compare("Ccf") || !retValue.compare("ccf")) {
 			newNode->type = CCF;
-		} else if (retValue.compare("CP") == 0 || retValue.compare("Cp") == 0 || retValue.compare("cp") == 0) {
+		} else if (!retValue.compare("CP") || !retValue.compare("Cp") || !retValue.compare("cp")) {
 			newNode->type = CP;
-		} else if (retValue.compare("CPD") == 0 || retValue.compare("Cpd") == 0 || retValue.compare("cpd") == 0) {
+		} else if (!retValue.compare("CPD") || !retValue.compare("Cpd") || !retValue.compare("cpd")) {
 			newNode->type = CPD;
-		}  else if (retValue.compare("CPDR") == 0 || retValue.compare("Cpdr") == 0 || retValue.compare("cpdr") == 0) {
+		}  else if (!retValue.compare("CPDR") || !retValue.compare("Cpdr") || !retValue.compare("cpdr")) {
 			newNode->type = CPDR;
-		} else if (retValue.compare("CPI") == 0 || retValue.compare("Cpi") == 0 || retValue.compare("cpi") == 0) {
+		} else if (!retValue.compare("CPI") || !retValue.compare("Cpi") || !retValue.compare("cpi")) {
 			newNode->type = CPI;
-		} else if (retValue.compare("CPIR") == 0 || retValue.compare("Cpir") == 0 || retValue.compare("cpir") == 0) {
+		} else if (!retValue.compare("CPIR") || !retValue.compare("Cpir") || !retValue.compare("cpir")) {
 			newNode->type = CPIR;
-		} else if (retValue.compare("CPL") == 0 || retValue.compare("Cpl") == 0 || retValue.compare("cpl") == 0) {
+		} else if (!retValue.compare("CPL") || !retValue.compare("Cpl") || !retValue.compare("cpl")) {
 			newNode->type = CPL;
-		} else if (retValue.compare("DAA") == 0 || retValue.compare("Daa") == 0 || retValue.compare("daa") == 0) {
+		} else if (!retValue.compare("DAA") || !retValue.compare("Daa") || !retValue.compare("daa")) {
 			newNode->type = DAA;
-		} else if (retValue.compare("DEC") == 0 || retValue.compare("Dec") == 0 || retValue.compare("dec") == 0) {
+		} else if (!retValue.compare("DEC") || !retValue.compare("Dec") || !retValue.compare("dec")) {
 			newNode->type = DEC;
-		} else if (retValue.compare("DI") == 0 || retValue.compare("Di") == 0 || retValue.compare("di") == 0) {
+		} else if (!retValue.compare("DI") || !retValue.compare("Di") || !retValue.compare("di")) {
 			newNode->type = DI;
-		} else if (retValue.compare("EI") == 0 || retValue.compare("Ei") == 0 || retValue.compare("ei") == 0) {
+		} else if (!retValue.compare("EI") || !retValue.compare("Ei") || !retValue.compare("ei")) {
 			newNode->type = EI;
-		} else if (retValue.compare("EX") == 0 || retValue.compare("Ex") == 0 || retValue.compare("ex") == 0) {
+		} else if (!retValue.compare("EX") || !retValue.compare("Ex") || !retValue.compare("ex")) {
 			newNode->type = EX;
-		} else if (retValue.compare("EXX") == 0 || retValue.compare("Exx") == 0 || retValue.compare("exx") == 0) {
+		} else if (!retValue.compare("EXX") || !retValue.compare("Exx") || !retValue.compare("exx")) {
 			newNode->type = EXX;
-		} else if (retValue.compare("HALT") == 0 || retValue.compare("Halt") == 0 || retValue.compare("halt") == 0 || retValue.compare("HLT") == 0 || retValue.compare("Hlt") == 0 || retValue.compare("hlt") == 0) {
+		} else if (!retValue.compare("HALT") || !retValue.compare("Halt") || !retValue.compare("halt") || !retValue.compare("HLT") || !retValue.compare("Hlt") || !retValue.compare("hlt")) {
 			newNode->type = HALT;
-		} else if (retValue.compare("IM") == 0 || retValue.compare("Im") == 0 || retValue.compare("im") == 0) {
+		} else if (!retValue.compare("IM") || !retValue.compare("Im") || !retValue.compare("im")) {
 			newNode->type = IM;
-		} else if (retValue.compare("IN") == 0 || retValue.compare("In") == 0 || retValue.compare("in") == 0) {
+		} else if (!retValue.compare("IN") || !retValue.compare("In") || !retValue.compare("in")) {
 			newNode->type = IN;
-		} else if (retValue.compare("INC") == 0 || retValue.compare("Inc") == 0 || retValue.compare("inc") == 0) {
+		} else if (!retValue.compare("INC") || !retValue.compare("Inc") || !retValue.compare("inc")) {
 			newNode->type = INC;
-		} else if (retValue.compare("IND") == 0 || retValue.compare("Ind") == 0 || retValue.compare("ind") == 0) {
+		} else if (!retValue.compare("IND") || !retValue.compare("Ind") || !retValue.compare("ind")) {
 			newNode->type = IND;
-		} else if (retValue.compare("INDR") == 0 || retValue.compare("Indr") == 0 || retValue.compare("indr") == 0) {
+		} else if (!retValue.compare("INDR") || !retValue.compare("Indr") || !retValue.compare("indr")) {
 			newNode->type = INDR;
-		} else if (retValue.compare("INI") == 0 || retValue.compare("Ini") == 0 || retValue.compare("ini") == 0) {
+		} else if (!retValue.compare("INI") || !retValue.compare("Ini") || !retValue.compare("ini")) {
 			newNode->type = INI;
-		} else if (retValue.compare("INIR") == 0 || retValue.compare("Inir") == 0 || retValue.compare("inir") == 0) {
+		} else if (!retValue.compare("INIR") || !retValue.compare("Inir") || !retValue.compare("inir")) {
 			newNode->type = INIR;
-		} else if (retValue.compare("JP") == 0 || retValue.compare("Jp") == 0 || retValue.compare("jp") == 0 || retValue.compare("JMP") == 0 || retValue.compare("Jmp") == 0 || retValue.compare("jmp") == 0) {
+		} else if (!retValue.compare("JP") || !retValue.compare("Jp") || !retValue.compare("jp") || !retValue.compare("JMP") || !retValue.compare("Jmp") || !retValue.compare("jmp")) {
 			newNode->type = JP;
-		} else if (retValue.compare("JR") == 0 || retValue.compare("Jr") == 0 || retValue.compare("jr") == 0) {
+		} else if (!retValue.compare("JR") || !retValue.compare("Jr") || !retValue.compare("jr")) {
 			newNode->type = JR;
-		} else if (retValue.compare("LD") == 0 || retValue.compare("Ld") == 0 || retValue.compare("ld") == 0) {
+		} else if (!retValue.compare("LD") || !retValue.compare("Ld") || !retValue.compare("ld")) {
 			newNode->type = LD;
-		} else if (retValue.compare("LDD") == 0 || retValue.compare("Ldd") == 0 || retValue.compare("ldd") == 0) {
+		} else if (!retValue.compare("LDD") || !retValue.compare("Ldd") || !retValue.compare("ldd")) {
 			newNode->type = LDD;
-		} else if (retValue.compare("LDDR") == 0 || retValue.compare("Lddr") == 0 || retValue.compare("lddr") == 0) {
+		} else if (!retValue.compare("LDDR") || !retValue.compare("Lddr") || !retValue.compare("lddr")) {
 			newNode->type = LDDR;
-		} else if (retValue.compare("LDI") == 0 || retValue.compare("Ldi") == 0 || retValue.compare("ldi") == 0) {
+		} else if (!retValue.compare("LDI") || !retValue.compare("Ldi") || !retValue.compare("ldi")) {
 			newNode->type = LDI;
-		} else if (retValue.compare("LDIR") == 0 || retValue.compare("Ldir") == 0 || retValue.compare("ldir") == 0) {
+		} else if (!retValue.compare("LDIR") || !retValue.compare("Ldir") || !retValue.compare("ldir")) {
 			newNode->type = LDIR;
-		} else if (retValue.compare("NEG") == 0 || retValue.compare("Neg") == 0 || retValue.compare("neg") == 0) {
+		} else if (!retValue.compare("NEG") || !retValue.compare("Neg") || !retValue.compare("neg")) {
 			newNode->type = NEG;
-		} else if (retValue.compare("NOP") == 0 || retValue.compare("Nop") == 0 || retValue.compare("nop") == 0) {
+		} else if (!retValue.compare("NOP") || !retValue.compare("Nop") || !retValue.compare("nop")) {
 			newNode->type = NOP;
-		} else if (retValue.compare("OR") == 0 || retValue.compare("or") == 0 || retValue.compare("or") == 0) {
+		} else if (!retValue.compare("OR") || !retValue.compare("or") || !retValue.compare("or")) {
 			newNode->type = OR;
-		} else if (retValue.compare("OTDR") == 0 || retValue.compare("OTDR") == 0 || retValue.compare("otdr") == 0) {
+		} else if (!retValue.compare("OTDR") || !retValue.compare("OTDR") || !retValue.compare("otdr")) {
 			newNode->type = OTDR;
-		} else if (retValue.compare("OTIR") == 0 || retValue.compare("OTiR") == 0 || retValue.compare("otir") == 0) {
+		} else if (!retValue.compare("OTIR") || !retValue.compare("OTiR") || !retValue.compare("otir")) {
 			newNode->type = OTIR;
-		} else if (retValue.compare("OUT") == 0 || retValue.compare("Out") == 0 || retValue.compare("out") == 0) {
+		} else if (!retValue.compare("OUT") || !retValue.compare("Out") || !retValue.compare("out")) {
 			newNode->type = OUT;
-		} else if (retValue.compare("OUTD") == 0 || retValue.compare("Outd") == 0 || retValue.compare("outd") == 0) {
+		} else if (!retValue.compare("OUTD") || !retValue.compare("Outd") || !retValue.compare("outd")) {
 			newNode->type = OUTD;
-		} else if (retValue.compare("OUTI") == 0 || retValue.compare("Outi") == 0 || retValue.compare("outi") == 0) {
+		} else if (!retValue.compare("OUTI") || !retValue.compare("Outi") || !retValue.compare("outi")) {
 			newNode->type = OUTI;
-		} else if (retValue.compare("POP") == 0 || retValue.compare("Pop") == 0 || retValue.compare("pop") == 0) {
+		} else if (!retValue.compare("POP") || !retValue.compare("Pop") || !retValue.compare("pop")) {
 			newNode->type = POP;
-		} else if (retValue.compare("PUSH") == 0 || retValue.compare("Push") == 0 || retValue.compare("push") == 0) {
+		} else if (!retValue.compare("PUSH") || !retValue.compare("Push") || !retValue.compare("push")) {
 			newNode->type = PUSH;
-		} else if (retValue.compare("RES") == 0 || retValue.compare("Res") == 0 || retValue.compare("res") == 0) {
+		} else if (!retValue.compare("RES") || !retValue.compare("Res") || !retValue.compare("res")) {
 			newNode->type = RES;
-		} else if (retValue.compare("RET") == 0 || retValue.compare("Ret") == 0 || retValue.compare("ret") == 0) {
+		} else if (!retValue.compare("RET") || !retValue.compare("Ret") || !retValue.compare("ret")) {
 			newNode->type = RET;
-		} else if (retValue.compare("RETI") == 0 || retValue.compare("Reti") == 0 || retValue.compare("reti") == 0) {
+		} else if (!retValue.compare("RETI") || !retValue.compare("Reti") || !retValue.compare("reti")) {
 			newNode->type = RETI;
-		} else if (retValue.compare("RETN") == 0 || retValue.compare("Retn") == 0 || retValue.compare("retn") == 0) {
+		} else if (!retValue.compare("RETN") || !retValue.compare("Retn") || !retValue.compare("retn")) {
 			newNode->type = RETN;
-		} else if (retValue.compare("RL") == 0 || retValue.compare("rl") == 0 || retValue.compare("rl") == 0) {
+		} else if (!retValue.compare("RL") || !retValue.compare("rl") || !retValue.compare("rl")) {
 			newNode->type = RL;
-		} else if (retValue.compare("RLA") == 0 || retValue.compare("Rla") == 0 || retValue.compare("rla") == 0) {
+		} else if (!retValue.compare("RLA") || !retValue.compare("Rla") || !retValue.compare("rla")) {
 			newNode->type = RLA;
-		} else if (retValue.compare("RLCA") == 0 || retValue.compare("Rlca") == 0 || retValue.compare("rlca") == 0) {
+		} else if (!retValue.compare("RLCA") || !retValue.compare("Rlca") || !retValue.compare("rlca")) {
 			newNode->type = RLCA;
-		} else if (retValue.compare("RLD") == 0 || retValue.compare("Rld") == 0 || retValue.compare("rld") == 0) {
+		} else if (!retValue.compare("RLD") || !retValue.compare("Rld") || !retValue.compare("rld")) {
 			newNode->type = RLD;
-		} else if (retValue.compare("RR") == 0 || retValue.compare("rr") == 0 || retValue.compare("rr") == 0) {
+		} else if (!retValue.compare("RR") || !retValue.compare("rr") || !retValue.compare("rr")) {
 			newNode->type = RR;
-		} else if (retValue.compare("RRA") == 0 || retValue.compare("Rra") == 0 || retValue.compare("rra") == 0) {
+		} else if (!retValue.compare("RRA") || !retValue.compare("Rra") || !retValue.compare("rra")) {
 			newNode->type = RRA;
-		} else if (retValue.compare("RRC") == 0 || retValue.compare("Rrc") == 0 || retValue.compare("rrc") == 0) {
+		} else if (!retValue.compare("RRC") || !retValue.compare("Rrc") || !retValue.compare("rrc")) {
 			newNode->type = RRC;
-		} else if (retValue.compare("RRCA") == 0 || retValue.compare("Rrca") == 0 || retValue.compare("rrca") == 0) {
+		} else if (!retValue.compare("RRCA") || !retValue.compare("Rrca") || !retValue.compare("rrca")) {
 			newNode->type = RRCA;
-		} else if (retValue.compare("RRD") == 0 || retValue.compare("Rrd") == 0 || retValue.compare("rrd") == 0) {
+		} else if (!retValue.compare("RRD") || !retValue.compare("Rrd") || !retValue.compare("rrd")) {
 			newNode->type = RRD;
-		} else if (retValue.compare("RST") == 0 || retValue.compare("Rst") == 0 || retValue.compare("rst") == 0) {
+		} else if (!retValue.compare("RST") || !retValue.compare("Rst") || !retValue.compare("rst")) {
 			newNode->type = RST;
-		} else if (retValue.compare("SBC") == 0 || retValue.compare("Sbc") == 0 || retValue.compare("sbc") == 0) {
+		} else if (!retValue.compare("SBC") || !retValue.compare("Sbc") || !retValue.compare("sbc")) {
 			newNode->type = SBC;
-		} else if (retValue.compare("SCF") == 0 || retValue.compare("Scf") == 0 || retValue.compare("scf") == 0) {
+		} else if (!retValue.compare("SCF") || !retValue.compare("Scf") || !retValue.compare("scf")) {
 			newNode->type = SCF;
-		} else if (retValue.compare("SET") == 0 || retValue.compare("Set") == 0 || retValue.compare("set") == 0) {
+		} else if (!retValue.compare("SET") || !retValue.compare("Set") || !retValue.compare("set")) {
 			newNode->type = SET;
-		} else if (retValue.compare("SLA") == 0 || retValue.compare("Sla") == 0 || retValue.compare("sla") == 0) {
+		} else if (!retValue.compare("SLA") || !retValue.compare("Sla") || !retValue.compare("sla")) {
 			newNode->type = SLA;
-		} else if (retValue.compare("SRA") == 0 || retValue.compare("Sra") == 0 || retValue.compare("sra") == 0) {
+		} else if (!retValue.compare("SRA") || !retValue.compare("Sra") || !retValue.compare("sra")) {
 			newNode->type = SRA;
-		} else if (retValue.compare("SRL") == 0 || retValue.compare("Srl") == 0 || retValue.compare("srl") == 0) {
+		} else if (!retValue.compare("SRL") || !retValue.compare("Srl") || !retValue.compare("srl")) {
 			newNode->type = SRL;
-		} else if (retValue.compare("SUB") == 0 || retValue.compare("Sub") == 0 || retValue.compare("sub") == 0) {
+		} else if (!retValue.compare("SUB") || !retValue.compare("Sub") || !retValue.compare("sub")) {
 			newNode->type = SUB;
-		} else if (retValue.compare("XOR") == 0 || retValue.compare("Xor") == 0 || retValue.compare("xor") == 0) {
+		} else if (!retValue.compare("XOR") || !retValue.compare("Xor") || !retValue.compare("xor")) {
 			newNode->type = XOR;
-		} else if (retValue.compare("A") == 0 || retValue.compare("a") == 0) {
+		} else if (!retValue.compare("A") || !retValue.compare("a")) {
 			newNode->type = A;
-		} else if (retValue.compare("F") == 0 || retValue.compare("f") == 0) {
+		} else if (!retValue.compare("F") || !retValue.compare("f")) {
 			newNode->type = F;
-		} else if (retValue.compare("B") == 0 || retValue.compare("b") == 0) {
+		} else if (!retValue.compare("B") || !retValue.compare("b")) {
 			newNode->type = B;
-		} else if (retValue.compare("C") == 0 || retValue.compare("c") == 0) {
+		} else if (!retValue.compare("C") || !retValue.compare("c")) {
 			newNode->type = C;
-		} else if (retValue.compare("D") == 0 || retValue.compare("d") == 0) {
+		} else if (!retValue.compare("D") || !retValue.compare("d")) {
 			newNode->type = D;
-		} else if (retValue.compare("E") == 0 || retValue.compare("e") == 0) {
+		} else if (!retValue.compare("E") || !retValue.compare("e")) {
 			newNode->type = E;
-		} else if (retValue.compare("H") == 0 || retValue.compare("h") == 0) {
+		} else if (!retValue.compare("H") || !retValue.compare("h")) {
 			newNode->type = H;
-		} else if (retValue.compare("L") == 0 || retValue.compare("l") == 0) {
+		} else if (!retValue.compare("L") || !retValue.compare("l")) {
 			newNode->type = L;
-		} else if (retValue.compare("BC") == 0 || retValue.compare("bc") == 0) {
+		} else if (!retValue.compare("BC") || !retValue.compare("bc")) {
 			newNode->type = BC;
-		} else if (retValue.compare("DE") == 0 || retValue.compare("de") == 0) {
+		} else if (!retValue.compare("DE") || !retValue.compare("de")) {
 			newNode->type = DE;
-		} else if (retValue.compare("HL") == 0 || retValue.compare("hl") == 0) {
+		} else if (!retValue.compare("HL") || !retValue.compare("hl")) {
 			newNode->type = HL;
-		} else if (retValue.compare("I") == 0 || retValue.compare("i") == 0) {
+		} else if (!retValue.compare("I") || !retValue.compare("i")) {
 			newNode->type = I;
-		} else if (retValue.compare("R") == 0 || retValue.compare("r") == 0) {
+		} else if (!retValue.compare("R") || !retValue.compare("r")) {
 			newNode->type = R;
-		} else if (retValue.compare("IX") == 0 || retValue.compare("ix") == 0) {
+		} else if (!retValue.compare("IX") || !retValue.compare("ix")) {
 			newNode->type = IX;
-		} else if (retValue.compare("IY") == 0 || retValue.compare("iy") == 0) {
+		} else if (!retValue.compare("IY") || !retValue.compare("iy")) {
 			newNode->type = IY;
-		} else if (retValue.compare("PC") == 0 || retValue.compare("pc") == 0) {
+		} else if (!retValue.compare("PC") || !retValue.compare("pc")) {
 			newNode->type = PC;
-		} else if (retValue.compare("SP") == 0 || retValue.compare("sp") == 0) {
+		} else if (!retValue.compare("SP") || !retValue.compare("sp")) {
 			newNode->type = SP;
-		} else if (retValue.compare("CPU") == 0 || retValue.compare("Cpu") == 0 || retValue.compare("cpu") == 0) {
+		} else if (!retValue.compare("CPU") || !retValue.compare("Cpu") || !retValue.compare("cpu")) {
 			newNode->type = CPU;
-		} else if (retValue.compare("DB") == 0 || retValue.compare("Db") == 0 || retValue.compare("db") == 0 || retValue.compare("BYTE") == 0 || retValue.compare("Byte") == 0 || retValue.compare("byte") == 0) {
+		} else if (!retValue.compare("DB") || !retValue.compare("Db") || !retValue.compare("db") || !retValue.compare("BYTE") || !retValue.compare("Byte") || !retValue.compare("byte")) {
 			newNode->type = DB;
-		} else if (retValue.compare("DW") == 0 || retValue.compare("Dw") == 0 || retValue.compare("dw") == 0 || retValue.compare("WORD") == 0 || retValue.compare("Word") == 0 || retValue.compare("word") == 0) {
+		} else if (!retValue.compare("DW") || !retValue.compare("Dw") || !retValue.compare("dw") || !retValue.compare("WORD") || !retValue.compare("Word") || !retValue.compare("word")) {
 			newNode->type = DW;
-		} else if (retValue.compare("ORG") == 0 || retValue.compare("Org") == 0 || retValue.compare("org") == 0) {
+		} else if (!retValue.compare("ORG") || !retValue.compare("Org") || !retValue.compare("org")) {
 			newNode->type = ORG;
-		} else if (retValue.compare("REP") == 0 || retValue.compare("Rep") == 0 || retValue.compare("rep") == 0) {
+		} else if (!retValue.compare("REP") || !retValue.compare("Rep") || !retValue.compare("rep")) {
 			newNode->type = REP;
-		} else if (retValue.compare("SPECREP") == 0 || retValue.compare("SPECREP") == 0 || retValue.compare("SPECREP") == 0) {
+		} else if (!retValue.compare("SPECREP") || !retValue.compare("SPECREP") || !retValue.compare("SPECREP")) {
 			newNode->type = SPECREP;
-		} else if (retValue.compare("M") == 0 || retValue.compare("m") == 0) {
+		} else if (!retValue.compare("M") || !retValue.compare("m")) {
 			newNode->type = M;
-		} else if (retValue.compare("NC") == 0 || retValue.compare("nc") == 0) {
+		} else if (!retValue.compare("NC") || !retValue.compare("nc")) {
 			newNode->type = NC;
-		} else if (retValue.compare("NZ") == 0 || retValue.compare("nz") == 0) {
+		} else if (!retValue.compare("NZ") || !retValue.compare("nz")) {
 			newNode->type = NZ;
-		} else if (retValue.compare("P") == 0 || retValue.compare("p") == 0) {
+		} else if (!retValue.compare("P") || !retValue.compare("p")) {
 			newNode->type = P;
-		} else if (retValue.compare("PE") == 0 || retValue.compare("pe") == 0) {
+		} else if (!retValue.compare("PE") || !retValue.compare("pe")) {
 			newNode->type = PE;
-		} else if (retValue.compare("PO") == 0 || retValue.compare("po") == 0) {
+		} else if (!retValue.compare("PO") || !retValue.compare("po")) {
 			newNode->type = PO;
-		} else if (retValue.compare("Z") == 0 || retValue.compare("z") == 0) {
+		} else if (!retValue.compare("Z") || !retValue.compare("z")) {
 			newNode->type = Z;
 		} else {
 			/*
 				if it is not a reserved word, it is an ATOM:
 			*/
-			newNode->type = ATOM;
-			newNode->value = retValue;
+			newNode->type = ATOM, newNode->value = retValue;
 		}
 		// Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = line;

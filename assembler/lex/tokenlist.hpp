@@ -68,5 +68,7 @@ class TokenList {
 
 		TokenNodePtr peekIndexed();
 
+		void iterate();
+
 		void popTillIndexed();
 };

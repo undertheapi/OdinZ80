@@ -77,7 +77,7 @@ string runZ80(ByteFile &obj) {
 			retString += "\t\tNOP\n";
 			break;
 		case 0x03:
-			retString += "\t\tBC\n";
+			retString += "\t\tINC BC\n";
 			break;
 		case 0x04:
 			retString += "\t\tINC B\n";
@@ -114,6 +114,9 @@ string runZ80(ByteFile &obj) {
 				retString += "\n";
 			}
 			break;
+		case 0x13:
+			retString += "\t\tINC DE\n";
+			break;
 		case 0x14:
 			retString += "\t\tINC D\n";
 			break;
@@ -131,6 +134,9 @@ string runZ80(ByteFile &obj) {
 			break;
 		case 0x1d:
 			retString += "\t\tDEC E\n";
+			break;
+		case 0x23:
+			retString += "\t\tINC HL\n";
 			break;
 		case 0x24:
 			retString += "\t\tINC H\n";
@@ -155,6 +161,12 @@ string runZ80(ByteFile &obj) {
 			break;
 		case 0x2f:
 			retString += "\t\tCPL\n";
+			break;
+		case 0x33:
+			retString += "\t\tINC SP\n";
+			break;
+		case 0x34:
+			retString += "\t\tINC [HL]\n"
 			break;
 		case 0x35:
 			retString += "\t\tDEC [HL]\n";
@@ -858,6 +870,10 @@ string runZ80(ByteFile &obj) {
 							retString += convertHex(value);
 							retString += "\t\tADD IX, DE\n";
 							break;
+						case 0x23:
+							retString += convertHex(value);
+							retString += "\t\tINC IX\n";
+							break;
 						case 0x29:
 							retString += convertHex(value);
 							retString += "\t\tADD IX, IX\n";
@@ -866,6 +882,16 @@ string runZ80(ByteFile &obj) {
 							retString += convertHex(value);
 							retString += "\t\tDEC IX\n";
 							break;
+						case 0x34:
+							retString += convertHex(value);
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tINC [IX + ";
+							retString += temp;
+							retString += "H]\n";
+							address++;
 						case 0x35:
 							retString += convertHex(value);
 							value = obj.pop();
@@ -1146,20 +1172,40 @@ string runZ80(ByteFile &obj) {
 						retString += convertHex(value);
 						retString += "\t\tCPI\n";
 						break;
+					case 0xa2:
+						retString += " ";
+						retString += convertHex(value);
+						retString += "\t\tINI\n";
+						break;
 					case 0xa9:
 						retString += " ";
 						retString += convertHex(value);
 						retString += "\t\tCPD\n";
+						break;
+					case 0xaa:
+						retString += " ";
+						retString += convertHex(value);
+						retString += "\t\tIND\n"
 						break;
 					case 0xb1:
 						retString += " ";
 						retString += convertHex(value);
 						retString += "\t\tCPIR\n";
 						break;
+					case 0xb2:
+						retString += " ";
+						retString += convertHex(value);
+						retString += "\t\tINIR\n";
+						break;
 					case 0xb9:
 						retString += " ";
 						retString += convertHex(value);
 						retString += "\t\tCPDR\n";
+						break;
+					case 0xba:
+						retString += " ";
+						retString += convertHex(value);
+						retString += "\t\tINDR\n";
 						break;
 					default:
 						retString += " ";
@@ -1235,12 +1281,25 @@ string runZ80(ByteFile &obj) {
 						case 0x19:
 							retString += "\t\tADD IY, DE\n";
 							break;
+						case 0x23:
+							retString += convertHex(value);
+							retString += "\t\tINC IY\n";
+							break;
 						case 0x29:
 							retString += "\t\tADD IY, IY\n";
 							break;
 						case 0x2b:
 							retString += "\t\tDEC IY\n";
 							break;
+						case 0x34:
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tINC [IY + ";
+							retString += temp;
+							retString += "H]\n";
+							address += 2;
 						case 0x35:
 							value = obj.pop();
 							temp = convertHex(value);

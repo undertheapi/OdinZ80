@@ -98,6 +98,9 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+		case 0x02:
+			retString += "\t\tLD [BC], A\n";
+			break;
 		case 0x03:
 			retString += "\t\tINC BC\n";
 			break;
@@ -186,6 +189,9 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+		case 0x12:
+			retString += "\t\tLD [DE], A\n";
+			break;
 		case 0x13:
 			retString += "\t\tINC DE\n";
 			break;
@@ -399,6 +405,20 @@ string runZ80(ByteFile &obj) {
 		case 0x35:
 			retString += "\t\tDEC [HL]\n";
 			break;
+		case 0x36:
+			if (!obj.isEmpty()) {
+				value = obj.pop();
+				temp = convertHex(value);
+				retString += " ";
+				retString += temp;
+				retString += "\t\tLD [HL], ";
+				retString += temp;
+				retString += "H\n";
+				address++;
+			} else {
+				retString += "\n";
+			}
+			break;
 		case 0x38:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
@@ -442,8 +462,155 @@ string runZ80(ByteFile &obj) {
 		case 0x3f:
 			retString += "\t\tCCF\n";
 			break;
+		case 0x40:
+			retString += "\t\tLD B, B\n";
+			break;
+		case 0x41:
+			retString += "\t\tLD B, C\n";
+			break;
+		case 0x42:
+			retString += "\t\tLD B, D\n";
+			break;
+		case 0x43:
+			retString += "\t\tLD B, E\n";
+			break;
+		case 0x44:
+			retString += "\t\tLD B, H\n";
+			break;
+		case 0x45:
+			retString += "\t\tLD B, L\n";
+			break;
+		case 0x47:
+			retString += "\t\tLD B, A\n";
+			break;
+		case 0x48:
+			retString += "\t\tLD C, B\n";
+			break;
+		case 0x49:
+			retString += "\t\tLD C, C\n";
+			break;
+		case 0x4a:
+			retString += "\t\tLD C, D\n";
+			break;
+		case 0x4b:
+			retString += "\t\tLD C, E\n";
+			break;
+		case 0x4c:
+			retString += "\t\tLD C, H\n";
+			break;
+		case 0x4d:
+			retString += "\t\tLD C, L\n";
+			break;
+		case 0x4f:
+			retString += "\t\tLD C, A\n";
+			break;
+		case 0x50:
+			retString += "\t\tLD D, B\n";
+			break;
+		case 0x51:
+			retString += "\t\tLD D, C\n";
+			break;
+		case 0x52:
+			retString += "\t\tLD D, D\n";
+			break;
+		case 0x53:
+			retString += "\t\tLD D, E\n";
+			break;
+		case 0x54:
+			retString += "\t\tLD D, H\n";
+			break;
+		case 0x55:
+			retString += "\t\tLD D, L\n";
+			break;
+		case 0x57:
+			retString += "\t\tLD D, A\n";
+			break;
+		case 0x58:
+			retString += "\t\tLD E, B\n";
+			break;
+		case 0x59:
+			retString += "\t\tLD E, B\n";
+			break;
+		case 0x5a:
+			retString += "\t\tLD E, B\n";
+			break;
+		case 0x5b:
+			retString += "\t\tLD E, B\n";
+			break;
+		case 0x5c:
+			retString += "\t\tLD E, B\n";
+			break;
+		case 0x5d:
+			retString += "\t\tLD E, B\n";
+			break;
+		case 0x5f:
+			retString += "\t\tLD E, A\n";
+			break;
+		case 0x60:
+			retString += "\t\tLD H, B\n";
+			break;
+		case 0x61:
+			retString += "\t\tLD H, C\n";
+			break;
+		case 0x62:
+			retString += "\t\tLD H, D\n";
+			break;
+		case 0x63:
+			retString += "\t\tLD H, E\n";
+			break;
+		case 0x64:
+			retString += "\t\tLD H, H\n";
+			break;
+		case 0x65:
+			retString += "\t\tLD H, L\n";
+			break;
+		case 0x67:
+			retString += "\t\tLD H, A\n";
+			break;
+		case 0x68:
+			retString += "\t\tLD L, B\n";
+			break;
+		case 0x69:
+			retString += "\t\tLD L, C\n";
+			break;
+		case 0x6a:
+			retString += "\t\tLD L, D\n";
+			break;
+		case 0x6b:
+			retString += "\t\tLD L, E\n";
+			break;
+		case 0x6c:
+			retString += "\t\tLD L, H\n";
+			break;
+		case 0x6d:
+			retString += "\t\tLD L, L\n";
+			break;
+		case 0x6f:
+			retString += "\t\tLD L, A\n";
+			break;
+		case 0x70:
+			retString += "\t\tLD [HL], B\n";
+			break;
+		case 0x71:
+			retString += "\t\tLD [HL], C\n";
+			break;
+		case 0x72:
+			retString += "\t\tLD [HL], D\n";
+			break;
+		case 0x73:
+			retString += "\t\tLD [HL], E\n";
+			break;
+		case 0x74:
+			retString += "\t\tLD [HL], H\n";
+			break;
+		case 0x75:
+			retString += "\t\tLD [HL], L\n";
+			break;
 		case 0x76:
 			retString += "\t\tHALT\n";
+			break;
+		case 0x77:
+			retString += "\t\tLD [HL], A\n";
 			break;
 		case 0x78:
 			retString += "\t\tLD A, B\n";

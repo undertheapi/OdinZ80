@@ -27,7 +27,19 @@
 	either expressed or implied, of the FreeBSD Project.
 */
 
-//z80 dissassember routines!
+/*
+	file name: z80.hpp
+	compiled name: z80.o
+	created date: 7/8/2012
+	date updated: 12/10/2012
+	author: Gareth Richardson
+	description: These are the methods for disassembling Z80 machine code.
+*/
+
+/*
+	The starting address of the machine code. Can be altered by the user.
+*/
+short address = 0;
 
 string convertHex(short value);
 

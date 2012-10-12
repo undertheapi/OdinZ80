@@ -62,8 +62,6 @@ string convertHex(BYTE value) {
 	return retString;
 }
 
-short address = 0;
-
 string runZ80(ByteFile &obj) {
 	string retString;
 	BYTE value = obj.pop();

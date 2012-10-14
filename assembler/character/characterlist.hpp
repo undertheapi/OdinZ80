@@ -30,27 +30,31 @@
 /*
 	file name: characterlist.hpp
 	date craeted: 28/8/2012
-	date updated: 12/9/2012
+	date updated: 12/10/2012
 	author: Gareth Richardson
-	description: This is the header file for the class CharacterList. This stores a
-	Singly Linked List of characters using the data structure CharNode. We use this to
-	store the characters from a file. This class also does character validation to make
-	sure that there are no invalid characters going into the Linked List.
+	description: This is the header file for the class CharacterList. This stores files
+	into an allocated place in memory.
 */
 
-#include "charnode.hpp"
+/*
+	defining the CHARACTER as a unsigned character (ASCII) for now. But this may change.
+*/
+#define CHARACTER unsigned char
+
+/*
+	The size of a mega byte in bytes. Use for the allocation of memory for the characters
+	coming from the files that are going to be assembled.
+*/
+#define ONE_MEGABYTE (1024 * 1024)
 
 class CharacterList {
 	private:
 	
 		/*
-			To store the characters in this class, we are using a Singly Linked
-			List data structure rather than an array of characters. These two
-			pointers are the standard "head" and "tail" values to make a Singly
-			Linked List.
+			head is the beginning of the file data, tail is the end of it.
 		*/
-		CharNodePtr head;
-		CharNodePtr tail;
+		CHARACTER* head;
+		CHARACTER* tail;
 		
 		/*
 			This method will check if a character to be put into this class is a valid
@@ -61,7 +65,7 @@ class CharacterList {
 		
 		/*
 			init(): This is called when the constructor is created. Put all the initial
-			code here.
+			code here. So, our memory allocation also happens here.
 		*/
 		void init();
 	public:
@@ -85,19 +89,13 @@ class CharacterList {
 			push(): pushes a CharNode into the CharacterList. It will return a false if
 			there was an error or if it was an invalid character.
 		*/
-		bool push(CHARACTER charValue, int line, char* file);
+		bool push(CHARACTER charValue);
 		
 		/*
 			these peek functions show the values for the top node in the Singly Linked List.
 			These do not remove the top node.
 		*/
 		CHARACTER peekValue();
-		
-		/*
-			This gets the line number the character is on. Used for the error handling and
-			displaying.
-		*/
-		int peekLineNumber();
 		
 		/*
 			This gets the file name the character is in. If the project that is being assembled

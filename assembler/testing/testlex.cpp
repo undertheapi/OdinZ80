@@ -52,7 +52,7 @@ void testADC() {
 	
 	int index = 0;
 	while (array[index] != 0) {
-		cList.push(array[index], 0, 0);
+		cList.push(array[index]);
 		index++;
 	}
 	
@@ -92,7 +92,7 @@ void testADD() {
 	
 	int index = 0;
 	while (array[index] != 0) {
-		cList.push(array[index], 0, 0);
+		cList.push(array[index]);
 		index++;
 	}
 	
@@ -132,7 +132,7 @@ void testAND() {
 	
 	int index = 0;
 	while (array[index] != 0) {
-		cList.push(array[index], 0, 0);
+		cList.push(array[index]);
 		index++;
 	}
 	
@@ -173,7 +173,7 @@ void testBIT() {
 	
 	int index = 0;
 	while (array[index] != 0) {
-		cList.push(array[index], 0, 0);
+		cList.push(array[index]);
 		index++;
 	}
 	
@@ -226,7 +226,7 @@ void testCALL() {
 	
 	int index = 0;
 	while (array[index] != 0) {
-		cList.push(array[index], 0, 0);
+		cList.push(array[index]);
 		index++;
 	}
 	

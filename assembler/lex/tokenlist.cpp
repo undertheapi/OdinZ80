@@ -46,7 +46,6 @@ using namespace std;
 void TokenList::init() {
 	TokenList::head = NULL;
 	TokenList::tail = NULL;
-	TokenList::indexed = NULL;
 }
 
 TokenList::TokenList() {
@@ -85,24 +84,4 @@ TOKEN_TYPE TokenList::peekTokenType() {
 
 string TokenList::peekValue() {
 	return TokenList::head->value;
-}
-
-TokenNodePtr TokenList::peekIndexed() {
-	return TokenList::indexed;
-}
-
-void TokenList::iterate() {
-	if (!TokenList::isEmpty() && TokenList::indexed->next != NULL) {
-		TokenList::indexed = TokenList::indexed->next;
-	}
-}
-
-void TokenList::popTillIndexed() {
-	TokenNodePtr pointer = TokenList::head;
-	while (TokenList::head != TokenList::indexed) {
-		TokenList::head = TokenList::head->next;
-		delete pointer;
-		pointer = TokenList::head;
-	}
-	TokenList::head = pointer;
 }

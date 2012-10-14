@@ -30,18 +30,15 @@
 /*
 	file name: characterlist.cpp
 	date created: 28/08/2012
-	date updated: 12/9/2012
+	date updated: 12/10/2012
 	author: Gareth Richardson
 	description: This is the object file for the CharacterList class. Implement all
 	the class methods here.
 */
 
-#include "characterlist.hpp"
+#include <cstdlib>
 
-/*
-	defien the NULL value here. We are not including any c standard libraries here. 
-*/
-#define NULL 0
+#include "characterlist.hpp"
 
 bool CharacterList::isValidCharacter(CHARACTER value) {
 	/*
@@ -51,8 +48,19 @@ bool CharacterList::isValidCharacter(CHARACTER value) {
 }
 
 void CharacterList::init() {
-	CharacterList::head = NULL;
-	CharacterList::tail = NULL;
+	/*
+		Allocation of memory for the file data here.
+		ADD more MEGABYTES when possible.
+	*/
+	CharacterList::head = (CHARACTER*)malloc(ONE_MEGABYTE);
+	CharacterList::tail = CharacterList::head;
+	
+	/*
+		fills that part of memory with 0 (clears memory):
+	*/
+	for (int index = 0; index < ONE_MEGABYTE; index++) {
+		CharacterList::head[index] = 0;
+	}
 }
 
 CharacterList::CharacterList() {
@@ -66,42 +74,31 @@ CharacterList::~CharacterList() {
 }
 
 bool CharacterList::isEmpty() {
-	return CharacterList::head == NULL;
+	/*
+		checks for a NULL pointer.
+	*/
+	return CharacterList::head[0] == 0;
 }
 
-bool CharacterList::push(CHARACTER charValue, int line, char* file) {
-	if (!CharacterList::isValidCharacter(charValue)) {
-		return false;
-	} else {
-		CharNodePtr newNode = new CharNode;
-		newNode->value = charValue;
-		newNode->lineNumber = line;
-		newNode->fileName = file;
-		newNode->next = NULL;
-		if (CharacterList::isEmpty()) {
-			CharacterList::head = newNode;
-			CharacterList::tail = newNode;
-		} else if (CharacterList::head == CharacterList::tail) {
-			CharacterList::head->next = newNode;
-			CharacterList::tail = newNode;
-		} else {
-			CharacterList::tail->next = newNode;
-			CharacterList::tail = newNode;
-		}
+bool CharacterList::push(CHARACTER charValue) {
+	/*
+		fix buffer overflow issue!
+	*/
+	if (CharacterList::isValidCharacter(charValue)) {
+		CharacterList::tail[0] = charValue;
+		CharacterList::tail++;
 		return true;
+	} else {
+		return false;
 	}
 }
 
 CHARACTER CharacterList::peekValue() {
-	return CharacterList::head->value;
-}
-
-int CharacterList::peekLineNumber() {
-	return CharacterList::head->lineNumber;
+	return CharacterList::head[0];
 }
 
 char* CharacterList::peekFileName() {
-	return CharacterList::head->fileName;
+	return 0;
 }
 
 void CharacterList::pop() {
@@ -110,8 +107,7 @@ void CharacterList::pop() {
 		not throwing any errors.
 	*/
 	if (!CharacterList::isEmpty()) {
-		CharNodePtr node = CharacterList::head;
-		CharacterList::head = CharacterList::head->next;
-		delete node;
+		CharacterList::head++;
+		//return CharacterList::head - 1;
 	}
 }

@@ -42,12 +42,6 @@ class TokenList {
 	private:
 		TokenNodePtr head;
 		TokenNodePtr tail;
-
-		/*
-			The indexed pointer for the parser.
-		*/
-		TokenNodePtr indexed;
-		
 		void init();
 	public:
 		TokenList();
@@ -65,10 +59,4 @@ class TokenList {
 		int peekLineNumber();
 		
 		char* peekFileName();
-
-		TokenNodePtr peekIndexed();
-
-		void iterate();
-
-		void popTillIndexed();
 };

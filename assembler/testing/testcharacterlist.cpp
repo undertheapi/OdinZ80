@@ -48,14 +48,14 @@ using namespace std;
 void testValidCharacters() {
 	printf("**Test Valid Characters in the CharacterList class.\n");
 	CharacterList cList;
-	assert(cList.push('\t', 0, 0) == true);
+	assert(cList.push('\t') == true);
 	printf("1: A CharacterList object can handle a Horizontal Tab character \'\\t\'\n");
-	assert(cList.push('\n', 0, 0) == true);
+	assert(cList.push('\n') == true);
 	printf("2: A CharacterList object can handle a New Line character \'\\n\'\n");
 	int counter = 3;
 	CHARACTER charValue = ' ';
 	while (charValue != 127) {
-		assert(cList.push(charValue, 0, 0) == true);
+		assert(cList.push(charValue) == true);
 		printf("%i: A CharacterList object can handle a \'%c\' character\n", counter, charValue);
 		counter++;
 		charValue++;
@@ -68,74 +68,74 @@ void testValidCharacters() {
 void testInvalidCharacters() {
 	printf("**Testing invalid Characters in the CharacterList class.\nNOTE: This part validates the ASCII control characters.\n");
 	CharacterList cList;
-	assert(cList.push(0, 0, 0) == false);
+	assert(cList.push(0) == false);
 	printf("1: A CharacterList can handle a NULL character.\n");
-	assert(cList.push(1, 0, 0) == false);
+	assert(cList.push(1) == false);
 	printf("2: A CharacterList can handle a SOH (Start Of Header) character.\n");
-	assert(cList.push(2, 0, 0) == false);
+	assert(cList.push(2) == false);
 	printf("3: A CharacterList can handle a STX (Start of TeXt) character.\n");
-	assert(cList.push(3, 0, 0) == false);
+	assert(cList.push(3) == false);
 	printf("4: A CharacterList can handle an ETX (End of TeXt) character.\n");
-	assert(cList.push(4, 0, 0) == false);
+	assert(cList.push(4) == false);
 	printf("5: A CharacterList can handle an EOT (End Of Transmission) character.\n");
-	assert(cList.push(5, 0, 0) == false);
+	assert(cList.push(5) == false);
 	printf("6: A CharacterList can handle an ENQ (Enquiry) character.\n");
-	assert(cList.push(6, 0, 0) == false);
+	assert(cList.push(6) == false);
 	printf("7: A CharacterList can handle an ACK (Acknowledge) character.\n");
-	assert(cList.push(7, 0, 0) == false);
+	assert(cList.push(7) == false);
 	printf("8: A CharacterList can handle a BELL character.\n");
-	assert(cList.push(8, 0, 0) == false);
+	assert(cList.push(8) == false);
 	printf("9: A CharacterList can handle a Backspace character.\n");
-	assert(cList.push(11, 0, 0) == false);
+	assert(cList.push(11) == false);
 	printf("10: A CharacterList can handle a Vertical Tab character.\n");
-	assert(cList.push(12, 0, 0) == false);
+	assert(cList.push(12) == false);
 	printf("11: A CharacterList can handle a Form Feed (New Page) character.\n");
-	assert(cList.push(13, 0, 0) == false);
+	assert(cList.push(13) == false);
 	printf("12: A CharacterList can handle the Carriage Return character.\n");
-	assert(cList.push(14, 0, 0) == false);
+	assert(cList.push(14) == false);
 	printf("13: A CharacterList can handle the Shift Out character.\n");
-	assert(cList.push(15, 0, 0) == false);
+	assert(cList.push(15) == false);
 	printf("14: A CharacterList can handle the Shift In character.\n");
-	assert(cList.push(16, 0, 0) == false);
+	assert(cList.push(16) == false);
 	printf("15: A CharacterList can handle the DLE (Data Line Escape) character.\n");
-	assert(cList.push(17, 0, 0) == false);
+	assert(cList.push(17) == false);
 	printf("16: A CharacterList can handle the Device Control One character.\n");
-	assert(cList.push(18, 0, 0) == false);
+	assert(cList.push(18) == false);
 	printf("17: A CharacterList can handle the Device Control Two character.\n");
-	assert(cList.push(19, 0, 0) == false);
+	assert(cList.push(19) == false);
 	printf("16: A CharacterList can handle the Device Control Three character.\n");
-	assert(cList.push(20, 0, 0) == false);
+	assert(cList.push(20) == false);
 	printf("17: A CharacterList can handle the Device Control Four character.\n");
-	assert(cList.push(21, 0, 0) == false);
+	assert(cList.push(21) == false);
 	printf("18: A CharacterList can handle the NK (Negative Acknowledge) character.\n");
-	assert(cList.push(22, 0, 0) == false);
+	assert(cList.push(22) == false);
 	printf("19: A CharacterList can handle the SYN (SYNchronous idle) character.\n");
-	assert(cList.push(23, 0, 0) == false);
+	assert(cList.push(23) == false);
 	printf("20: A CharacterList can handle the ETB (End of Transmission Block) character.\n");
-	assert(cList.push(24, 0, 0) == false);
+	assert(cList.push(24) == false);
 	printf("21: A CharacterList can handle the Cancel character.\n");
-	assert(cList.push(25, 0, 0) == false);
+	assert(cList.push(25) == false);
 	printf("22: A CharacterList can handle the EM (End of Medium) character.\n");
-	assert(cList.push(26, 0, 0) == false);
+	assert(cList.push(26) == false);
 	printf("23: A CharacterList can handle the Substitution character.\n");
-	assert(cList.push(27, 0, 0) == false);
+	assert(cList.push(27) == false);
 	printf("24: A CharacterList can handle the Escape character.\n");
-	assert(cList.push(28, 0, 0) == false);
+	assert(cList.push(28) == false);
 	printf("25: A CharacterList can handle the FS (File Separator) character.\n");
-	assert(cList.push(29, 0, 0) == false);
+	assert(cList.push(29) == false);
 	printf("26: A CharacterList can handle the GS (Group Separator) character.\n");
-	assert(cList.push(30, 0, 0) == false);
+	assert(cList.push(30) == false);
 	printf("27: A CharacterList can handle the RS (Record Separator) character.\n");
-	assert(cList.push(31, 0, 0) == false);
+	assert(cList.push(31) == false);
 	printf("28: A CharacterList can handle the US (Unit Separator) character.\n");
-	assert(cList.push(127, 0, 0) == false);
+	assert(cList.push(127) == false);
 	printf("29: A CharacterList can handle the Delete character.\n");
 	
 	int counter = 30;
 	CHARACTER charValue = 128;
 	printf("NOTE: The next characters are part of the Extended ASCII characters.\n");
 	while (charValue != 255) {
-		assert(cList.push(charValue, 0, 0) == false);
+		assert(cList.push(charValue) == false);
 		printf("%i: A CharacterList object can handle a \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
@@ -149,44 +149,44 @@ void testAllCharacters() {
 	CHARACTER charValue = 0;
 	
 	while (charValue != 9) {
-		assert(cList.push(charValue, 0, 0) == false);
+		assert(cList.push(charValue) == false);
 		printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
 	}
 	
-	assert(cList.push(charValue, 0, 0) == true);
+	assert(cList.push(charValue) == true);
 	printf("%i: A CharacterList can handle the TAB character.\n", counter);
 	counter++;
 	charValue++;
 	
-	assert(cList.push(charValue, 0, 0) == true);
+	assert(cList.push(charValue) == true);
 	printf("%i: A CharacterList can handle the NEW LINE character.\n", counter);
 	counter++;
 	charValue++;
 	
 	while (charValue != 32) {
-		assert(cList.push(charValue, 0, 0) == false);
+		assert(cList.push(charValue) == false);
 		printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
 	}
 	
 	while (charValue != 127) {
-		assert(cList.push(charValue, 0, 0) == true);
+		assert(cList.push(charValue) == true);
 		printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
 	}
 	
 	while (charValue != 255) {
-		assert(cList.push(charValue, 0, 0) == false);
+		assert(cList.push(charValue) == false);
 		printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
 	}
 	
-	assert(cList.push(charValue, 0, 0) == false);
+	assert(cList.push(charValue) == false);
 	printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 }
 
@@ -195,10 +195,10 @@ void testEmpty() {
 	CharacterList cList;
 	assert(cList.isEmpty() == true);
 	printf("\tcList is empty.\n");
-	cList.push('a', 0, 0);
+	cList.push('a');
 	assert(cList.isEmpty() == false);
 	printf("\tcList is not empty after \'a\' is pushed.\n");
-	cList.push('b', 0, 0);
+	cList.push('b');
 	assert(cList.isEmpty() == false);
 	printf("\tcList is not empty after \'b\' is pushed.\n");
 	cList.pop();

@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 23/09/2012
+	date updated: 12/10/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -41,6 +41,7 @@ class Lex {
 		TokenList* tList;
 		string errorString;
 		bool errorState;
+		int lineNumber;
 		TokenNodePtr getToken();
 	public:
 		Lex(CharacterList* cList, TokenList* tList);

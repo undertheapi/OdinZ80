@@ -30,22 +30,61 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 12/10/2012
+	date updated: 15/10/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
 
 class Lex {
 	private:
+		/*
+			This is a pointer to the CharacterList that will be used for storing the
+			character strewam from the file.
+		*/
 		CharacterList* cList;
+
+		/*
+			Were the Tokens are going to be stored. This is just a pointer to a
+			TokenList.
+		*/
 		TokenList* tList;
+
+		/*
+			The value of the error string. Set if there is an error, otherwise it is not
+			set. (Default is "").
+		*/
 		string errorString;
+
+		/*
+			When the Lex obj comes along an error, we set this to true. Otherwise it is false.
+		*/
 		bool errorState;
+
+		/*
+			A counter for the line number in the file.
+		*/
 		int lineNumber;
+
+		/*
+			Gets a unique token from the CharacterList object being pointed to. Sets errorString and errorState
+			if there is an error. Called up in run().
+		*/
 		TokenNodePtr getToken();
 	public:
 		Lex(CharacterList* cList, TokenList* tList);
+
+		/*
+			Runs the Lex object and populates the TokenList obj that is being pointed to.
+		*/
 		void run();
+
+		/*
+			This checks errorState and returns its value.
+		*/
 		bool checkForError();
+
+		/*
+			Gets the errorString. Remember, if it is not set, it will return "".
+		*/
 		string getError();
 };

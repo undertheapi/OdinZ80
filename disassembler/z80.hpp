@@ -37,12 +37,17 @@
 */
 
 /*
-	The starting address of the machine code. Can be altered by the user.
+	converts a short variable data type to a string for displaying.
 */
-short address = 0;
-
 string convertHex(short value);
 
+/*
+	Converts a Byte / Char data type to a string for displaying.
+*/
 string convertHex(BYTE value);
 
+/*
+	Give a ByteFile object as a parameter and it will give an output of the
+	first opcode in the object.
+*/
 string runZ80(ByteFile &obj);

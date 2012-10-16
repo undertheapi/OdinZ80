@@ -44,6 +44,11 @@ using namespace std;
 #include "bytefile.hpp"
 #include "z80.hpp"
 
+/*
+	This is the address of the opcodes. starts at zero and increments accordingly.
+*/
+int address = 0;
+
 string convertHex(short value) {
 	string retString = "";
 	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};

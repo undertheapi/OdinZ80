@@ -27,10 +27,14 @@
 	either expressed or implied, of the FreeBSD Project.
 */
 
-#include <cctype>
+#include <cstdlib>
+#include <cstdio>
 #include <cstring>
-#include <fstream>
-#include <iostream>
+#include <string>
+
+#ifdef __linux__
+	#include <unistd.h>
+#endif
 
 using namespace std;
 
@@ -42,48 +46,78 @@ ByteFile fileData;
 BYTE convertFromHex(char* array);
 
 int main( int argc, char *argv[]) {
-	if (argc == 1) {
-		cout << "no input file declared." << endl;
-	} else if (argc == 2) {
-		ifstream input;
-		input.open(argv[1], ios::binary);
-		if(input.fail()) {
-			cout << "File failed to open." << endl;;
-			return 0;
-		}
-		while (!input.eof()) {
-			char valueFromFile;
-			input.get(valueFromFile);
-			fileData.push(valueFromFile);
-		}
-		input.close();
-		ofstream output;
-		output.open("output.asm");
-		output << ";-----------------------------" << endl;
-		output << ";  disassembled using the" << endl;
-		output << ";  odin Z80 development" << endl;
-		output << ";  suite." << endl;
-		output << ";-----------------------------" << endl;
-		while (!fileData.isEmpty()) {
-			string outputString = runZ80(fileData);
-			output << outputString;
-		}
-		output.close();
+if (argc == 1) {
+		printf("ZDIS: There has been no file, options or string input specified.\n");
 	} else {
-		bool stringState = false; //treats the char value as a hex string.
-		/*
-			add more boolean states here
-		*/
-		int indexOfString = 1;
-		for (int index = 0; index < argc; index++) {
-			if (strcmp(argv[index], "-s") == 0) {
-				stringState = true;
-			} else {
-				indexOfString = index;
+		bool fileFlag = true;
+		bool stringFlag = false;
+		int startPosition = 0;
+		int endPosition = -1;
+		char* hexString = 0;
+		char* inputFile = 0;
+		char* outputFile = 0;
+		
+		#ifdef __linux__
+			int opt = getopt(argc, argv, "sa:b:e:o:hi");
+			while (opt != -1) {
+				switch (opt) {
+					case 's':
+						/* found a string input */
+						stringFlag = true;
+						fileFlag = false;
+						break;
+					case 'a':
+						/* address to be set */
+						//address = atoi(optarg);
+						break;
+					case 'b':
+						/* The starting position of the disassembler */
+						startPosition = atoi(optarg);
+						break;
+					case 'e':
+						/* This is were the disassembler should end */
+						endPosition = atoi(optarg);
+						break;
+					case 'o':
+						/* the output file that will contain the opcodes. */
+						/* If this is not set, the opcodes will be        */
+						/* displayed on  the console. */
+						outputFile = optarg;
+						break;
+					case 'h':
+						/* Help options. */
+						break;
+					case 'i':
+						/* info on ZDIS etc. */
+						break;
+					case ':':
+						printf("ZDIS: There is an option that needs a value in the command prompt.\n");
+						//get out of system ASAP!
+						exit(0);
+						break;
+					case '?':
+						printf("ZIDS: These is an unknown option \'%c\' in the command prompt.\n", opt);
+						break;
+				}
+				opt = getopt(argc, argv, "s:a:b:e:o:hi");
 			}
-		}
-		if (stringState) {
-			char* hexString = argv[indexOfString];
+			
+			//If zdis has been told NOT to manipulate a string, it is a file.
+			if (!stringFlag && optind != -1) {
+				inputFile = argv[optind];
+			}
+			
+			if (!fileFlag && optind != -1) {
+				hexString = argv[optind];
+			}
+		#endif
+
+		#ifdef _WIN32
+			//how to set these in a windows environment?
+		#endif
+		
+		if (stringFlag) {
+			//Processes a string from the prompt.
 			bool validHexString = true;
 			int index = 0;
 			while (validHexString && index < strlen(hexString)) {
@@ -93,15 +127,12 @@ int main( int argc, char *argv[]) {
 				index++;
 			}
 			if (!validHexString) {
-				cout << "not a valid hex string." << endl;
+				printf("ZDIS: The input string is not a valid Hex String.\n");
 			} else {
 				if (strlen(hexString) % 2 != 0) {
 					strcat(hexString, "0");
-					cout << "added a \"0\" to the end of the string to make it even." << endl;
+					printf("ZDIS: Added a \"0\" to the end of the string to make it even.");
 				}
-				/*
-					now to convert the hex string into a ByteFile object.
-				*/
 				index = 0;
 				ByteFile smallList;
 				while (index < strlen(hexString)) {
@@ -112,18 +143,23 @@ int main( int argc, char *argv[]) {
 					index++;
 					smallList.push(convertFromHex(&array[0]));
 				}
-				/*
-					now the hex string is in smallList, run the
-					dissassembler now!
-				*/
 				while (!smallList.isEmpty()) {
 					string val = runZ80(smallList);
-					cout << val;
+					printf("%s", val.c_str());	//No need to at a NEW LINE character.
 				}
 			}
+		} else {
+			//we have a file
+			#ifdef __linux__
+				
+			#endif
+			
+			#ifdef _WIN32
+				
+			#endif
 		}
 	}
-	return 0;
+	exit(0);
 }
 
 BYTE convertFromHex(char* array) {

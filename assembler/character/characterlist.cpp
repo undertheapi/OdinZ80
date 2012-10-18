@@ -30,13 +30,11 @@
 /*
 	file name: characterlist.cpp
 	date created: 28/08/2012
-	date updated: 12/10/2012
+	date updated: 18/10/2012
 	author: Gareth Richardson
 	description: This is the object file for the CharacterList class. Implement all
 	the class methods here.
 */
-
-#include <cstdlib>
 
 #include "characterlist.hpp"
 
@@ -48,19 +46,8 @@ bool CharacterList::isValidCharacter(CHARACTER value) {
 }
 
 void CharacterList::init() {
-	/*
-		Allocation of memory for the file data here.
-		ADD more MEGABYTES when possible.
-	*/
-	CharacterList::head = (CHARACTER*)malloc(ONE_MEGABYTE);
-	CharacterList::tail = CharacterList::head;
-	
-	/*
-		fills that part of memory with 0 (clears memory):
-	*/
-	for (int index = 0; index < ONE_MEGABYTE; index++) {
-		CharacterList::head[index] = 0;
-	}
+	CharacterList::length = 0;
+	CharacterList::currentPosition = 0;
 }
 
 CharacterList::CharacterList() {
@@ -74,40 +61,52 @@ CharacterList::~CharacterList() {
 }
 
 bool CharacterList::isEmpty() {
-	/*
-		checks for a NULL pointer.
-	*/
-	return CharacterList::head[0] == 0;
+	return CharacterList::length == 0;
+}
+
+bool CharacterList::isFull() {
+	return CharacterList::length == MAX_SIZE;
 }
 
 bool CharacterList::push(CHARACTER charValue) {
-	/*
-		fix buffer overflow issue!
-	*/
-	if (CharacterList::isValidCharacter(charValue)) {
-		CharacterList::tail[0] = charValue;
-		CharacterList::tail++;
-		return true;
-	} else {
+	if (!CharacterList::isValidCharacter(charValue)) {
 		return false;
+	} else {
+		if (CharacterList::isFull()) {
+			return false;
+		} else {
+			CharacterList::fileInMemory[currentPosition] = charValue;
+			CharacterList::length++;
+			CharacterList::currentPosition++;
+			return true;
+		}
 	}
 }
 
-CHARACTER CharacterList::peekValue() {
-	return CharacterList::head[0];
+bool CharacterList::peekValue(CHARACTER &charValue) {
+	/*
+		if currentPosition is 0, then it will check postion -1. How to overcome this?
+		This is how:
+	*/
+	if (CharacterList::isEmpty()) {
+		charValue = 0;
+		return false;
+	} else {
+		charValue =  CharacterList::fileInMemory[CharacterList::currentPosition - 1];
+	}
 }
 
-char* CharacterList::peekFileName() {
-	return 0;
-}
-
-void CharacterList::pop() {
+bool CharacterList::pop() {
 	/*
 		should only run this if the list is not empty. So we are
 		not throwing any errors.
 	*/
 	if (!CharacterList::isEmpty()) {
-		CharacterList::head++;
-		//return CharacterList::head - 1;
+		CharacterList::fileInMemory[CharacterList::currentPosition - 1] = 0;
+		CharacterList::currentPosition--;
+		CharacterList::length--;
+		return true;
+	} else {
+		return false;
 	}
 }

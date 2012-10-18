@@ -29,8 +29,8 @@
 
 /*
 	file name: testcharacterlist.cpp
-	date craeted: 4/10/2012
-	date updated: 4/10/2012
+	date created: 18/10/2012
+	date updated: 18/10/2012
 	author: Gareth Richardson
 	description: The unit test for the CharacterList class.
 */
@@ -201,10 +201,10 @@ void testEmpty() {
 	cList.push('b');
 	assert(cList.isEmpty() == false);
 	printf("\tcList is not empty after \'b\' is pushed.\n");
-	cList.pop();
+	assert(cList.pop() == true);
 	assert(cList.isEmpty() == false);
 	printf("\tcList is not empty after \'a\' is popped.\n");
-	cList.pop();
+	assert(cList.pop() == true);
 	assert(cList.isEmpty() == true);
 	printf("\tcList is empty after \'b\' is popped.\n");
 }

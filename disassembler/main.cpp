@@ -32,8 +32,16 @@
 #include <cstring>
 #include <string>
 
+/*
+	This is for the getopt() method. In Linux, it is part of the unistd
+	header file, but in MingW Gcc, we have the getopt.h to include.
+*/
 #ifdef __linux__
 	#include <unistd.h>
+#endif
+
+#ifdef _WIN32
+	#include <getopt.h>
 #endif
 
 using namespace std;
@@ -57,64 +65,60 @@ if (argc == 1) {
 		char* inputFile = 0;
 		char* outputFile = 0;
 		
-		#ifdef __linux__
-			int opt = getopt(argc, argv, "sa:b:e:o:hi");
-			while (opt != -1) {
-				switch (opt) {
-					case 's':
-						/* found a string input */
-						stringFlag = true;
-						fileFlag = false;
-						break;
-					case 'a':
-						/* address to be set */
-						//address = atoi(optarg);
-						break;
-					case 'b':
-						/* The starting position of the disassembler */
-						startPosition = atoi(optarg);
-						break;
-					case 'e':
-						/* This is were the disassembler should end */
-						endPosition = atoi(optarg);
-						break;
-					case 'o':
-						/* the output file that will contain the opcodes. */
-						/* If this is not set, the opcodes will be        */
-						/* displayed on  the console. */
-						outputFile = optarg;
-						break;
-					case 'h':
-						/* Help options. */
-						break;
-					case 'i':
-						/* info on ZDIS etc. */
-						break;
-					case ':':
-						printf("ZDIS: There is an option that needs a value in the command prompt.\n");
-						//get out of system ASAP!
-						exit(0);
-						break;
-					case '?':
-						printf("ZIDS: These is an unknown option \'%c\' in the command prompt.\n", opt);
-						break;
-				}
-				opt = getopt(argc, argv, "s:a:b:e:o:hi");
+		int opt = getopt(argc, argv, "sa:b:e:o:hi");
+		while (opt != -1) {
+			switch (opt) {
+				case 's':
+					/* found a string input */
+					stringFlag = true;
+					fileFlag = false;
+					break;
+				case 'a':
+					/* address to be set */
+					//address = atoi(optarg);
+					break;
+				case 'b':
+					/* The starting position of the disassembler */
+					//########We should do some error checking here:
+					startPosition = atoi(optarg);
+					break;
+				case 'e':
+					/* This is were the disassembler should end */
+					//########We should do some error checking here:
+					endPosition = atoi(optarg);
+					break;
+				case 'o':
+					/* the output file that will contain the opcodes. */
+					/* If this is not set, the opcodes will be        */
+					/* displayed on  the console. */
+					outputFile = optarg;
+					break;
+				case 'h':
+					/* Help options. */
+					break;
+				case 'i':
+					/* info on ZDIS etc. */
+					break;
+				case ':':
+					printf("ZDIS: There is an option that needs a value in the command prompt.\n");
+					//get out of system ASAP!
+					exit(0);
+					break;
+				case '?':
+					printf("ZIDS: These is an unknown option \'%c\' in the command prompt.\n", opt);
+					break;
 			}
-			
-			//If zdis has been told NOT to manipulate a string, it is a file.
-			if (!stringFlag && optind != -1) {
-				inputFile = argv[optind];
-			}
-			
-			if (!fileFlag && optind != -1) {
-				hexString = argv[optind];
-			}
-		#endif
-
-		#ifdef _WIN32
-			//how to set these in a windows environment?
-		#endif
+			opt = getopt(argc, argv, "s:a:b:e:o:hi");
+		}
+		
+		//If zdis has been told NOT to manipulate a string, it is a file.
+		if (!stringFlag && optind != -1) {
+			inputFile = argv[optind];
+		}
+		
+		if (!fileFlag && optind != -1) {
+			hexString = argv[optind];
+		}
 		
 		if (stringFlag) {
 			//Processes a string from the prompt.

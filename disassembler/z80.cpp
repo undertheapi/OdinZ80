@@ -31,7 +31,7 @@
 	file name: z80.cpp
 	compiled name: z80.o
 	created date: 7/8/2012
-	date updated: 9/10/2012
+	date updated: 11/10/2012
 	author: Gareth Richardson
 	description: the implementation of the disassembler
 	method.
@@ -43,11 +43,6 @@ using namespace std;
 
 #include "bytefile.hpp"
 #include "z80.hpp"
-
-/*
-	This is the address of the opcodes. starts at zero and increments accordingly.
-*/
-int address = 0;
 
 string convertHex(short value) {
 	string retString = "";
@@ -66,6 +61,11 @@ string convertHex(BYTE value) {
 	retString += hexArray[(int)((value) & 0x000f)];
 	return retString;
 }
+
+/*
+	put this into the header, so we can alter its value when needed.
+*/
+short address = 0;
 
 string runZ80(ByteFile &obj) {
 	string retString;
@@ -89,6 +89,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tLD BC, [";
@@ -101,6 +102,7 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
 		case 0x02:
 			retString += "\t\tLD [BC], A\n";
 			break;
@@ -165,7 +167,7 @@ string runZ80(ByteFile &obj) {
 				temp = convertHex(value);
 				retString += " ";
 				retString += temp;
-				retString += "\t\t DJNZ ";
+				retString += "\t\tDJNZ ";
 				retString += temp;
 				retString += "H\n";
 				address++;
@@ -183,6 +185,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tLD DE, [";
@@ -195,6 +198,7 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
 		case 0x12:
 			retString += "\t\tLD [DE], A\n";
 			break;
@@ -288,6 +292,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tLD HL, [";
@@ -300,6 +305,7 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
 		case 0x22:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
@@ -310,6 +316,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tLD [";
@@ -322,6 +329,7 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
 		case 0x23:
 			retString += "\t\tINC HL\n";
 			break;
@@ -375,6 +383,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tLD HL, [";
@@ -387,6 +396,7 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
 		case 0x2b:
 			retString += "\t\tDEC HL\n";
 			break;
@@ -437,6 +447,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tLD SP, [";
@@ -449,6 +460,7 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
 		case 0x32:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
@@ -459,6 +471,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tLD [";
@@ -476,7 +489,7 @@ string runZ80(ByteFile &obj) {
 			retString += "\t\tINC SP\n";
 			break;
 		case 0x34:
-			retString += "\t\tINC [HL]\n"
+			retString += "\t\tINC [HL]\n";
 			break;
 		case 0x35:
 			retString += "\t\tDEC [HL]\n";
@@ -522,6 +535,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tLD A, [";
@@ -825,6 +839,30 @@ string runZ80(ByteFile &obj) {
 		case 0xa7:
 			retString += "\t\tAND A, A\n";
 			break;
+		case 0xb0:
+			retString += "\t\tOR A, B\n";
+			break;
+		case 0xb1:
+			retString += "\t\tOR A, C\n";
+			break;
+		case 0xb2:
+			retString += "\t\tOR A, D\n";
+			break;
+		case 0xb3:
+			retString += "\t\tOR A, E\n";
+			break;
+		case 0xb4:
+			retString += "\t\tOR A, H\n";
+			break;
+		case 0xb5:
+			retString += "\t\tOR A, L\n";
+			break;
+		case 0xb6:
+			retString += "\t\tOR A, [HL]\n";
+			break;
+		case 0xb7:
+			retString += "\t\tOR A, A\n";
+			break;
 		case 0xb8:
 			retString += "\t\tCP B\n";
 			break;
@@ -849,6 +887,12 @@ string runZ80(ByteFile &obj) {
 		case 0xbf:
 			retString += "\t\tCP A\n";
 			break;
+		case 0xc0:
+			retString += "\t\tRET NZ\n";
+			break;
+		case 0xc1:
+			retString += "\t\tPOP BC\n";
+			break;
 		case 0xc2:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
@@ -859,6 +903,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP NZ, ";
@@ -882,6 +927,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP ";
@@ -905,6 +951,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL NZ, ";
@@ -918,6 +965,9 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
+		case 0xc5:
+			retString += "\t\tPUSH BC\n";
 			break;
 		case 0xc6:
 			if (!obj.isEmpty()) {
@@ -933,6 +983,12 @@ string runZ80(ByteFile &obj) {
 			}
 			address++;
 			break;
+		case 0xc8:
+			retString += "\t\tRET Z\n";
+			break;
+		case 0xc9:
+			retString += "\t\tRET\n";
+			break;
 		case 0xca:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
@@ -943,6 +999,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP Z, ";
@@ -959,394 +1016,419 @@ string runZ80(ByteFile &obj) {
 		case 0xcb:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
+				retString += " ";
+				retString += convertHex(value);
+				address++;
 				switch((unsigned char)value) {
+					case 0x10:
+						retString += "\t\tRL B\n";
+						break;
+					case 0x11:
+						retString += "\t\tRL C\n";
+						break;
+					case 0x12:
+						retString += "\t\tRL D\n";
+						break;
+					case 0x13:
+						retString += "\t\tRL E\n";
+						break;
+					case 0x14:
+						retString += "\t\tRL H\n";
+						break;
+					case 0x15:
+						retString += "\t\tRL L\n";
+						break;
+					case 0x16:
+						retString += "\t\tRL [HL]\n";
+						break;
+					case 0x17:
+						retString += "\t\tRL A\n";
+						break;
 					case 0x40:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 0, B\n";
-						address++;
 						break;
 					case 0x41:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 0, C\n";
-						address++;
 						break;
 					case 0x42:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 0, D\n";
-						address++;
 						break;
 					case 0x43:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 0, E\n";
-						address++;
 						break;
 					case 0x44:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 0, H\n";
-						address++;
 						break;
 					case 0x45:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 0, L\n";
-						address++;
 						break;
 					case 0x46:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 0, [HL]\n";
-						address++;
 						break;
 					case 0x47:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 0, A\n";
-						address++;
 						break;
 					case 0x48:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 1, B\n";
-						address++;
 						break;
 					case 0x49:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 1, C\n";
-						address++;
 						break;
 					case 0x4a:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 1, D\n";
-						address++;
 						break;
 					case 0x4b:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 1, E\n";
-						address++;
 						break;
 					case 0x4c:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 1, H\n";
-						address++;
 						break;
 					case 0x4d:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 1, L\n";
-						address++;
 						break;
 					case 0x4e:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 1, [HL]\n";
-						address++;
 						break;
 					case 0x4f:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 1, A\n";
-						address++;
 						break;
 					case 0x50:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 2, B\n";
-						address++;
 						break;
 					case 0x51:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 2, C\n";
-						address++;
 						break;
 					case 0x52:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 2, D\n";
-						address++;
 						break;
 					case 0x53:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 2, E\n";
-						address++;
 						break;
 					case 0x54:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 2, H\n";
-						address++;
 						break;
 					case 0x55:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 2, L\n";
-						address++;
 						break;
 					case 0x56:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 2, [HL]\n";
-						address++;
 						break;
 					case 0x57:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 2, A\n";
-						address++;
 						break;
 					case 0x58:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 3, B\n";
-						address++;
 						break;
 					case 0x59:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 3, C\n";
-						address++;
 						break;
 					case 0x5a:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 3, D\n";
-						address++;
 						break;
 					case 0x5b:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 3, E\n";
-						address++;
 						break;
 					case 0x5c:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 3, H\n";
-						address++;
 						break;
 					case 0x5d:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 3, L\n";
-						address++;
 						break;
 					case 0x5e:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 3, [HL]\n";
-						address++;
 						break;
 					case 0x5f:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 3, A\n";
-						address++;
 						break;
 					case 0x60:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 4, B\n";
-						address++;
 						break;
 					case 0x61:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 4, C\n";
-						address++;
 						break;
 					case 0x62:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 4, D\n";
-						address++;
 						break;
 					case 0x63:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 4, E\n";
-						address++;
 						break;
 					case 0x64:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 4, H\n";
-						address++;
 						break;
 					case 0x65:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 4, L\n";
-						address++;
 						break;
 					case 0x66:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 4, [HL]\n";
-						address++;
 						break;
 					case 0x67:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 4, A\n";
-						address++;
 						break;
 					case 0x68:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 5, B\n";
-						address++;
 						break;
 					case 0x69:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 5, C\n";
-						address++;
 						break;
 					case 0x6a:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 5, D\n";
-						address++;
 						break;
 					case 0x6b:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 5, E\n";
-						address++;
 						break;
 					case 0x6c:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 5, H\n";
-						address++;
 						break;
 					case 0x6d:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 5, L\n";
-						address++;
 						break;
 					case 0x6e:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 5, [HL]\n";
-						address++;
 						break;
 					case 0x6f:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 5, A\n";
-						address++;
 						break;
 					case 0x70:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 6, B\n";
-						address++;
 						break;
 					case 0x71:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 6, C\n";
-						address++;
 						break;
 					case 0x72:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 6, D\n";
-						address++;
 						break;
 					case 0x73:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 6, E\n";
-						address++;
 						break;
 					case 0x74:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 6, H\n";
-						address++;
 						break;
 					case 0x75:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 6, L\n";
-						address++;
 						break;
 					case 0x76:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 6, [HL]\n";
-						address++;
 						break;
 					case 0x77:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 6, A\n";
-						address++;
 						break;
 					case 0x78:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 7, B\n";
-						address++;
 						break;
 					case 0x79:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 7, C\n";
-						address++;
 						break;
 					case 0x7a:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 7, D\n";
-						address++;
 						break;
 					case 0x7b:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 7, E\n";
-						address++;
 						break;
 					case 0x7c:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 7, H\n";
-						address++;
 						break;
 					case 0x7d:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 7, L\n";
-						address++;
 						break;
 					case 0x7e:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 7, [HL]\n";
-						address++;
 						break;
 					case 0x7f:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tBIT 7, A\n";
-						address++;
+						break;
+					case 0x80:
+						retString += "\t\tRES 0, B\n";
+						break;
+					case 0x81:
+						retString += "\t\tRES 0, C\n";
+						break;
+					case 0x82:
+						retString += "\t\tRES 0, D\n";
+						break;
+					case 0x83:
+						retString += "\t\tRES 0, E\n";
+						break;
+					case 0x84:
+						retString += "\t\tRES 0, H\n";
+						break;
+					case 0x85:
+						retString += "\t\tRES 0, L\n";
+						break;
+					case 0x86:
+						retString += "\t\tRES 0, [HL]\n";
+						break;
+					case 0x87:
+						retString += "\t\tRES 0, A\n";
+						break;
+					case 0x88:
+						retString += "\t\tRES 1, B\n";
+						break;
+					case 0x89:
+						retString += "\t\tRES 1, C\n";
+						break;
+					case 0x8a:
+						retString += "\t\tRES 1, D\n";
+						break;
+					case 0x8b:
+						retString += "\t\tRES 1, E\n";
+						break;
+					case 0x8c:
+						retString += "\t\tRES 1, H\n";
+						break;
+					case 0x8d:
+						retString += "\t\tRES 1, L\n";
+						break;
+					case 0x8e:
+						retString += "\t\tRES 1, [HL]\n";
+						break;
+					case 0x8f:
+						retString += "\t\tRES 1, A\n";
+						break;
+					case 0x90:
+						retString += "\t\tRES 2, B\n";
+						break;
+					case 0x91:
+						retString += "\t\tRES 2, C\n";
+						break;
+					case 0x92:
+						retString += "\t\tRES 2, D\n";
+						break;
+					case 0x93:
+						retString += "\t\tRES 2, E\n";
+						break;
+					case 0x94:
+						retString += "\t\tRES 2, H\n";
+						break;
+					case 0x95:
+						retString += "\t\tRES 2, L\n";
+						break;
+					case 0x96:
+						retString += "\t\tRES 2, [HL]\n";
+						break;
+					case 0x97:
+						retString += "\t\tRES 2, A\n";
+						break;
+					case 0x98:
+						retString += "\t\tRES 3, B\n";
+						break;
+					case 0x99:
+						retString += "\t\tRES 3, C\n";
+						break;
+					case 0x9a:
+						retString += "\t\tRES 3, D\n";
+						break;
+					case 0x9b:
+						retString += "\t\tRES 3, E\n";
+						break;
+					case 0x9c:
+						retString += "\t\tRES 3, H\n";
+						break;
+					case 0x9d:
+						retString += "\t\tRES 3, L\n";
+						break;
+					case 0x9e:
+						retString += "\t\tRES 3, [HL]\n";
+						break;
+					case 0x9f:
+						retString += "\t\tRES 3, A\n";
+						break;
+					case 0xa0:
+						retString += "\t\tRES 4, B\n";
+						break;
+					case 0xa1:
+						retString += "\t\tRES 4, C\n";
+						break;
+					case 0xa2:
+						retString += "\t\tRES 4, D\n";
+						break;
+					case 0xa3:
+						retString += "\t\tRES 4 E\n";
+						break;
+					case 0xa4:
+						retString += "\t\tRES 4, H\n";
+						break;
+					case 0xa5:
+						retString += "\t\tRES 4, L\n";
+						break;
+					case 0xa6:
+						retString += "\t\tRES 4, [HL]\n";
+						break;
+					case 0xa7:
+						retString += "\t\tRES 4, A\n";
+						break;
+					case 0xa8:
+						retString += "\t\tRES 5, B\n";
+						break;
+					case 0xa9:
+						retString += "\t\tRES 5, C\n";
+						break;
+					case 0xaa:
+						retString += "\t\tRES 5, D\n";
+						break;
+					case 0xab:
+						retString += "\t\tRES 5, E\n";
+						break;
+					case 0xac:
+						retString += "\t\tRES 5, H\n";
+						break;
+					case 0xad:
+						retString += "\t\tRES 5, L\n";
+						break;
+					case 0xae:
+						retString += "\t\tRES 5, [HL]\n";
+						break;
+					case 0xaf:
+						retString += "\t\tRES 5, A\n";
+						break;
+					case 0xb0:
+						retString += "\t\tRES 6, B\n";
+						break;
+					case 0xb1:
+						retString += "\t\tRES 6, C\n";
+						break;
+					case 0xb2:
+						retString += "\t\tRES 6, D\n";
+						break;
+					case 0xb3:
+						retString += "\t\tRES 6, E\n";
+						break;
+					case 0xb4:
+						retString += "\t\tRES 6, H\n";
+						break;
+					case 0xb5:
+						retString += "\t\tRES 6, L\n";
+						break;
+					case 0xb6:
+						retString += "\t\tRES 6, [HL]\n";
+						break;
+					case 0xb7:
+						retString += "\t\tRES 6, A\n";
+						break;
+					case 0xb8:
+						retString += "\t\tRES 7, B\n";
+						break;
+					case 0xb9:
+						retString += "\t\tRES 7, C\n";
+						break;
+					case 0xba:
+						retString += "\t\tRES 7, D\n";
+						break;
+					case 0xbb:
+						retString += "\t\tRES 7, E\n";
+						break;
+					case 0xbc:
+						retString += "\t\tRES 7, H\n";
+						break;
+					case 0xbd:
+						retString += "\t\tRES 7, L\n";
+						break;
+					case 0xbe:
+						retString += "\t\tRES 7, [HL]\n";
+						break;
+					case 0xbf:
+						retString += "\t\tRES 7, A\n";
 						break;
 					default:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\n";
 				}
 			} else {
@@ -1363,6 +1445,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL Z, ";
@@ -1386,6 +1469,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL ";
@@ -1413,6 +1497,12 @@ string runZ80(ByteFile &obj) {
 			}
 			address++;
 			break;
+		case 0xd0:
+			retString += "\t\tRET NC\n";
+			break;
+		case 0xd1:
+			retString += "\t\tPOP DE\n";
+			break;
 		case 0xd2:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
@@ -1423,6 +1513,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP NC, ";
@@ -1432,6 +1523,18 @@ string runZ80(ByteFile &obj) {
 				} else {
 					retString += "\n";
 				}
+			} else {
+				retString += "\n";
+			}
+			break;
+		case 0xd3:
+			if (!obj.isEmpty()) {
+				value = obj.pop();
+				retString += " ";
+				retString += convertHex(value);
+				retString += "\t\tOUT [";
+				retString += convertHex(value);
+				retString += "H], A\n";
 			} else {
 				retString += "\n";
 			}
@@ -1446,6 +1549,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL NC, ";
@@ -1458,6 +1562,12 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
+		case 0xd5:
+			retString += "\t\tPUSH DE\n";
+			break;
+		case 0xd8:
+			retString += "\t\tRET C\n";
 			break;
 		case 0xd9:
 			retString += "\t\tEXX\n";
@@ -1472,6 +1582,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP C, ";
@@ -1493,7 +1604,7 @@ string runZ80(ByteFile &obj) {
 				retString += temp;
 				retString += "\t\tIN A, [";
 				retString += temp;
-				retString += "]\n";
+				retString += "H]\n";
 			} else {
 				retString += "\n";
 			}
@@ -1509,6 +1620,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL C, ";
@@ -1526,97 +1638,98 @@ string runZ80(ByteFile &obj) {
 			if (!obj.isEmpty()) {
 				value = obj.pop();
 				retString += " ";
+				retString += convertHex(value);
 				address++;
-				if (!obj.isEmpty()) {
-					switch ((unsigned char)value) {
-						case 0x09:
-							retString += convertHex(value);
-							retString += "\t\tADD IX, BC\n";
-							break;
-						case 0x19:
-							retString += convertHex(value);
-							retString += "\t\tADD IX, DE\n";
-							break;
-						case 0x21:
+				switch ((unsigned char)value) {
+					case 0x09:
+						retString += "\t\tADD IX, BC\n";
+						break;
+					case 0x19:
+						retString += "\t\tADD IX, DE\n";
+						break;
+					case 0x21:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							address++;
 							if (!obj.isEmpty()) {
-								value = obj.pop();
-								temp = convertHex(value);
-								retString += " ";
-								retString += temp;
 								address++;
-								if (!obj.isEmpty()) {
-									address++;
-									value = obj.pop();
-									retString += " ";
-									retString += temp2;
-									retString += "\t\tLD IX, ";
-									retString += temp2;
-									retString += temp;
-									retString += "H\n";
-								} else {
-									retString += "\n";
-								}
+								value = obj.pop();
+								temp2 = convertHex(value);
+								retString += " ";
+								retString += temp2;
+								retString += "\tLD IX, ";
+								retString += temp2;
+								retString += temp;
+								retString += "H\n";
 							} else {
 								retString += "\n";
 							}
-						case 0x22:
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x22:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							address++;
 							if (!obj.isEmpty()) {
-								value = obj.pop();
-								temp = convertHex(value);
-								retString += " ";
-								retString += temp;
 								address++;
-								if (!obj.isEmpty()) {
-									address++;
-									value = obj.pop();
-									retString += " ";
-									retString += temp2;
-									retString += "\t\tLD [";
-									retString += temp2;
-									retString += temp;
-									retString += "H], IX\n";
-								} else {
-									retString += "\n";
-								}
+								value = obj.pop();
+								temp2 = convertHex(value);
+								retString += " ";
+								retString += temp2;
+								retString += "\tLD [";
+								retString += temp2;
+								retString += temp;
+								retString += "H], IX\n";
 							} else {
 								retString += "\n";
 							}
-						case 0x23:
-							retString += convertHex(value);
-							retString += "\t\tINC IX\n";
-							break;
-						case 0x29:
-							retString += convertHex(value);
-							retString += "\t\tADD IX, IX\n";
-							break;
-						case 0x2a:
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x23:
+						retString += "\t\tINC IX\n";
+						break;
+					case 0x29:
+						retString += "\t\tADD IX, IX\n";
+						break;
+					case 0x2a:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							address++;
 							if (!obj.isEmpty()) {
-								value = obj.pop();
-								temp = convertHex(value);
-								retString += " ";
-								retString += temp;
 								address++;
-								if (!obj.isEmpty()) {
-									address++;
-									value = obj.pop();
-									retString += " ";
-									retString += temp2;
-									retString += "\t\tLD IX, [";
-									retString += temp2;
-									retString += temp;
-									retString += "H]\n";
-								} else {
-									retString += "\n";
-								}
+								value = obj.pop();
+								temp2 = convertHex(value);
+								retString += " ";
+								retString += temp2;
+								retString += "\tLD IX, [";
+								retString += temp2;
+								retString += temp;
+								retString += "H]\n";
 							} else {
 								retString += "\n";
 							}
-						case 0x2b:
-							retString += convertHex(value);
-							retString += "\t\tDEC IX\n";
-							break;
-						case 0x34:
-							retString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x2b:
+						retString += "\t\tDEC IX\n";
+						break;
+					case 0x34:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1625,9 +1738,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x35:
-							retString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x35:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1636,36 +1752,40 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x36:
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x36:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							address++;
 							if (!obj.isEmpty()) {
-								value = obj.pop();
-								temp = convertHex(value);
-								retString += " ";
-								retString += temp;
 								address++;
-								if (!obj.isEmpty()) {
-									address++;
-									value = obj.pop();
-									retString += " ";
-									retString += temp2;
-									retString += "\t\tLD [IX + ";
-									retString += temp;
-									retString += "H], ";
-									retString += temp2;
-									retString += "H\n";
-								} else {
-									retString += "\n";
-								}
+								value = obj.pop();
+								temp2 = convertHex(value);
+								retString += " ";
+								retString += temp2;
+								retString += "\t\tLD [IX + ";
+								retString += temp;
+								retString += "H], ";
+								retString += temp2;
+								retString += "H\n";
 							} else {
 								retString += "\n";
 							}
-							break;
-						case 0x39:
-							retString += "39\t\tADD IX, SP\n";
-							break;
-						case 0x46:
-							retString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x39:
+						retString += "\t\tADD IX, SP\n";
+						break;
+					case 0x46:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1674,9 +1794,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x4e:
-							retString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x4e:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1685,9 +1808,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x56:
-							retString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x56:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1696,9 +1822,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x5e:
-							retString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x5e:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1707,9 +1836,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x66:
-							etString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x66:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1718,9 +1850,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x6e:
-							etString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x6e:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1729,9 +1864,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x7e:
-							retString += convertHex(value);
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x7e:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += " ";
@@ -1740,8 +1878,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x86:
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x86:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += "86";
@@ -1750,8 +1892,12 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0x8e:
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x8e:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += "8E";
@@ -1760,134 +1906,195 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "H]\n";
 							address++;
-							break;
-						case 0xa6:
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0xa6:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
 							temp = convertHex(value);
 							retString += "A6";
 							retString += temp;
 							retString += "\t\tAND A, [IX + ";
 							retString += temp;
-							retString += "]\n";
+							retString += "H]\n";
 							address++;
-							break;
-						case 0xcb:
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0xb6:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
-							temp = convertHex(value);
 							retString += " ";
-							retString += "CB";
-							retString += temp;
+							retString += convertHex(value);
+							retString += "\t\tOR A, [IX + ";
+							retString += convertHex(value);
+							retString += "H]\n";
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0xcb:
+						if (!obj.isEmpty()) {
 							value = obj.pop();
+							retString += " ";
+							retString += convertHex(value);
 							address++;
 							switch ((unsigned char)value) {
 								case 0x46:
-									retString += " ";
-									retString += convertHex(value);
-									retString += "\t\tBIT 0, [IX + ";
-									retString += temp;
-									retString += "]\n";
-									address++;
+									if (!obj.isEmpty()) {
+										value = obj.pop();
+										retString += " ";
+										retString += convertHex(value);
+										retString += "\t\tBIT 0, [IX + ";
+										retString += convertHex(value);
+										retString += "H]\n";
+										address++;
+									} else {
+										retString += "\n";
+									}
 									break;
 								case 0x4e:
-									retString += " ";
-									retString += convertHex(value);
-									retString += "\t\tBIT 1, [IX + ";
-									retString += temp;
-									retString += "]\n";
-									address++;
+									if (!obj.isEmpty()) {
+										value = obj.pop();
+										retString += " ";
+										retString += convertHex(value);
+										retString += "\t\tBIT 1, [IX + ";
+										retString += convertHex(value);
+										retString += "H]\n";
+										address++;
+									} else {
+										retString += "\n";
+									}
 									break;
 								case 0x56:
-									retString += " ";
-									retString += convertHex(value);
-									retString += "\t\tBIT 2, [IX + ";
-									retString += temp;
-									retString += "]\n";
-									address++;
+									if (!obj.isEmpty()) {
+										value = obj.pop();
+										retString += " ";
+										retString += convertHex(value);
+										retString += "\t\tBIT 2, [IX + ";
+										retString += convertHex(value);
+										retString += "H]\n";
+										address++;
+									} else {
+										retString += "\n";
+									}
 									break;
 								case 0x5e:
-									retString += " ";
-									retString += convertHex(value);
-									retString += "\t\tBIT 3, [IX + ";
-									retString += temp;
-									retString += "]\n";
-									address++;
+									if (!obj.isEmpty()) {
+										value = obj.pop();
+										retString += " ";
+										retString += convertHex(value);
+										retString += "\t\tBIT 3, [IX + ";
+										retString += convertHex(value);
+										retString += "H]\n";
+										address++;
+									} else {
+										retString += "\n";
+									}
 									break;
 								case 0x66:
-									retString += " ";
-									retString += convertHex(value);
-									retString += "\t\tBIT 4, [IX + ";
-									retString += temp;
-									retString += "]\n";
-									address++;
+									if (!obj.isEmpty()) {
+										value = obj.pop();
+										retString += " ";
+										retString += convertHex(value);
+										retString += "\t\tBIT 4, [IX + ";
+										retString += convertHex(value);
+										retString += "H]\n";
+										address++;
+									} else {
+										retString += "\n";
+									}
 									break;
 								case 0x6e:
-									retString += " ";
-									retString += convertHex(value);
-									retString += "\t\tBIT 5, [IX + ";
-									retString += temp;
-									retString += "]\n";
-									address++;
+									if (!obj.isEmpty()) {
+										value = obj.pop();
+										retString += " ";
+										retString += convertHex(value);
+										retString += "\t\tBIT 5, [IX + ";
+										retString += convertHex(value);
+										retString += "H]\n";
+										address++;
+									} else {
+										retString += "\n";
+									}
 									break;
 								case 0x76:
-									retString += " ";
-									retString += convertHex(value);
-									retString += "\t\tBIT 6, [IX + ";
-									retString += temp;
-									retString += "]\n";
-									address++;
+									if (!obj.isEmpty()) {
+										value = obj.pop();
+										retString += " ";
+										retString += convertHex(value);
+										retString += "\t\tBIT 6, [IX + ";
+										retString += convertHex(value);
+										retString += "H]\n";
+										address++;
+									} else {
+										retString += "\n";
+									}
 									break;
 								case 0x7e:
-									retString += " ";
-									retString += convertHex(value);
-									retString += "\t\tBIT 7, [IX + ";
-									retString += temp;
-									retString += "]\n";
-									address++;
+									if (!obj.isEmpty()) {
+										value = obj.pop();
+										retString += " ";
+										retString += convertHex(value);
+										retString += "\t\tBIT 7, [IX + ";
+										retString += convertHex(value);
+										retString += "H]\n";
+										address++;
+									} else {
+										retString += "\n";
+									}
 									break;
 								default:
 									retString += " ";
 									retString += convertHex(value);
 							}
-						case 0xbe:
-							if (!obj.isEmpty()) {
-								retString += " ";
-								retString += convertHex(value);
-								if (!obj.isEmpty()) {
-									retString += " ";
-									value = obj.pop();
-									temp = convertHex(value);
-									retString += temp;
-									retString += "\t\tCP [IX + ";
-									retString += temp;
-									retString += "H]\n";
-									address += 2;
-								} else {
-									retString += "\n";
-								}
-							} else {
-								retString += "\n";
-							}
-							break;
-						case 0xe3:
-							retString += " E3\t\tEX [SP], IX\n";
-							break;
-						case 0xe9:
-							retString += "\t\tJP [IX]\n";
-							break;
-						case 0xf9:
-							retString += "\t\tLD SP, IX\n";
-							break;
-						default:
+						} else {
 							retString += "\n";
-					}
-				} else {
-					retString += convertHex(value);
-					retString += '\n';
+						}
+						break;
+					case 0xbe:
+						if (!obj.isEmpty()) {
+							retString += " ";
+							value = obj.pop();
+							retString += convertHex(value);
+							retString += "\t\tCP [IX + ";
+							retString += convertHex(value);
+							retString += "H]\n";
+							address++;
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0xe1:
+						retString += "\t\tPOP IX\n";
+						break;
+					case 0xe3:
+						retString += "\t\tEX [SP], IX\n";
+						break;
+					case 0xe5:
+						retString += "\t\tPUSH IX\n";
+						break;
+					case 0xe9:
+						retString += "\t\tJP [IX]\n";
+						break;
+					case 0xf9:
+						retString += "\t\tLD SP, IX\n";
+						break;
+					default:
+						retString += "\n";
 				}
-				address++;
 			} else {
 				retString += '\n';
 			}
+			break;
+		case 0xe0:
+			retString += "\t\tRET P0\n";
+			break;
+		case 0xe1:
+			retString += "\t\tPOP HL\n";
 			break;
 		case 0xe2:
 			if (!obj.isEmpty()) {
@@ -1899,6 +2106,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP P0, ";
@@ -1925,6 +2133,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL P0, ";
@@ -1937,6 +2146,9 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
+		case 0xe5:
+			retString += "\t\tPUSH HL\n";
 			break;
 		case 0xe6:
 			if (!obj.isEmpty()) {
@@ -1952,6 +2164,9 @@ string runZ80(ByteFile &obj) {
 				retString += '\n';
 			}
 			break;
+		case 0xe8:
+			retString += "\t\tRET PE\n";
+			break;
 		case 0xe9:
 			retString += "\t\tJP [HL]\n";
 			break;
@@ -1965,6 +2180,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP PE, ";
@@ -1991,6 +2207,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL PE, ";
@@ -2007,11 +2224,14 @@ string runZ80(ByteFile &obj) {
 		case 0xed:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
+				retString += " ";
+				retString += convertHex(value);
 				switch ((unsigned char)value) {
 					case 0x40:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tIN B, [C]\n";
+						break;
+					case 0x41:
+						retString += "\t\tOUT [C], B\n";
 						break;
 					case 0x43:
 						if (!obj.isEmpty()) {
@@ -2036,27 +2256,24 @@ string runZ80(ByteFile &obj) {
 							retString += "\n";
 						}
 					case 0x44:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tNEG\n";
+						break;
+					case 0x45:
+						retString += "\t\tRETN\n";
+						break;
 					case 0x46:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tIM 0\n";
 						break;
 					case 0x47:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tLD I, A\n";
 						break;
 					case 0x48:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tIN C, [C]\n";
 						break;
+					case 0x49:
+						retString += "\t\tOUT [C], C\n";
+						break;
 					case 0x4a:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tADC HL, BC\n";
 						break;
 					case 0x4b:
@@ -2069,6 +2286,7 @@ string runZ80(ByteFile &obj) {
 							if (!obj.isEmpty()) {
 								address++;
 								value = obj.pop();
+								temp2 = convertHex(value);
 								retString += " ";
 								retString += temp2;
 								retString += "\t\tLD BC, [";
@@ -2081,13 +2299,18 @@ string runZ80(ByteFile &obj) {
 						} else {
 							retString += "\n";
 						}
+						break;
+					case 0x4d:
+						retString += "\t\tRETI\n";
+						break;
 					case 0x4f:
 						retString += "\t\tLD R, A\n";
 						break;
 					case 0x50:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tIN D, [C]\n";
+						break;
+					case 0x51:
+						retString += "\t\tOUT [C], D\n";
 						break;
 					case 0x53:
 						if (!obj.isEmpty()) {
@@ -2099,6 +2322,7 @@ string runZ80(ByteFile &obj) {
 							if (!obj.isEmpty()) {
 								address++;
 								value = obj.pop();
+								temp2 = convertHex(value);
 								retString += " ";
 								retString += temp2;
 								retString += "\t\tLD [";
@@ -2111,24 +2335,20 @@ string runZ80(ByteFile &obj) {
 						} else {
 							retString += "\n";
 						}
+						break;
 					case 0x56:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tIM 1\n";
 						break;
 					case 0x57:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tLD A, I\n";
 						break;
 					case 0x58:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tIN E, [C]\n";
 						break;
+					case 0x59:
+						retString += "\t\tOUT [C], E\n";
+						break;
 					case 0x5a:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tADC HL, DE\n";
 						break;
 					case 0x5b:
@@ -2141,6 +2361,7 @@ string runZ80(ByteFile &obj) {
 							if (!obj.isEmpty()) {
 								address++;
 								value = obj.pop();
+								temp2 = convertHex(value);
 								retString += " ";
 								retString += temp2;
 								retString += "\t\tLD DE, [";
@@ -2153,6 +2374,7 @@ string runZ80(ByteFile &obj) {
 						} else {
 							retString += "\n";
 						}
+						break;
 					case 0x5e:
 						retString += " ";
 						retString += convertHex(value);
@@ -2168,6 +2390,9 @@ string runZ80(ByteFile &obj) {
 						retString += convertHex(value);
 						retString += "\t\tIN H, [C]\n";
 						break;
+					case 0x61:
+						retString += "\t\tOUT [C], H\n";
+						break;
 					case 0x63:
 						if (!obj.isEmpty()) {
 							value = obj.pop();
@@ -2178,6 +2403,7 @@ string runZ80(ByteFile &obj) {
 							if (!obj.isEmpty()) {
 								address++;
 								value = obj.pop();
+								temp2 = convertHex(value);
 								retString += " ";
 								retString += temp2;
 								retString += "\t\tLD [";
@@ -2190,14 +2416,14 @@ string runZ80(ByteFile &obj) {
 						} else {
 							retString += "\n";
 						}
+						break;
 					case 0x68:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tIN L, [C]\n";
 						break;
+					case 0x69:
+						retString += "\t\tOUT [C], L";
+						break;
 					case 0x6a:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tADC HL, HL\n";
 						break;
 					case 0x6b:
@@ -2210,6 +2436,7 @@ string runZ80(ByteFile &obj) {
 							if (!obj.isEmpty()) {
 								address++;
 								value = obj.pop();
+								temp2 = convertHex(value);
 								retString += " ";
 								retString += temp2;
 								retString += "\t\tLD HL, [";
@@ -2232,6 +2459,7 @@ string runZ80(ByteFile &obj) {
 							if (!obj.isEmpty()) {
 								address++;
 								value = obj.pop();
+								temp2 = convertHex(value);
 								retString += " ";
 								retString += temp2;
 								retString += "\t\tLD [";
@@ -2245,13 +2473,12 @@ string runZ80(ByteFile &obj) {
 							retString += "\n";
 						}
 					case 0x78:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tIN A, [C]\n";
 						break;
+					case 0x79:
+						retString += "\t\tOUT [C], A\n";
+						break;
 					case 0x7a:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tADC HL, SP\n";
 						break;
 					case 0x7b:
@@ -2264,6 +2491,7 @@ string runZ80(ByteFile &obj) {
 							if (!obj.isEmpty()) {
 								address++;
 								value = obj.pop();
+								temp2 = convertHex(value);
 								retString += " ";
 								retString += temp2;
 								retString += "\t\tLD SP, [";
@@ -2280,63 +2508,63 @@ string runZ80(ByteFile &obj) {
 						retString += "\t\tLDDI\n";
 						break;
 					case 0xa1:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tCPI\n";
 						break;
 					case 0xa2:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tINI\n";
+						break;
+					case 0xa3:
+						retString += "\t\tOUTI\n";
 						break;
 					case 0xa8:
 						retString += "\t\tLDD\n";
 						break;
 					case 0xa9:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tCPD\n";
 						break;
 					case 0xaa:
-						retString += " ";
-						retString += convertHex(value);
-						retString += "\t\tIND\n"
+						retString += "\t\tIND\n";
+						break;
+					case 0xab:
+						retString += "\t\tOUTD\n";
 						break;
 					case 0xb0:
 						retString += "\t\tLDIR\n";
 						break;
 					case 0xb1:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tCPIR\n";
 						break;
 					case 0xb2:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tINIR\n";
+						break;
+					case 0xb3:
+						retString += "\t\tOTIR\n";
 						break;
 					case 0xb8:
 						retString += "\t\tLDDR\n";
 						break;
 					case 0xb9:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tCPDR\n";
 						break;
 					case 0xba:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\t\tINDR\n";
 						break;
+					case 0xbb:
+						retString += "\t\tOTDR\n";
+						break;
 					default:
-						retString += " ";
-						retString += convertHex(value);
 						retString += "\n";
 				}
 				address++;
 			} else {
 				retString += "\n";
 			}
+			break;
+		case 0xf0:
+			retString += "\t\tRET P\n";
+			break;
+		case 0xf1:
+			retString += "\t\tPOP AF\n";
 			break;
 		case 0xf2:
 			if (!obj.isEmpty()) {
@@ -2348,6 +2576,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP P, ";
@@ -2374,6 +2603,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL P, ";
@@ -2386,6 +2616,24 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
+		case 0xf5:
+			retString += "\t\tPUSH AF\n";
+			break;
+		case 0xf6:
+			if (!obj.isEmpty()) {
+				value = obj.pop();
+				retString += " ";
+				retString += convertHex(value);
+				retString += "\t\tOR A, ";
+				retString += convertHex(value);
+				retString += "H\n";
+			} else {
+				retString += "\n";
+			}
+			break;
+		case 0xf8:
+			retString += "\t\tRET M\n";
 			break;
 		case 0xf9:
 			retString += "\t\tLD SP, HL\n";
@@ -2400,6 +2648,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tJP M, ";
@@ -2426,6 +2675,7 @@ string runZ80(ByteFile &obj) {
 				if (!obj.isEmpty()) {
 					address++;
 					value = obj.pop();
+					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
 					retString += "\t\tCALL M, ";
@@ -2443,6 +2693,7 @@ string runZ80(ByteFile &obj) {
 			if (!obj.isEmpty()) {
 				value = obj.pop();
 				retString += " ";
+				retString += convertHex(value);
 				if (!obj.isEmpty()) {
 					switch ((unsigned char)value) {
 						case 0x09:
@@ -2461,6 +2712,7 @@ string runZ80(ByteFile &obj) {
 								if (!obj.isEmpty()) {
 									address++;
 									value = obj.pop();
+									temp2 = convertHex(value);
 									retString += " ";
 									retString += temp2;
 									retString += "\t\tLD IY, ";
@@ -2483,6 +2735,7 @@ string runZ80(ByteFile &obj) {
 								if (!obj.isEmpty()) {
 									address++;
 									value = obj.pop();
+									temp2 = convertHex(value);
 									retString += " ";
 									retString += temp2;
 									retString += "\t\tLD [";
@@ -2496,7 +2749,6 @@ string runZ80(ByteFile &obj) {
 								retString += "\n";
 							}
 						case 0x23:
-							retString += convertHex(value);
 							retString += "\t\tINC IY\n";
 							break;
 						case 0x29:
@@ -2512,6 +2764,7 @@ string runZ80(ByteFile &obj) {
 								if (!obj.isEmpty()) {
 									address++;
 									value = obj.pop();
+									temp2 = convertHex(value);
 									retString += " ";
 									retString += temp2;
 									retString += "\t\tLD IY, [";
@@ -2557,6 +2810,7 @@ string runZ80(ByteFile &obj) {
 								if (!obj.isEmpty()) {
 									address++;
 									value = obj.pop();
+									temp2 = convertHex(value);
 									retString += " ";
 									retString += temp2;
 									retString += "\t\tLD [IY + ";
@@ -2739,24 +2993,30 @@ string runZ80(ByteFile &obj) {
 							retString += temp;
 							retString += "\t\tAND A, [IY + ";
 							retString += temp;
-							retString += "]\n";
+							retString += "H]\n";
+							break;
+						case 0xb6:
+							if (!obj.isEmpty()) {
+								value = obj.pop();
+								retString += " ";
+								retString += convertHex(value);
+								retString += "\t\tOR A, [IY + ";
+								retString += convertHex(value);
+								retString += "H]\n";
+							} else {
+								retString += "\n";
+							}
 							break;
 						case 0xbe:
 							if (!obj.isEmpty()) {
 								retString += " ";
-								retString += convertHex(value);
-								if (!obj.isEmpty()) {
-									retString += " ";
-									value = obj.pop();
-									temp = convertHex(value);
-									retString += temp;
-									retString += "\t\tCP [IY + ";
-									retString += temp;
-									retString += "H]\n";
-									address += 2;
-								} else {
-									retString += "\n";
-								}
+								value = obj.pop();
+								temp = convertHex(value);
+								retString += temp;
+								retString += "\t\tCP [IY + ";
+								retString += temp;
+								retString += "H]\n";
+								address += 2;
 							} else {
 								retString += "\n";
 							}
@@ -2830,11 +3090,17 @@ string runZ80(ByteFile &obj) {
 									retString += convertHex(value);
 							}
 							break;
-						case 0xe9:
-							retString += "\t\tJP [IY]\n";
+						case 0xe1:
+							retString += "\t\tPOP IY\n";
 							break;
 						case 0xe3:
-							retString += " E3\t\tEX [SP], IY\n";
+							retString += "\t\tEX [SP], IY\n";
+							break;
+						case 0xe5:
+							retString += "\t\tPUSH IY\n";
+							break;
+						case 0xe9:
+							retString += "\t\tJP [IY]\n";
 							break;
 						case 0xf9:
 							retString += "\t\tLD SP, IY\n";

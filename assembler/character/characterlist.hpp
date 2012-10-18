@@ -30,42 +30,61 @@
 /*
 	file name: characterlist.hpp
 	date craeted: 28/8/2012
-	date updated: 12/10/2012
+	date updated: 18/10/2012
 	author: Gareth Richardson
-	description: This is the header file for the class CharacterList. This stores files
-	into an allocated place in memory.
+	description: This is the header file for the class CharacterList. This stores a
+	Singly Linked List of characters using the data structure CharNode. We use this to
+	store the characters from a file. This class also does character validation to make
+	sure that there are no invalid characters going into the Linked List.
 */
 
 /*
-	defining the CHARACTER as a unsigned character (ASCII) for now. But this may change.
+	A pre-processor defining the maximum amount of characters that can be put into
+	the memory. Adjust accordingly.
 */
+#define MAX_SIZE 300
+
 #define CHARACTER unsigned char
-
-/*
-	The size of a mega byte in bytes. Use for the allocation of memory for the characters
-	coming from the files that are going to be assembled.
-*/
-#define ONE_MEGABYTE (1024 * 1024)
 
 class CharacterList {
 	private:
 	
 		/*
-			head is the beginning of the file data, tail is the end of it.
+			This is the length of the current character list we are making.
 		*/
-		CHARACTER* head;
-		CHARACTER* tail;
+		int length;
 		
 		/*
-			This method will check if a character to be put into this class is a valid
-			character or not. Used in the push method. So, it will check for a New Line
-			character, Tab character and all printable ascii characters.
+			The position we are in, will increment every time a character is
+			added to it.
+		*/
+		int currentPosition;
+		
+		/*
+			This is the file in memory
+		*/
+		char fileInMemory[MAX_SIZE];
+		
+		/*
+			isValidCharacter(): This method will check if a character to be put into 
+			this class is a valid character or not. Used in the push method. So, it 
+			will check for a New Line character, Tab character and all printable ascii 
+			characters.
+			
+			Precondition: Object has been initialised.
+			
+			Postcondition: method value = (character is a valid character to be put
+			into the reserved memory).
 		*/
 		bool isValidCharacter(CHARACTER value);
 		
 		/*
 			init(): This is called when the constructor is created. Put all the initial
-			code here. So, our memory allocation also happens here.
+			code here.
+			
+			Precondition: A CharacterList object has been declared and put into memory.
+			
+			Postcondition: The CharacterList object has been initalised.
 		*/
 		void init();
 	public:
@@ -76,35 +95,71 @@ class CharacterList {
 		
 		/*
 			The deconstructor empties the CharNodes in the list.
+			
+			Precondition: A CharacterList object is going to be deleted from
+			memory.
+			A CharacterList has been initalised.
+			
+			Postcondition: The resvered memory for the file has all been replaced with
+			all 0x00 values.
 		*/
 		~CharacterList();
 		
 		/*
 			isEmpty(): checks the Singly Linked List if it is empty. True if it is
 			empty and false if is has at least one node in the data structure still.
+			
+			Preconditions: A CharacterList object has been initalised.
+			
+			Postconditions: Function value = (list is empty).
 		*/
 		bool isEmpty();
 		
 		/*
+			isFull(): Because we are dealing with a finite memory space, we do not 
+			want to go over the designated reserved memory. This method allows us 
+			to check for this.
+			
+			preconditions: A CharacterList object has been initalised.
+			
+			postconditions: Function value = (list is full).
+		*/
+		bool isFull();
+		
+		/*
 			push(): pushes a CharNode into the CharacterList. It will return a false if
 			there was an error or if it was an invalid character.
+			
+			preconditions: A CharacterList object has been initalised.
+			The CharacterList reserved memory is not full.
+			
+			postconditions: A character (byte) has been put into memory if it was a valid
+			value.
+			The length and currentPosition values change.
+			Function value = (character added to list).
 		*/
 		bool push(CHARACTER charValue);
 		
 		/*
-			these peek functions show the values for the top node in the Singly Linked List.
-			These do not remove the top node.
+			peekValue(): The character that the current position is returned.
+			
+			preconditions: The length of the list cannot be zero / empty memory.
+			The CharacterList object has been initalised.
+			
+			postconditions: Function value = (was the list not empty, did a value come back).
+			charValue has the value of the character at currentPosition - 1.
 		*/
-		CHARACTER peekValue();
+		bool peekValue(CHARACTER &charValue);
 		
 		/*
-			This gets the file name the character is in. If the project that is being assembled
-			is going to have more than one file, this comes in handy.
+			pop(): removes the character currentPosition - 1 is pointing to.
+			
+			preconditions: CharacterList object has been initalised.
+			memory list cannot be empty.
+			
+			postconditions: length and currentPosition changed.
+			currentPosition - 1 is changed to 0.
+			Function value = (was list altered).
 		*/
-		char* peekFileName();
-		
-		/*
-			pop(): removes the top node from the Singly Linked List.
-		*/
-		void pop();
+		bool pop();
 };

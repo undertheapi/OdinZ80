@@ -38,10 +38,25 @@
 */
 
 /*
+	We define the amount of bytes in a Megabyte here, use this to define the Maximum size of
+	the resverved memory for a file.
+*/
+#define MEGABYTE 1024 * 1024
+
+/*
 	A pre-processor defining the maximum amount of characters that can be put into
 	the memory. Adjust accordingly.
+	Add more megabyte like this:
+		*if you want 3 megabytes reserved, you type:
+			MAX_SIZE (MEGABYTE * 3)
+	Warning: 2 Megabytes or more crash a Windows system. Maybe stick it to just a megabyte
+	of memory for a file.
+	
+	**TODO: What is the maximum size we can possiblyy have for the file in memory? One megabyte
+	does seem to be the right size, then again, the biggest file size of source code in this
+	programming project is 72kB.
 */
-#define MAX_SIZE 300
+#define MAX_SIZE (MEGABYTE * 1)
 
 /*
 	The definition of a character in the list. We can change it to anything we want as
@@ -102,7 +117,8 @@ class CharacterList {
 		
 		/*
 			This is the error state of the list. Each bit is a flag on the error
-			state of the object.
+			state of the object. Use this to check for errors when using this
+			class.
 		*/
 		unsigned char errorState;
 		
@@ -164,10 +180,11 @@ class CharacterList {
 			preconditions: The length of the list cannot be zero / empty memory.
 			The CharacterList object has been initalised.
 			
-			postconditions: Function value = (was the list not empty, did a value come back).
+			postconditions: Function value = (if there is a byte, it will return the
+			value, else it will return a 0).
 			charValue has the value of the character at currentPosition - 1.
 		*/
-		bool peekValue(CHARACTER &charValue);
+		CHARACTER peekValue();
 		
 		/*
 			finishedFile(): When a file has been put into the reserved memory, call this method as

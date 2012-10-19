@@ -588,16 +588,26 @@ TokenNodePtr Lex::getToken() {
 		newNode->fileName = 0;
 		newNode->next = NULL;
 		Lex::cList->pop();
-	} else if (Lex::cList->peekValue() == '[' || Lex::cList->peekValue() == '(') {
+	} else if (Lex::cList->peekValue() == '[') {
 		newNode->type = LEFT_BRACKET;
 		newNode->lineNumber = Lex::lineNumber;
 		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
-	} else if (Lex::cList->peekValue() == ']' || Lex::cList->peekValue() == ')') {
+	} else if (Lex::cList->peekValue() == '(') {
+		newNode->type = LEFT_PARENT;
+		newNode->lineNumber = Lex::lineNumber;
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == ']') {
 		newNode->type = RIGHT_BRACKET;
 		newNode->lineNumber = Lex::lineNumber;
 		// newNode->fileName = Lex::cList->peekFileName();
+		newNode->next = NULL;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == ')') {
+		newNode->type = RIGHT_PARENT;
+		newNode->lineNumber = Lex::lineNumber;
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '+') {

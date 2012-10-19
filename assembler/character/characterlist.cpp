@@ -30,7 +30,7 @@
 /*
 	file name: characterlist.cpp
 	date created: 28/08/2012
-	date updated: 18/10/2012
+	date updated: 19/10/2012
 	author: Gareth Richardson
 	description: This is the object file for the CharacterList class. Implement all
 	the class methods here.
@@ -42,12 +42,24 @@ bool CharacterList::isValidCharacter(CHARACTER value) {
 	/*
 		so far these are the only valid characters the Odin Assembler can deal with.
 	*/
-	return value == '\n' || value == '\t' || (value >= 32 && value <= 126);
+	return value == '\n' || value == '\t' || value >= 32 && value <= 126;
 }
 
 void CharacterList::init() {
-	CharacterList::length = 0;
-	CharacterList::currentPosition = 0;
+	/*
+		All the variables are initalised to 0.
+	*/
+	CharacterList::length = CharacterList::currentPosition = CharacterList::errorState = 0;
+	
+	/*
+		We are making all the bytes in the reserved memory 0x00, just in case
+		if there are any bugs in the code.
+	*/
+	int index = 0;
+	while (index != MAX_SIZE) {
+		CharacterList::fileInMemory[index] = 0;
+		index++;
+	}
 }
 
 CharacterList::CharacterList() {
@@ -70,17 +82,17 @@ bool CharacterList::isFull() {
 
 bool CharacterList::push(CHARACTER charValue) {
 	if (!CharacterList::isValidCharacter(charValue)) {
+		CharacterList::errorState |= INVALID_CHAR;
 		return false;
-	} else {
-		if (CharacterList::isFull()) {
-			return false;
-		} else {
-			CharacterList::fileInMemory[currentPosition] = charValue;
-			CharacterList::length++;
-			CharacterList::currentPosition++;
-			return true;
-		}
 	}
+	if (CharacterList::isFull()) {
+		CharacterList::errorState |= LIST_FULL;
+		return false;
+	}
+	CharacterList::fileInMemory[currentPosition] = charValue;
+	CharacterList::length++;
+	CharacterList::currentPosition++;
+	return true;
 }
 
 bool CharacterList::peekValue(CHARACTER &charValue) {
@@ -89,11 +101,19 @@ bool CharacterList::peekValue(CHARACTER &charValue) {
 		This is how:
 	*/
 	if (CharacterList::isEmpty()) {
+		CharacterList::errorState |= LIST_EMPTY;
 		charValue = 0;
 		return false;
-	} else {
-		charValue =  CharacterList::fileInMemory[CharacterList::currentPosition - 1];
 	}
+	charValue =  CharacterList::fileInMemory[CharacterList::currentPosition];
+	return true;
+}
+
+void CharacterList::finishedFile() {
+	if (CharacterList::isEmpty()) {
+		CharacterList::errorState |= LIST_EMPTY;
+	}
+	CharacterList::currentPosition = 0;
 }
 
 bool CharacterList::pop() {
@@ -102,11 +122,11 @@ bool CharacterList::pop() {
 		not throwing any errors.
 	*/
 	if (!CharacterList::isEmpty()) {
-		CharacterList::fileInMemory[CharacterList::currentPosition - 1] = 0;
-		CharacterList::currentPosition--;
+		CharacterList::fileInMemory[CharacterList::currentPosition] = 0;
+		CharacterList::currentPosition++;
 		CharacterList::length--;
 		return true;
-	} else {
-		return false;
 	}
+	CharacterList::errorState |= LIST_EMPTY;
+	return false;
 }

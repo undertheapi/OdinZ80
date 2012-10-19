@@ -209,10 +209,50 @@ void testEmpty() {
 	printf("\tcList is empty after \'b\' is popped.\n");
 }
 
+void testListPositions() {
+	printf("**Testing a CharacterList object if the characters are in the correct position.\n");
+	CharacterList cList;
+	assert(cList.push('a') == true);
+	printf("Managed to push \'a\' onto the list.\n");
+	assert(cList.push('b') == true);
+	printf("Managed to push \'b\' onto the list.\n");
+	assert(cList.push('\0') == false);
+	printf("Did not manage to push \'null\' onto the list.\n");
+	assert(cList.push('c') == true);
+	printf("Managed to push \'c\' onto the list.\n");
+	cList.finishedFile();
+	CHARACTER value = 0;
+	assert(cList.peekValue(value) == true);
+	assert(value == 'a');
+	assert(cList.pop() == true);
+	assert(cList.peekValue(value) == true);
+	assert(value == 'b');
+	assert(cList.pop() == true);
+	assert(cList.peekValue(value) == true);
+	assert(value == 'c');
+	assert(cList.pop() == true);
+	assert(cList.pop() == false);
+	assert(cList.pop() == false);
+	
+	assert(cList.push('f') == true);
+	assert(cList.push('g') == true);
+	assert(cList.push('h') == true);
+	assert(cList.push('i') == true);
+	
+	cList.finishedFile();
+	
+	assert(cList.peekValue(value) == true);
+	assert(cList.peekValue(value) == true);
+	assert(value == 'f');
+	printf("Got an \'f\' from the list.\n");
+	
+}
+
 int main() {
 	testValidCharacters();
 	testInvalidCharacters();
 	testAllCharacters();
 	testEmpty();
+	testListPositions();
 	return 0;
 }

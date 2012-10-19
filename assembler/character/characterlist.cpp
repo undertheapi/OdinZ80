@@ -55,11 +55,8 @@ void CharacterList::init() {
 		We are making all the bytes in the reserved memory 0x00, just in case
 		if there are any bugs in the code.
 	*/
-	int index = 0;
-	while (index != MAX_SIZE) {
-		CharacterList::fileInMemory[index] = 0;
-		index++;
-	}
+	for (int index = 0; index != MAX_SIZE; index++)
+		CharacterList::fileInMemory[index] = 0; 
 }
 
 CharacterList::CharacterList() {
@@ -67,9 +64,8 @@ CharacterList::CharacterList() {
 }
 
 CharacterList::~CharacterList() {
-	while (!CharacterList::isEmpty()) {
+	while (!CharacterList::isEmpty())
 		CharacterList::pop();
-	}
 }
 
 bool CharacterList::isEmpty() {
@@ -84,8 +80,7 @@ bool CharacterList::push(CHARACTER charValue) {
 	if (!CharacterList::isValidCharacter(charValue)) {
 		CharacterList::errorState |= INVALID_CHAR;
 		return false;
-	}
-	if (CharacterList::isFull()) {
+	} else if (CharacterList::isFull()) {
 		CharacterList::errorState |= LIST_FULL;
 		return false;
 	}
@@ -110,9 +105,9 @@ bool CharacterList::peekValue(CHARACTER &charValue) {
 }
 
 void CharacterList::finishedFile() {
-	if (CharacterList::isEmpty()) {
+	if (CharacterList::isEmpty())
 		CharacterList::errorState |= LIST_EMPTY;
-	}
+
 	CharacterList::currentPosition = 0;
 }
 
@@ -130,10 +125,9 @@ bool CharacterList::pop() {
 			If the list is empty now, we set the values back to the first
 			position of the reserved memory.
 		*/
-		if (CharacterList::length == 0) {
+		if (CharacterList::length == 0)
 			CharacterList::currentPosition = 0;
-			CharacterList::length = 0;
-		}
+
 		return true;
 	}
 	CharacterList::errorState |= LIST_EMPTY;

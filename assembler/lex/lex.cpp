@@ -170,7 +170,7 @@ TokenNodePtr Lex::getToken() {
 		for getting rid of the comments. Comments are only single line, so we read from a ';' to a
 		new line character.
 	*/
-	if (!Lex::cList->isEmpty() && Lex::cList->peekValue() == ';') {
+	if (!Lex::cList->isEmpty() && Lex::cList->peekValue()  == ';') {
 		Lex::cList->pop();
 		while (!Lex::cList->isEmpty() && Lex::cList->peekValue() != '\n') {
 			Lex::cList->pop();
@@ -416,7 +416,7 @@ TokenNodePtr Lex::getToken() {
 		}
 		// Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = Lex::lineNumber;
-		newNode->fileName = Lex::cList->peekFileName();
+		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 	} else if (Lex::cList->peekValue() == '0') {
 		//So, we have a token starting with 0.
@@ -429,7 +429,7 @@ TokenNodePtr Lex::getToken() {
 				while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 					numberValue += Lex::cList->peekValue();
 					newNode->lineNumber = Lex::lineNumber;
-					newNode->fileName = Lex::cList->peekFileName();
+					// newNode->fileName = Lex::cList->peekFileName();
 					Lex::cList->pop();
 				}
 				
@@ -449,7 +449,7 @@ TokenNodePtr Lex::getToken() {
 				while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
 					numberValue += Lex::cList->peekValue();
 					newNode->lineNumber = Lex::lineNumber;
-					newNode->fileName = Lex::cList->peekFileName();
+					// newNode->fileName = Lex::cList->peekFileName();
 					Lex::cList->pop();
 				}
 				
@@ -469,7 +469,7 @@ TokenNodePtr Lex::getToken() {
 				while (!Lex::cList->isEmpty() && isBinary(Lex::cList->peekValue())) {
 					numberValue += Lex::cList->peekValue();
 					newNode->lineNumber = Lex::lineNumber;
-					newNode->fileName = Lex::cList->peekFileName();
+					// newNode->fileName = Lex::cList->peekFileName();
 					Lex::cList->pop();
 				}
 				
@@ -490,7 +490,7 @@ TokenNodePtr Lex::getToken() {
 				while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 					numberValue += Lex::cList->peekValue();
 					newNode->lineNumber = Lex::lineNumber;
-					newNode->fileName = Lex::cList->peekFileName();
+					// newNode->fileName = Lex::cList->peekFileName();
 					Lex::cList->pop();
 				}
 				
@@ -512,7 +512,7 @@ TokenNodePtr Lex::getToken() {
 		while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 			numberValue += Lex::cList->peekValue();
 			newNode->lineNumber = Lex::lineNumber;
-			newNode->fileName = Lex::cList->peekFileName();
+			// newNode->fileName = Lex::cList->peekFileName();
 			Lex::cList->pop();
 		}
 		
@@ -528,7 +528,7 @@ TokenNodePtr Lex::getToken() {
 		while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
 			hexValue += Lex::cList->peekValue();
 			newNode->lineNumber = Lex::lineNumber;
-			newNode->fileName = Lex::cList->peekFileName();
+			// newNode->fileName = Lex::cList->peekFileName();
 			Lex::cList->pop();
 		}
 		
@@ -572,13 +572,13 @@ TokenNodePtr Lex::getToken() {
 	} else if (Lex::cList->peekValue() == ':') {
 		newNode->type = COLON;
 		newNode->lineNumber = Lex::lineNumber;
-		newNode->fileName = Lex::cList->peekFileName();
+		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ',') {
 		newNode->type = COMMA;
 		newNode->lineNumber = Lex::lineNumber;
-		newNode->fileName = Lex::cList->peekFileName();
+		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '\n') {
@@ -591,31 +591,31 @@ TokenNodePtr Lex::getToken() {
 	} else if (Lex::cList->peekValue() == '[' || Lex::cList->peekValue() == '(') {
 		newNode->type = LEFT_BRACKET;
 		newNode->lineNumber = Lex::lineNumber;
-		newNode->fileName = Lex::cList->peekFileName();
+		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ']' || Lex::cList->peekValue() == ')') {
 		newNode->type = RIGHT_BRACKET;
 		newNode->lineNumber = Lex::lineNumber;
-		newNode->fileName = Lex::cList->peekFileName();
+		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '+') {
 		newNode->type = PLUS;
 		newNode->lineNumber = Lex::lineNumber;
-		newNode->fileName = Lex::cList->peekFileName();
+		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '-') {
 		newNode->type = MINUS;
 		newNode->lineNumber = Lex::lineNumber;
-		newNode->fileName = Lex::cList->peekFileName();
+		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '*') {
 		newNode->type = MULTIPLY;
 		newNode->lineNumber = Lex::lineNumber;
-		newNode->fileName = Lex::cList->peekFileName();
+		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else {

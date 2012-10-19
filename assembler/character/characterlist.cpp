@@ -64,8 +64,19 @@ CharacterList::CharacterList() {
 }
 
 CharacterList::~CharacterList() {
-	while (!CharacterList::isEmpty())
-		CharacterList::pop();
+	/*
+		while (!CharacterList::isEmpty())
+			CharacterList::pop();
+	*/
+	
+	/*
+		The reason for this code below and not the top one is because the
+		program kept crashing when the Deconstructor was run. I believe it
+		could have been either a buffer overflow, stack overflow or an
+		infinite loop.
+	*/
+	for (int index = 0; index != MAX_SIZE; index++)
+		CharacterList::fileInMemory[index] = 0;
 }
 
 bool CharacterList::isEmpty() {
@@ -89,18 +100,12 @@ bool CharacterList::push(CHARACTER charValue) {
 	return true;
 }
 
-bool CharacterList::peekValue(CHARACTER &charValue) {
-	/*
-		if currentPosition is 0, then it will check postion -1. How to overcome this?
-		This is how:
-	*/
+CHARACTER CharacterList::peekValue() {
 	if (CharacterList::isEmpty()) {
 		CharacterList::errorState |= LIST_EMPTY;
-		charValue = 0;
-		return false;
+		return 0;
 	}
-	charValue =  CharacterList::fileInMemory[CharacterList::currentPosition];
-	return true;
+	return CharacterList::fileInMemory[CharacterList::currentPosition];
 }
 
 void CharacterList::finishedFile() {
@@ -111,10 +116,6 @@ void CharacterList::finishedFile() {
 }
 
 bool CharacterList::pop() {
-	/*
-		should only run this if the list is not empty. So we are
-		not throwing any errors.
-	*/
 	if (!CharacterList::isEmpty()) {
 		CharacterList::fileInMemory[CharacterList::currentPosition] = 0;
 		CharacterList::currentPosition++;
@@ -122,7 +123,7 @@ bool CharacterList::pop() {
 		
 		/*
 			If the list is empty now, we set the values back to the first
-			position of the reserved memory.
+			position of the reserved memory. This is a bug fix.
 		*/
 		if (CharacterList::length == 0)
 			CharacterList::currentPosition = 0;

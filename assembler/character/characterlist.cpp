@@ -125,6 +125,15 @@ bool CharacterList::pop() {
 		CharacterList::fileInMemory[CharacterList::currentPosition] = 0;
 		CharacterList::currentPosition++;
 		CharacterList::length--;
+		
+		/*
+			If the list is empty now, we set the values back to the first
+			position of the reserved memory.
+		*/
+		if (CharacterList::length == 0) {
+			CharacterList::currentPosition = 0;
+			CharacterList::length = 0;
+		}
 		return true;
 	}
 	CharacterList::errorState |= LIST_EMPTY;

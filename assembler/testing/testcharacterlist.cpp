@@ -221,15 +221,15 @@ void testListPositions() {
 	assert(cList.push('c') == true);
 	printf("Managed to push \'c\' onto the list.\n");
 	cList.finishedFile();
-	CHARACTER value = 0;
-	assert(cList.peekValue(value) == true);
-	assert(value == 'a');
+	//CHARACTER value = 0;
+	assert(cList.peekValue() == 'a');
+	//assert(value == 'a');
 	assert(cList.pop() == true);
-	assert(cList.peekValue(value) == true);
-	assert(value == 'b');
+	assert(cList.peekValue() == 'b');
+	//assert(value == 'b');
 	assert(cList.pop() == true);
-	assert(cList.peekValue(value) == true);
-	assert(value == 'c');
+	assert(cList.peekValue() == 'c');
+	//assert(value == 'c');
 	assert(cList.pop() == true);
 	assert(cList.pop() == false);
 	assert(cList.pop() == false);
@@ -241,11 +241,41 @@ void testListPositions() {
 	
 	cList.finishedFile();
 	
-	assert(cList.peekValue(value) == true);
-	assert(cList.peekValue(value) == true);
-	assert(value == 'f');
+	assert(cList.peekValue() == 'f');
 	printf("Got an \'f\' from the list.\n");
+	assert(cList.pop() == true);
+	assert(cList.peekValue() == 'g');
+	printf("Got an \'g\' from the list.\n");
+	assert(cList.pop() == true);
+}
+
+void checkErrorStates() {
+	printf("**Testing the errorState byte, checking if it works properly.\n");
 	
+	CharacterList cList;
+	
+	assert(cList.pop() == false);
+	printf("\tPopping an empty list works.\n");
+	
+	assert(cList.errorState == LIST_EMPTY);
+	printf("\tError state is correct, brought back LIST_EMPTY.\n");
+	
+	assert(cList.push(0x01) == false);
+	printf("\tPushing an invalid character into list passes, does not put onto list.\n");
+	
+	assert(cList.errorState == LIST_EMPTY | INVALID_CHAR);
+	printf("\tError state is correct. LIST_EMPTY and INVALID_CHAR are both set.\n");
+	
+	int counter = 1;
+	
+	
+	while (counter != 20000000) {
+		cList.push('a');
+		counter++;
+	}
+	
+	assert(cList.errorState == LIST_EMPTY | INVALID_CHAR | LIST_FULL);
+	printf("\tError state is correct. LIST_EMPTY, INVALID_CAHR and LIST_FULL are all set.\n");
 }
 
 int main() {
@@ -254,5 +284,6 @@ int main() {
 	testAllCharacters();
 	testEmpty();
 	testListPositions();
+	checkErrorStates();
 	return 0;
 }

@@ -30,12 +30,11 @@
 /*
 	file name: characterlist.hpp
 	date craeted: 28/8/2012
-	date updated: 18/10/2012
+	date updated: 19/10/2012
 	author: Gareth Richardson
-	description: This is the header file for the class CharacterList. This stores a
-	Singly Linked List of characters using the data structure CharNode. We use this to
-	store the characters from a file. This class also does character validation to make
-	sure that there are no invalid characters going into the Linked List.
+	description: This is the header file for the class CharacterList. This stores an entire
+	file into a reserved part of memory. Push each individual byte from the file onto the memory
+	and also "pop" the front of the file when needed to.
 */
 
 /*
@@ -44,7 +43,19 @@
 */
 #define MAX_SIZE 300
 
+/*
+	The definition of a character in the list. We can change it to anything we want as
+	long as the code can handle it. We can alter it to unicode if we wanted to.
+*/
 #define CHARACTER unsigned char
+
+/*
+	These are error state definitions used for the errorState byte. Programmers can check the 
+	state of the errors in the code this way.
+*/
+#define INVALID_CHAR 0x01
+#define LIST_FULL 0x02
+#define LIST_EMPTY 0x04
 
 class CharacterList {
 	private:
@@ -88,6 +99,13 @@ class CharacterList {
 		*/
 		void init();
 	public:
+		
+		/*
+			This is the error state of the list. Each bit is a flag on the error
+			state of the object.
+		*/
+		unsigned char errorState;
+		
 		/*
 			An empty constructor. MUST call up init().
 		*/
@@ -150,6 +168,15 @@ class CharacterList {
 			charValue has the value of the character at currentPosition - 1.
 		*/
 		bool peekValue(CHARACTER &charValue);
+		
+		/*
+			finishedFile(): When a file has been put into the reserved memory, call this method as
+			it starts the currentPosition at the from of the file.
+			preconditions: A CharacterList object has been initalised.
+			List CANNOT be empty.
+			postconditions: currentPosition is now zero.
+		*/
+		void finishedFile();
 		
 		/*
 			pop(): removes the character currentPosition - 1 is pointing to.

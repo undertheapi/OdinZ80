@@ -56,6 +56,10 @@ void testADC() {
 		index++;
 	}
 	
+	assert(cList.isEmpty() == false);
+	
+	cList.finishedFile();
+	
 	TokenList tList;
 	
 	Lex lexObj(&cList, &tList);
@@ -95,6 +99,8 @@ void testADD() {
 		cList.push(array[index]);
 		index++;
 	}
+	
+	cList.finishedFile();
 	
 	TokenList tList;
 	
@@ -136,6 +142,8 @@ void testAND() {
 		index++;
 	}
 	
+	cList.finishedFile();
+	
 	TokenList tList;
 	
 	Lex lexObj(&cList, &tList);
@@ -176,6 +184,8 @@ void testBIT() {
 		cList.push(array[index]);
 		index++;
 	}
+	
+	cList.finishedFile();
 	
 	TokenList tList;
 	
@@ -229,6 +239,8 @@ void testCALL() {
 		cList.push(array[index]);
 		index++;
 	}
+	
+	cList.finishedFile();
 	
 	TokenList tList;
 	

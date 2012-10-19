@@ -85,8 +85,7 @@ bool CharacterList::push(CHARACTER charValue) {
 		return false;
 	}
 	CharacterList::fileInMemory[currentPosition] = charValue;
-	CharacterList::length++;
-	CharacterList::currentPosition++;
+	CharacterList::length++, CharacterList::currentPosition++;
 	return true;
 }
 

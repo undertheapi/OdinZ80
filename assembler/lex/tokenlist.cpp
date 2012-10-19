@@ -60,7 +60,7 @@ void TokenList::push(TokenNodePtr obj) {
 	if (TokenList::isEmpty()) {
 		TokenList::head = obj;
 		TokenList::tail = obj;
-		TokenList::indexed = obj;
+		//TokenList::indexed = obj;
 	} else if (TokenList::head == TokenList::tail) {
 		TokenList::head->next = obj;
 		TokenList::tail = obj;

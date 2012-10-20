@@ -689,6 +689,13 @@ string Lex::getNumber() {
 						break;
 					default:
 						Lex::cList->pop();
+						string tempValue = "";
+						while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+							retValue += Lex::cList->peekValue();
+							Lex::cList->pop();
+						}
+						//now we check the end of the number for the Number System:
+						
 				}
 			} else {
 				retValue += "d0";

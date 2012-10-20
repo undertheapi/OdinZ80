@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 12/10/2012
+	date updated: 19/10/2012
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -416,7 +416,6 @@ TokenNodePtr Lex::getToken() {
 		}
 		// Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = Lex::lineNumber;
-		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 	} else if (Lex::cList->peekValue() == '0') {
 		//So, we have a token starting with 0.
@@ -429,7 +428,6 @@ TokenNodePtr Lex::getToken() {
 				while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 					numberValue += Lex::cList->peekValue();
 					newNode->lineNumber = Lex::lineNumber;
-					// newNode->fileName = Lex::cList->peekFileName();
 					Lex::cList->pop();
 				}
 				
@@ -449,7 +447,6 @@ TokenNodePtr Lex::getToken() {
 				while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
 					numberValue += Lex::cList->peekValue();
 					newNode->lineNumber = Lex::lineNumber;
-					// newNode->fileName = Lex::cList->peekFileName();
 					Lex::cList->pop();
 				}
 				
@@ -469,7 +466,6 @@ TokenNodePtr Lex::getToken() {
 				while (!Lex::cList->isEmpty() && isBinary(Lex::cList->peekValue())) {
 					numberValue += Lex::cList->peekValue();
 					newNode->lineNumber = Lex::lineNumber;
-					// newNode->fileName = Lex::cList->peekFileName();
 					Lex::cList->pop();
 				}
 				
@@ -490,7 +486,6 @@ TokenNodePtr Lex::getToken() {
 				while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 					numberValue += Lex::cList->peekValue();
 					newNode->lineNumber = Lex::lineNumber;
-					// newNode->fileName = Lex::cList->peekFileName();
 					Lex::cList->pop();
 				}
 				
@@ -512,7 +507,6 @@ TokenNodePtr Lex::getToken() {
 		while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 			numberValue += Lex::cList->peekValue();
 			newNode->lineNumber = Lex::lineNumber;
-			// newNode->fileName = Lex::cList->peekFileName();
 			Lex::cList->pop();
 		}
 		
@@ -528,7 +522,6 @@ TokenNodePtr Lex::getToken() {
 		while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
 			hexValue += Lex::cList->peekValue();
 			newNode->lineNumber = Lex::lineNumber;
-			// newNode->fileName = Lex::cList->peekFileName();
 			Lex::cList->pop();
 		}
 		
@@ -572,13 +565,11 @@ TokenNodePtr Lex::getToken() {
 	} else if (Lex::cList->peekValue() == ':') {
 		newNode->type = COLON;
 		newNode->lineNumber = Lex::lineNumber;
-		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ',') {
 		newNode->type = COMMA;
 		newNode->lineNumber = Lex::lineNumber;
-		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '\n') {
@@ -591,7 +582,6 @@ TokenNodePtr Lex::getToken() {
 	} else if (Lex::cList->peekValue() == '[') {
 		newNode->type = LEFT_BRACKET;
 		newNode->lineNumber = Lex::lineNumber;
-		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '(') {
@@ -602,7 +592,6 @@ TokenNodePtr Lex::getToken() {
 	} else if (Lex::cList->peekValue() == ']') {
 		newNode->type = RIGHT_BRACKET;
 		newNode->lineNumber = Lex::lineNumber;
-		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ')') {
@@ -613,19 +602,16 @@ TokenNodePtr Lex::getToken() {
 	} else if (Lex::cList->peekValue() == '+') {
 		newNode->type = PLUS;
 		newNode->lineNumber = Lex::lineNumber;
-		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '-') {
 		newNode->type = MINUS;
 		newNode->lineNumber = Lex::lineNumber;
-		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '*') {
 		newNode->type = MULTIPLY;
 		newNode->lineNumber = Lex::lineNumber;
-		// newNode->fileName = Lex::cList->peekFileName();
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else {
@@ -643,6 +629,80 @@ TokenNodePtr Lex::getToken() {
 	}
 	
 	return newNode;
+}
+
+string Lex::getNumber() {
+	/*
+		Dec:
+		342
+		342D
+		0d90
+		
+		Hex:
+		0x3f
+		0h34
+		$3243
+		#5454
+		
+		Bin:
+		0b01110
+		0101011B
+	*/
+	
+	string retValue = "";
+	
+	switch (Lex::cList->peekValue()) {
+		case '0':
+			Lex:cList->pop();
+			if (!Lex::cList->isEmpty()) {
+				switch (Lex::cList->peekValue()) {
+					case 'd':
+					case 'D':
+						retValue += 'd';
+						Lex::cList->pop();
+						while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
+							retValue += Lex::cList->peekValue();
+							Lex::cList->pop();
+						}
+						break;
+					case 'x':
+					case 'X':
+					case 'H':
+					case 'h':
+						retValue += 'h';
+						Lex::cList->pop();
+						while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+							retValue += Lex::cList->peekValue();
+							Lex::cList->pop();
+						}
+						break;
+					case 'b':
+					case 'B':
+					case 'y':	//why 'y' I will never know ...
+					case 'Y':
+						retValue += 'b';
+						Lex::cList->pop();
+						while (!Lex::cList->isEmpty() && isBinary(Lex::cList->peekValue())) {
+							retValue += Lex::cList->peekValue();
+							Lex::cList->pop();
+						}
+						break;
+					default:
+						Lex::cList->pop();
+				}
+			} else {
+				retValue += "d0";
+			}
+			break;
+		case '$':
+		case '#':
+			
+		default:
+			/* because we have already done validation earlier on, we have a number between 1 -> 9 */
+			
+	}
+	
+	return retValue;
 }
 
 void Lex::run() {

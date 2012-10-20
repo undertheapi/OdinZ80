@@ -417,125 +417,11 @@ TokenNodePtr Lex::getToken() {
 		// Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = Lex::lineNumber;
 		newNode->next = NULL;
-	} else if (Lex::cList->peekValue() == '0') {
-		//So, we have a token starting with 0.
-		Lex::cList->pop();
-		if (!Lex::cList->isEmpty()) {
-			string numberValue = "";
-			if (Lex::cList->peekValue() == 'd') {
-				Lex::cList->pop();
-				//we have a decimal number:
-				while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
-					numberValue += Lex::cList->peekValue();
-					newNode->lineNumber = Lex::lineNumber;
-					Lex::cList->pop();
-				}
-				
-				if (numberValue.empty()) {
-					Lex::errorState = true;
-					Lex::errorString = "There is a 0d without any number after it. Every 0d must have a number following it.";
-				} else {
-					newNode->type = NUMBER;
-					newNode->value = "d";
-					newNode->value += numberValue;
-					newNode->next = NULL;
-				}
-				
-			} else if (Lex::cList->peekValue() == 'x' || Lex::cList->peekValue() == 'h') {
-				Lex::cList->pop();
-				//we have a hex number:
-				while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
-					numberValue += Lex::cList->peekValue();
-					newNode->lineNumber = Lex::lineNumber;
-					Lex::cList->pop();
-				}
-				
-				if (numberValue.empty()) {
-					Lex::errorState = true;
-					Lex::errorString = "There is a 0d or 0x without any number after it. Every 0d or 0x must have a number following it.";
-				} else {
-					newNode->type = NUMBER;
-					newNode->value = "h";
-					newNode->value += numberValue;
-					newNode->next = NULL;
-				}
-				
-			} else if (Lex::cList->peekValue() == 'b') {
-				Lex::cList->pop();
-				//we have a binary number:
-				while (!Lex::cList->isEmpty() && isBinary(Lex::cList->peekValue())) {
-					numberValue += Lex::cList->peekValue();
-					newNode->lineNumber = Lex::lineNumber;
-					Lex::cList->pop();
-				}
-				
-				if (numberValue.empty()) {
-					Lex::errorState = true;
-					Lex::errorString = "There is a 0b without any number after it. Every 0b must have a number following it.";
-				} else {
-					newNode->type = NUMBER;
-					newNode->value = "b";
-					newNode->value += numberValue;
-					newNode->next = NULL;
-				}
-				
-			} else if (isNumerical(Lex::cList->peekValue())) {
-				Lex::cList->pop();
-				//we have a decimal number:
-				numberValue += "0";
-				while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
-					numberValue += Lex::cList->peekValue();
-					newNode->lineNumber = Lex::lineNumber;
-					Lex::cList->pop();
-				}
-				
-				newNode->type = NUMBER;
-				newNode->value = "d";
-				newNode->value += numberValue;
-				newNode->next = NULL;
-			}
-			// ********************* Need to add an else!
-		} else {
-			newNode->type = NUMBER;
-			newNode->value = "d0";
-			newNode->next = NULL;
-		}
-	} else if (isNumerical(Lex::cList->peekValue())) {
-		//So if the character is NOT 0, it will be a decimal number:
-		string numberValue = "";
-		
-		while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
-			numberValue += Lex::cList->peekValue();
-			newNode->lineNumber = Lex::lineNumber;
-			Lex::cList->pop();
-		}
-		
+	} else if (Lex::cList->peekValue() == '0' || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#') {
 		newNode->type = NUMBER;
-		newNode->value = "d";
-		newNode->value += numberValue;
+		newNode->value = Lex::getNumber();
+		newNode->lineNumber = Lex::lineNumber;
 		newNode->next = NULL;
-	} else if (Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#') {
-		//We have a hex value:
-		Lex::cList->pop();
-		
-		string hexValue = "";
-		while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
-			hexValue += Lex::cList->peekValue();
-			newNode->lineNumber = Lex::lineNumber;
-			Lex::cList->pop();
-		}
-		
-		if (hexValue.size() == 0) {
-			Lex::errorState = true;
-			Lex::errorString = "There is a $ with no hexidecimal number after it. There should always be a number after a $.";
-			Lex::errorString += hexValue;
-		} else {
-			newNode->type = NUMBER;
-			newNode->value = "h";
-			newNode->value += hexValue;
-			newNode->next = NULL;
-		}
-		
 	} else if (Lex::cList->peekValue() == '\"') {
 		Lex::cList->pop();
 		while (Lex::cList->peekValue() != '\"' && !Lex::errorState) {
@@ -690,7 +576,7 @@ string Lex::getNumber() {
 					default:
 						Lex::cList->pop();
 						string tempValue = "";
-						while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+						while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 							retValue += Lex::cList->peekValue();
 							Lex::cList->pop();
 						}
@@ -703,10 +589,22 @@ string Lex::getNumber() {
 			break;
 		case '$':
 		case '#':
-			
+			retValue += 'h';
+			Lex::cList->pop();
+			while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+				retValue += Lex::cList->peekValue();
+				Lex::cList->pop();
+			}
+			break;
 		default:
 			/* because we have already done validation earlier on, we have a number between 1 -> 9 */
-			
+			Lex::cList->pop();
+			retValue += 'd';
+			while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
+				retValue += Lex::cList->peekValue();
+				Lex::cList->pop();
+			}
+			break;
 	}
 	
 	return retValue;

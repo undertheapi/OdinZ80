@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.cpp
 	date created: 29/08/2012
-	date updated: 5/10/2012
+	date updated: 22/10/2012
 	author: Garth Richardson
 	description: The implementation of the TokenList class.
 */
@@ -40,8 +40,6 @@
 using namespace std;
 
 #include "tokenlist.hpp"
-
-//#define NULL 0
 
 void TokenList::init() {
 	TokenList::head = NULL;
@@ -60,7 +58,6 @@ void TokenList::push(TokenNodePtr obj) {
 	if (TokenList::isEmpty()) {
 		TokenList::head = obj;
 		TokenList::tail = obj;
-		//TokenList::indexed = obj;
 	} else if (TokenList::head == TokenList::tail) {
 		TokenList::head->next = obj;
 		TokenList::tail = obj;
@@ -70,6 +67,9 @@ void TokenList::push(TokenNodePtr obj) {
 	}
 }
 
+/*
+	TODO Some error state code and validation just in case.
+*/
 void TokenList::pop() {
 	if (!TokenList::isEmpty()) {
 		TokenNodePtr pointer = TokenList::head;
@@ -84,4 +84,10 @@ TOKEN_TYPE TokenList::peekTokenType() {
 
 string TokenList::peekValue() {
 	return TokenList::head->value;
+}
+
+int TokenList::peekLineNumber() {
+	if (!TokenList::isEmpty()) {
+		return TokenList::head->value;
+	}
 }

@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.hpp
 	date created: 29/08/2012
-	date updated: 9/10/2012
+	date updated: 22/10/2012
 	author: Gareth Richardson
 	description: Were all the Tokens fron the Lex class will be stored.
 */
@@ -40,12 +40,25 @@
 
 class TokenList {
 	private:
+		/*
+			The TOkenList class is a Singly Linked List of TokenNodes. These
+			two TokenNode pointers are the typical 'head' and 'tail' parts of
+			one of these data structures.
+		*/
 		TokenNodePtr head;
 		TokenNodePtr tail;
+		
+		/*
+			All initialising code is to go in this method, it is called in the
+			constructor.
+		*/
 		void init();
 	public:
 		TokenList();
 		
+		/*
+			When the list is empty, TRUE is returned, else false.
+		*/
 		bool isEmpty();
 		
 		void push(TokenNodePtr obj);
@@ -58,5 +71,5 @@ class TokenList {
 		
 		int peekLineNumber();
 		
-		char* peekFileName();
+		/* char* peekFileName(); */
 };

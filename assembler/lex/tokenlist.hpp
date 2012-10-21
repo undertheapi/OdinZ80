@@ -70,6 +70,4 @@ class TokenList {
 		string peekValue();
 		
 		int peekLineNumber();
-		
-		/* char* peekFileName(); */
 };

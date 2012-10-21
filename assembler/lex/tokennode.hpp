@@ -30,21 +30,34 @@
 /*
 	file name: tokennode.hpp
 	date created: 28/08/2012
-	date updated: 29/08/2012
+	date updated: 22/10/2012
 	author: Gareth Richardson
 	description: This is the data structure for the TokenNode in the TokenList class. The
-	TokenList class is an implementation of a Singly Linked List, this will show in this
-	structure.
+	TokenList class is an implementation of a Singly Linked List data structure. This
+	structure is the Node representation in the TokenList class.
 */
 
+/*
+	In a token, a byte that represents the type of token is present. Most likely the
+	byte will be more than enough as there is at the moment less than 255 token types
+	in the assembler.
+*/
 #define TOKEN_TYPE unsigned char
 
+/*
+	Here is the structure for the TokenNode.
+	For now, we are not having a file name in the structure. Odin at the moment will
+	be assembling one file at a time with no includes from other files.
+*/
 struct TokenNode {
 	TOKEN_TYPE type;
 	string value;
 	int lineNumber;
-	char* fileName;
+	/* char* fileName; */
 	TokenNode* next;
 };
 
+/*
+	This is a pointer type definition of a TokenNode.
+*/
 typedef TokenNode* TokenNodePtr;

@@ -3,4 +3,5 @@ OdinZ80
 
 This is a Z80 assembler suite for Windows and Linux. This project will be three parts: Assembler, Disassembler and Debugger for the Zilog Z80 Microprocessor.
 OdinZ80 is a development tool to aid programmers still using the Z80 Microprocessor. There will be two ways to build the software,
-first on Windeows environments, ther will be Batch files and on Linux there will be Bash Scripts.
+first on Windows environments, there will be Batch files and on Linux there will be Bash Scripts.
+Just run the build.bat or build.sh files (when they have been created) and the suite will compile.

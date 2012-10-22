@@ -64,6 +64,12 @@ class Lex {
 			A counter for the line number in the file.
 		*/
 		int lineNumber;
+		
+		/*
+			Gets a number if we want one from the file. Error state ill be set if there
+			are any problems.
+		*/
+		string getNumber();
 
 		/*
 			Gets a unique token from the CharacterList object being pointed to. Sets errorString and errorState

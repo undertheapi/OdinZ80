@@ -609,6 +609,16 @@ void Lex::run() {
 			Lex::tList->push(newPtr);
 		}
 	}
+	/*
+	if (!Lex::errorState && Lex::tList->peekTokenType() != END_OF_FILE) {
+		TokenNodePtr newPtr = new TokenNode;
+		newPtr->type = END_OF_FILE;
+		newPtr->value = "";
+		newPtr->lineNumber = Lex::lineNumber;
+		newPtr->next = NULL;
+		Lex::tList->push(newPtr);
+	}
+	*/
 }
 
 bool Lex::checkForError() {

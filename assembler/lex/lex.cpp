@@ -412,7 +412,7 @@ TokenNodePtr Lex::getToken() {
 		// Adding the rest of the values for the TokenNode:
 		newNode->lineNumber = Lex::lineNumber;
 		newNode->next = NULL;
-	} else if (Lex::cList->peekValue() == '0' || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#') {
+	} else if (isNumerical(Lex::cList->peekValue()) || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#') {
 		newNode->type = NUMBER;
 		newNode->value = Lex::getNumber();
 		newNode->lineNumber = Lex::lineNumber;
@@ -568,14 +568,12 @@ string Lex::getNumber() {
 						}
 						break;
 					default:
-						Lex::cList->pop();
-						string tempValue = "";
+						string tempValue = "d";
+						//Lex::cList->pop();
 						while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 							retValue += Lex::cList->peekValue();
 							Lex::cList->pop();
 						}
-						//now we check the end of the number for the Number System:
-						
 				}
 			} else {
 				retValue += "d0";
@@ -592,7 +590,7 @@ string Lex::getNumber() {
 			break;
 		default:
 			/* because we have already done validation earlier on, we have a number between 1 -> 9 */
-			Lex::cList->pop();
+			//Lex::cList->pop();
 			retValue += 'd';
 			while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
 				retValue += Lex::cList->peekValue();

@@ -192,7 +192,6 @@ TokenNodePtr Lex::getToken() {
 		newNode->type = END_OF_FILE;
 		newNode->value = "";
 		newNode->lineNumber = -1;
-		newNode->fileName = NULL;
 		newNode->next = NULL;
 		return newNode;
 	}
@@ -203,13 +202,9 @@ TokenNodePtr Lex::getToken() {
 	string retValue = "";
 	
 	if (isAlphabetical(Lex::cList->peekValue())) {
-		//int line;
-		//char* file;
 		
 		while (!Lex::cList->isEmpty() && (isAlphabetical(Lex::cList->peekValue()) || isNumerical(Lex::cList->peekValue()))) {
 			retValue += Lex::cList->peekValue();
-			//line = Lex::cList->peekLineNumber();
-			//file = Lex::cList->peekFileName();
 			Lex::cList->pop();
 		}
 		/*
@@ -462,7 +457,6 @@ TokenNodePtr Lex::getToken() {
 		newNode->type = NEW_LINE;
 		newNode->lineNumber = Lex::lineNumber;
 		Lex::lineNumber++;
-		newNode->fileName = 0;
 		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '[') {

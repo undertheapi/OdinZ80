@@ -30,7 +30,7 @@
 /*
 	file name: testlex.cpp
 	date created: 4/10/2012
-	date updated: 4/10/2012
+	date updated: 23/10/2012
 	author: Gareth Richardson
 	description: This is the unit test for the Lex class.
 */

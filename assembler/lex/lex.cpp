@@ -429,6 +429,10 @@ TokenNodePtr Lex::getToken() {
 			Lex::cList->pop();
 		}
 		// This is here to pop the end quotation on the string.
+		newNode->type = STRING;
+		newNode->value = retValue;
+		newNode->lineNumber = Lex::lineNumber;
+		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ':') {
 		newNode->type = COLON;

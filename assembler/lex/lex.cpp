@@ -116,31 +116,18 @@ bool isBinaryString(string value) {
 }
 
 string integerToString(int value) {
-	//cannot use this in release!!!!!!
 	if (value == 0) {
 		return "0";
-	} else {
-		string retValue = "";
-		
-		while (value > 0) {
-			retValue += (value % 10) + 48;
-			value /= 10;
-		}
-		
-		return retValue;
 	}
-     /*   
-    string temp="";
-    string returnvalue="";
-    while (number>0)
-    {
-        temp+=number%10+48;
-        number/=10;
-    }
-    for (int i=0;i<temp.length();i++)
-        returnvalue+=temp[temp.length()-i-1];
-    return returnvalue;
-	*/
+	
+	string retValue = "";
+	
+	while (value > 0) {
+		retValue += value % 10 + 48;
+		value /= 10;
+	}
+	
+	return retValue;
 }
 
 string convertHex(char value) {
@@ -515,8 +502,8 @@ string Lex::getNumber() {
 	/*
 		Dec:
 		342
-		342D
 		0d90
+		0D342
 		
 		Hex:
 		0x3f
@@ -526,7 +513,7 @@ string Lex::getNumber() {
 		
 		Bin:
 		0b01110
-		0101011B
+		0B101011
 	*/
 	
 	string retValue = "";
@@ -603,14 +590,22 @@ string Lex::getNumber() {
 }
 
 void Lex::run() {
+	/*
+		This variable keeps track of the last Token Type to be added to
+		the TokenList. Part of a bug fix, see the end of this method.
+	*/
+	TOKEN_TYPE lastToken = 0;
+	
 	while (!Lex::errorState && !Lex::cList->isEmpty()) {
 		TokenNodePtr newPtr = Lex::getToken();
 		if (!Lex::errorState) {
 			Lex::tList->push(newPtr);
+			lastToken = newPtr->type;
 		}
 	}
-	/*
-	if (!Lex::errorState && Lex::tList->peekTokenType() != END_OF_FILE) {
+	
+	/* Bug fix, sometimes an END_OF_FILE token is not added to the end of the token list */
+	if (!Lex::errorState && lastToken != END_OF_FILE) {
 		TokenNodePtr newPtr = new TokenNode;
 		newPtr->type = END_OF_FILE;
 		newPtr->value = "";
@@ -618,7 +613,6 @@ void Lex::run() {
 		newPtr->next = NULL;
 		Lex::tList->push(newPtr);
 	}
-	*/
 }
 
 bool Lex::checkForError() {

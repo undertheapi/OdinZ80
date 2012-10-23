@@ -30,7 +30,7 @@
 /*
 	file name: parser.hpp
 	date created: 28/09/2012
-	date updated: 28/09/2012
+	date updated: 23/10/2012
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it.
@@ -38,13 +38,41 @@
 
 class Z80Parser {
 	private:
+		/*
+			Were the tokens are stored.
+		*/
 		TokenList* tList;
+		
+		/*
+			Were the bytes compiled will go.
+		*/
 		ByteCode* bCode;
+		
+		/*
+			this keeps track of errors.
+		*/
 		bool errorState;
+		
+		/*
+			errors from the parser make an error string.
+		*/
 		string errorString;
+		
+		/*
+			Keeps track of the address in the program.
+		*/
+		int address;
+		
+		/*
+			Put this into the constructor.
+		*/
 		void init();
 		
-		int address;
+		
+		void checkToken(TOKEN_TYPE tok);
+		void checkEightBitNumber(unsigned char &number);
+		void checkSixteenButNumber(unsigned short &number);
+		
 	public:
 		Z80Parser(TokenList* tPointer, ByteCode* bPointer);
 		void run();

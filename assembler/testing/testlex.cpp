@@ -340,6 +340,121 @@ void testNumbers() {
 	tList.pop();
 }
 
+void testMoreNumbers() {
+	printf("**Testing more numbers.\n");
+	CharacterList cList;
+	char array[] = "\t\t\t\n\n   $450322 0h34343 0H5fF435 0d544 0D4444 #4343444444\n\n\n\n      \t ";
+	
+	int index = 0;
+	while (array[index] != 0) {
+		cList.push(array[index]);
+		index++;
+	}
+	
+	cList.finishedFile();
+	
+	TokenList tList;
+	
+	Lex lexObj(&cList, &tList);
+	
+	lexObj.run();
+	
+	assert(lexObj.checkForError() == false);
+	printf("No error has come from the Lexical Analyser.\n");
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	printf("Value at position 1 is NEW_LINE\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	printf("Value at position 2 is NEW_LINE\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NUMBER);
+	assert(tList.peekValue().compare("h450322") == 0);
+	printf("Value at position 3 is \"h450322\"\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NUMBER);
+	assert(tList.peekValue().compare("h34343") == 0);
+	printf("Value at position 4 is \"h34343\"\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NUMBER);
+	assert(tList.peekValue().compare("h5fF435") == 0);
+	printf("Value at position 5 is \"h5fF435\"\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NUMBER);
+	assert(tList.peekValue().compare("d544") == 0);
+	printf("Value at position 6 is \"d544\"\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NUMBER);
+	assert(tList.peekValue().compare("d4444") == 0);
+	printf("Value at position 7 is \"d4444\"\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NUMBER);
+	assert(tList.peekValue().compare("h4343444444") == 0);
+	printf("Value at position 8 is \"h4343444444\"\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	printf("Value at position 9 is NEW_LINE\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	printf("Value at position 10 is NEW_LINE\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	printf("Value at position 11 is NEW_LINE\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	printf("Value at position 12 is NEW_LINE\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == END_OF_FILE);
+	printf("Value at position 8 is END_OF_FILE\n");
+	tList.pop();
+}
+
+void testString() {
+	printf("**Testing more numbers.\n");
+	CharacterList cList;
+	char array[] = "\t\t\t \"Hello\" \t\t\"What?\"\t ";
+	
+	int index = 0;
+	while (array[index] != 0) {
+		cList.push(array[index]);
+		index++;
+	}
+	
+	cList.finishedFile();
+	
+	TokenList tList;
+	
+	Lex lexObj(&cList, &tList);
+	
+	lexObj.run();
+	
+	assert(tList.peekTokenType() == STRING);
+	assert(tList.peekValue().compare("Hello") == 0);
+	printf("Value at position 8 is \"Hello\"\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == STRING);
+	assert(tList.peekValue().compare("What?") == 0);
+	printf("Value at position 8 is \"What?\"\n");
+	tList.pop();
+	
+	assert(tList.peekTokenType() == END_OF_FILE);
+	printf("Value at position 8 is END_OF_FILE\n");
+	tList.pop();
+}
+
 int main() {
 	testADC();
 	testADD();
@@ -347,5 +462,7 @@ int main() {
 	testBIT();
 	testCALL();
 	testNumbers();
+	testMoreNumbers();
+	testString();
 	return 0;
 }

@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 28/09/2012
+	date updated: 23/10/2012
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it.
@@ -40,7 +40,6 @@
 
 using namespace std;
 
-#include "../lex/tokentype.hpp"
 #include "../lex/tokenlist.hpp"
 #include "bytecode.hpp"
 #include "parser.hpp"
@@ -53,6 +52,40 @@ void Z80Parser::init() {
 	Z80Parser::address = 0;
 }
 
+void Z80Parser::checkToken(TOKEN_TYPE tok) {
+	if (!Z80Parser::errorState) {
+		if (!Z80Parser::tList->isEmpty()) {
+			if (Z80Parser::tList->peekTokenType() != tok) {
+				Z80Parser::errorState = true;
+			}
+		} else {
+			Z80Parser::errorState = true;
+		}
+	}
+}
+
+void Z80Parser::checkEightBitNumber(unsigned char &number) {
+	if (!Z80Parser::errorState) {
+		if (!Z80Parser::tList->isEmpty()) {
+			if (Z80Parser::tList->peekTokenType() == NUMBER) {
+				string tokStr = Z80Parser::tList->peekValue();
+				
+				/*
+					Processing the string here to make sure that
+					it is an 8 bit value.
+				*/
+				if (tokStr[0] == 'd') {
+				
+				} 
+			} else {
+				Z80Parser::errorState = true;
+			}
+		} else {
+			Z80Parser::errorState = true;
+		}
+	}
+}
+
 Z80Parser::Z80Parser(TokenList* tPointer, ByteCode* bPointer) {
 	Z80Parser::init();
 	Z80Parser::tList = tPointer;
@@ -61,11 +94,6 @@ Z80Parser::Z80Parser(TokenList* tPointer, ByteCode* bPointer) {
 
 void Z80Parser::run() {
 	while (!Z80Parser::errorState && !Z80Parser::tList->peekTokenType() == END_OF_FILE) {
-		if (!Z80Parser::tList->isEmpty() && Z80Parser::tList->peekTokenType() == ADC) {
-			Z80Parser::tList->pop();
-			if (!Z80Parser::tList->isEmpty() && Z80Parser::tList->peekTokenType() == A) {
-				
-			}
-		}
+		
 	}
 }

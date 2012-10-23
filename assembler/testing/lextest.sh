@@ -8,4 +8,4 @@ rm tokenlist.o
 rm lex.o
 rm characterlist.o
 rm testlex.o
-rm unittest.exe
+rm unittest

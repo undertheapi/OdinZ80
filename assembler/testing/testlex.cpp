@@ -82,7 +82,7 @@ void testADC() {
 	tList.pop();
 	
 	assert(tList.peekTokenType() == END_OF_FILE);
-	printf("\tThird token is END_OF_FILE.\n");
+	printf("\tFourth token is END_OF_FILE.\n");
 	tList.pop();
 	
 	assert(tList.isEmpty() == true);
@@ -328,6 +328,12 @@ void testNumbers() {
 	assert(tList.peekValue().compare("h433") == 0);
 	printf("Value at position 7 is h433\n");
 	tList.pop();
+	
+	/*
+	assert(tList.peekTokenType() == NEW_LINE);
+	printf("Value at position 8 is NEW_LINE\n");
+	tList.pop();
+	*/
 	
 	assert(tList.peekTokenType() == END_OF_FILE);
 	printf("Value at position 8 is END_OF_FILE\n");

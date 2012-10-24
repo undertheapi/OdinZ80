@@ -88,6 +88,8 @@ string TokenList::peekValue() {
 
 int TokenList::peekLineNumber() {
 	if (!TokenList::isEmpty()) {
-		return TokenList::head->value;
+		return TokenList::head->lineNumber;
+	} else {
+		return -1;
 	}
 }

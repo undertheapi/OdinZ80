@@ -455,6 +455,81 @@ void testString() {
 	tList.pop();
 }
 
+void testLineCount() {
+	printf("**Testing line count.\n");
+	CharacterList cList;
+	char array[] = "ADD , 56 54 \n ADC Bit \n CALL hello John\n";
+	
+	int index = 0;
+	
+	while (array[index] != 0) {
+		cList.push(array[index]);
+		index++;
+	}
+	
+	cList.finishedFile();
+	
+	TokenList tList;
+	
+	Lex lexObj(&cList, &tList);
+	
+	lexObj.run();
+	
+	assert(tList.peekTokenType() == ADD);
+	assert(tList.peekLineNumber() == 1);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == COMMA);
+	assert(tList.peekLineNumber() == 1);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NUMBER);
+	assert(tList.peekValue().compare("d56") == 0);
+	assert(tList.peekLineNumber() == 1);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NUMBER);
+	assert(tList.peekValue().compare("d54") == 0);
+	assert(tList.peekLineNumber() == 1);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	assert(tList.peekLineNumber() == 1);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == ADC);
+	assert(tList.peekLineNumber() == 2);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == BIT);
+	assert(tList.peekLineNumber() == 2);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	assert(tList.peekLineNumber() == 2);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == CALL);
+	assert(tList.peekLineNumber() == 3);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == ATOM);
+	assert(tList.peekValue().compare("hello") == 0);
+	assert(tList.peekLineNumber() == 3);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == ATOM);
+	assert(tList.peekValue().compare("John") == 0);
+	assert(tList.peekLineNumber() == 3);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == NEW_LINE);
+	assert(tList.peekLineNumber() == 3);
+	tList.pop();
+	
+	printf("**Test line count complete!\n");
+}
+
 int main() {
 	testADC();
 	testADD();
@@ -464,5 +539,6 @@ int main() {
 	testNumbers();
 	testMoreNumbers();
 	testString();
+	testLineCount();
 	return 0;
 }

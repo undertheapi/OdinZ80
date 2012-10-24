@@ -530,6 +530,43 @@ void testLineCount() {
 	printf("**Test line count complete!\n");
 }
 
+void testStrings() {
+	printf("**Testing strings.\n");
+	CharacterList cList;
+	char array[] = "\"What?\" \"##%!@@\" \"Katie\" \t\t\"Hello\"";
+	
+	int index = 0;
+	
+	while (array[index] != 0) {
+		cList.push(array[index]);
+		index++;
+	}
+	
+	cList.finishedFile();
+	
+	TokenList tList;
+	
+	Lex lexObj(&cList, &tList);
+	
+	lexObj.run();
+	
+	assert(tList.peekTokenType() == STRING);
+	assert(tList.peekValue().compare("What?") == 0);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == STRING);
+	assert(tList.peekValue().compare("##%!@@") == 0);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == STRING);
+	assert(tList.peekValue().compare("Katie") == 0);
+	tList.pop();
+	
+	assert(tList.peekTokenType() == STRING);
+	assert(tList.peekValue().compare("Hello") == 0);
+	tList.pop();
+}
+
 int main() {
 	testADC();
 	testADD();
@@ -540,5 +577,6 @@ int main() {
 	testMoreNumbers();
 	testString();
 	testLineCount();
+	testStrings();
 	return 0;
 }

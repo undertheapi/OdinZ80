@@ -42,7 +42,7 @@
 	byte will be more than enough as there is at the moment less than 255 token types
 	in the assembler.
 */
-#define TOKEN_TYPE char
+#define TOKEN_TYPE unsigned char
 
 /*
 	Here is the structure for the TokenNode.

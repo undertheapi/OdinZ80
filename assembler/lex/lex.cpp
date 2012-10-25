@@ -152,6 +152,8 @@ Lex::Lex(CharacterList* cList, TokenList* tList) {
 TokenNodePtr Lex::getToken() {
 	TokenNodePtr newNode = new TokenNode;
 	newNode->value = "";
+	newNode->lineNumber = Lex::lineNumber;
+	newNode->next = NULL;
 	
 	/*
 		for getting rid of the comments. Comments are only single line, so we read from a ';' to a
@@ -179,7 +181,7 @@ TokenNodePtr Lex::getToken() {
 		newNode->type = END_OF_FILE;
 		newNode->value = "";
 		newNode->lineNumber = -1;
-		newNode->next = NULL;
+		
 		return newNode;
 	}
 	
@@ -396,14 +398,9 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = ATOM;
 			newNode->value = retValue;
 		}
-		// Adding the rest of the values for the TokenNode:
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 	} else if (isNumerical(Lex::cList->peekValue()) || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#') {
 		newNode->type = NUMBER;
 		newNode->value = Lex::getNumber();
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 	} else if (Lex::cList->peekValue() == '\"') {
 		Lex::cList->pop();
 		while (Lex::cList->peekValue() != '\"' && !Lex::errorState) {
@@ -431,59 +428,37 @@ TokenNodePtr Lex::getToken() {
 		// This is here to pop the end quotation on the string.
 		newNode->type = STRING;
 		newNode->value = retValue;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ':') {
 		newNode->type = COLON;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ',') {
 		newNode->type = COMMA;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '\n') {
 		newNode->type = NEW_LINE;
-		newNode->lineNumber = Lex::lineNumber;
 		Lex::lineNumber++;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '[') {
 		newNode->type = LEFT_BRACKET;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '(') {
 		newNode->type = LEFT_PARENT;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ']') {
 		newNode->type = RIGHT_BRACKET;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == ')') {
 		newNode->type = RIGHT_PARENT;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '+') {
 		newNode->type = PLUS;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '-') {
 		newNode->type = MINUS;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '*') {
 		newNode->type = MULTIPLY;
-		newNode->lineNumber = Lex::lineNumber;
-		newNode->next = NULL;
 		Lex::cList->pop();
 	} else {
 		/*

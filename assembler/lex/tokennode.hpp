@@ -30,7 +30,7 @@
 /*
 	file name: tokennode.hpp
 	date created: 28/08/2012
-	date updated: 22/10/2012
+	date updated: 25/10/2012
 	author: Gareth Richardson
 	description: This is the data structure for the TokenNode in the TokenList class. The
 	TokenList class is an implementation of a Singly Linked List data structure. This
@@ -42,7 +42,7 @@
 	byte will be more than enough as there is at the moment less than 255 token types
 	in the assembler.
 */
-#define TOKEN_TYPE unsigned char
+#define TOKEN_TYPE char
 
 /*
 	Here is the structure for the TokenNode.

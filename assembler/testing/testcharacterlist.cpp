@@ -3,13 +3,13 @@
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met: 
+	modification, are permitted provided that the following conditions are met:
 
 	1. Redistributions of source code must retain the above copyright notice, this
-	   list of conditions and the following disclaimer. 
+	   list of conditions and the following disclaimer.
 	2. Redistributions in binary form must reproduce the above copyright notice,
 	   this list of conditions and the following disclaimer in the documentation
-	   and/or other materials provided with the distribution. 
+	   and/or other materials provided with the distribution.
 
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 	ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -23,7 +23,7 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 	The views and conclusions contained in the software and documentation are those
-	of the authors and should not be interpreted as representing official policies, 
+	of the authors and should not be interpreted as representing official policies,
 	either expressed or implied, of the FreeBSD Project.
 */
 
@@ -130,7 +130,7 @@ void testInvalidCharacters() {
 	printf("28: A CharacterList can handle the US (Unit Separator) character.\n");
 	assert(cList.push(127) == false);
 	printf("29: A CharacterList can handle the Delete character.\n");
-	
+
 	int counter = 30;
 	CHARACTER charValue = 128;
 	printf("NOTE: The next characters are part of the Extended ASCII characters.\n");
@@ -147,45 +147,45 @@ void testAllCharacters() {
 	CharacterList cList;
 	int counter = 1;
 	CHARACTER charValue = 0;
-	
+
 	while (charValue != 9) {
 		assert(cList.push(charValue) == false);
 		printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
 	}
-	
+
 	assert(cList.push(charValue) == true);
 	printf("%i: A CharacterList can handle the TAB character.\n", counter);
 	counter++;
 	charValue++;
-	
+
 	assert(cList.push(charValue) == true);
 	printf("%i: A CharacterList can handle the NEW LINE character.\n", counter);
 	counter++;
 	charValue++;
-	
+
 	while (charValue != 32) {
 		assert(cList.push(charValue) == false);
 		printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
 	}
-	
+
 	while (charValue != 127) {
 		assert(cList.push(charValue) == true);
 		printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
 	}
-	
+
 	while (charValue != 255) {
 		assert(cList.push(charValue) == false);
 		printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 		counter++;
 		charValue++;
 	}
-	
+
 	assert(cList.push(charValue) == false);
 	printf("%i: A CharacterList can handle the \'%c\' character.\n", counter, charValue);
 }
@@ -233,14 +233,14 @@ void testListPositions() {
 	assert(cList.pop() == true);
 	assert(cList.pop() == false);
 	assert(cList.pop() == false);
-	
+
 	assert(cList.push('f') == true);
 	assert(cList.push('g') == true);
 	assert(cList.push('h') == true);
 	assert(cList.push('i') == true);
-	
+
 	cList.finishedFile();
-	
+
 	assert(cList.peekValue() == 'f');
 	printf("Got an \'f\' from the list.\n");
 	assert(cList.pop() == true);
@@ -251,29 +251,29 @@ void testListPositions() {
 
 void checkErrorStates() {
 	printf("**Testing the errorState byte, checking if it works properly.\n");
-	
+
 	CharacterList cList;
-	
+
 	assert(cList.pop() == false);
 	printf("\tPopping an empty list works.\n");
-	
+
 	assert(cList.errorState == LIST_EMPTY);
 	printf("\tError state is correct, brought back LIST_EMPTY.\n");
-	
+
 	assert(cList.push(0x01) == false);
 	printf("\tPushing an invalid character into list passes, does not put onto list.\n");
-	
+
 	assert(cList.errorState == LIST_EMPTY | INVALID_CHAR);
 	printf("\tError state is correct. LIST_EMPTY and INVALID_CHAR are both set.\n");
-	
+
 	int counter = 1;
-	
-	
+
+
 	while (counter != 20000000) {
 		cList.push('a');
 		counter++;
 	}
-	
+
 	assert(cList.errorState == LIST_EMPTY | INVALID_CHAR | LIST_FULL);
 	printf("\tError state is correct. LIST_EMPTY, INVALID_CAHR and LIST_FULL are all set.\n");
 }

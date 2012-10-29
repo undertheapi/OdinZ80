@@ -3,13 +3,13 @@
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met: 
+	modification, are permitted provided that the following conditions are met:
 
 	1. Redistributions of source code must retain the above copyright notice, this
-	   list of conditions and the following disclaimer. 
+	   list of conditions and the following disclaimer.
 	2. Redistributions in binary form must reproduce the above copyright notice,
 	   this list of conditions and the following disclaimer in the documentation
-	   and/or other materials provided with the distribution. 
+	   and/or other materials provided with the distribution.
 
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 	ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -23,7 +23,7 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 	The views and conclusions contained in the software and documentation are those
-	of the authors and should not be interpreted as representing official policies, 
+	of the authors and should not be interpreted as representing official policies,
 	either expressed or implied, of the FreeBSD Project.
 */
 
@@ -37,11 +37,11 @@
 	header file, but in MingW Gcc, we have the getopt.h to include.
 */
 #ifdef __linux__
-	#include <unistd.h>
+#include <unistd.h>
 #endif
 
 #ifdef _WIN32
-	#include <getopt.h>
+#include <getopt.h>
 #endif
 
 using namespace std;
@@ -54,7 +54,7 @@ ByteFile fileData;
 BYTE convertFromHex(char* array);
 
 int main( int argc, char *argv[]) {
-if (argc == 1) {
+	if (argc == 1) {
 		printf("ZDIS: There has been no file, options or string input specified.\n");
 	} else {
 		bool fileFlag = true;
@@ -64,7 +64,7 @@ if (argc == 1) {
 		char* hexString = 0;
 		char* inputFile = 0;
 		char* outputFile = 0;
-		
+
 		int opt = getopt(argc, argv, "sa:b:e:o:hi");
 		while (opt != -1) {
 			switch (opt) {
@@ -110,16 +110,16 @@ if (argc == 1) {
 			}
 			opt = getopt(argc, argv, "s:a:b:e:o:hi");
 		}
-		
+
 		//If zdis has been told NOT to manipulate a string, it is a file.
 		if (!stringFlag && optind != -1) {
 			inputFile = argv[optind];
 		}
-		
+
 		if (!fileFlag && optind != -1) {
 			hexString = argv[optind];
 		}
-		
+
 		if (stringFlag) {
 			//Processes a string from the prompt.
 			bool validHexString = true;
@@ -154,13 +154,13 @@ if (argc == 1) {
 			}
 		} else {
 			//we have a file
-			#ifdef __linux__
-				
-			#endif
-			
-			#ifdef _WIN32
-				
-			#endif
+#ifdef __linux__
+
+#endif
+
+#ifdef _WIN32
+
+#endif
 		}
 	}
 	exit(0);

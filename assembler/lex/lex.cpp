@@ -3,13 +3,13 @@
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
-	modification, are permitted provided that the following conditions are met: 
+	modification, are permitted provided that the following conditions are met:
 
 	1. Redistributions of source code must retain the above copyright notice, this
-	   list of conditions and the following disclaimer. 
+	   list of conditions and the following disclaimer.
 	2. Redistributions in binary form must reproduce the above copyright notice,
 	   this list of conditions and the following disclaimer in the documentation
-	   and/or other materials provided with the distribution. 
+	   and/or other materials provided with the distribution.
 
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 	ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -23,7 +23,7 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 	The views and conclusions contained in the software and documentation are those
-	of the authors and should not be interpreted as representing official policies, 
+	of the authors and should not be interpreted as representing official policies,
 	either expressed or implied, of the FreeBSD Project.
 */
 
@@ -119,14 +119,14 @@ string integerToString(int value) {
 	if (value == 0) {
 		return "0";
 	}
-	
+
 	string retValue = "";
-	
+
 	while (value > 0) {
 		retValue += value % 10 + 48;
 		value /= 10;
 	}
-	
+
 	return retValue;
 }
 
@@ -154,7 +154,7 @@ TokenNodePtr Lex::getToken() {
 	newNode->value = "";
 	newNode->lineNumber = Lex::lineNumber;
 	newNode->next = NULL;
-	
+
 	/*
 		for getting rid of the comments. Comments are only single line, so we read from a ';' to a
 		new line character.
@@ -165,14 +165,14 @@ TokenNodePtr Lex::getToken() {
 			Lex::cList->pop();
 		}
 	}
-	
+
 	/*
 		this is getting rid of the space characters from the CharacterList class.
 	*/
 	while (!Lex::cList->isEmpty() && (Lex::cList->peekValue() == '\t' || Lex::cList->peekValue() == ' ')) {
 		Lex::cList->pop();
 	}
-	
+
 	/*
 		This is here to stop ANY errors happening.
 	*/
@@ -181,17 +181,17 @@ TokenNodePtr Lex::getToken() {
 		newNode->type = END_OF_FILE;
 		newNode->value = "";
 		newNode->lineNumber = -1;
-		
+
 		return newNode;
 	}
-	
+
 	/*
 		This is the string that collects the token value.
 	*/
 	string retValue = "";
-	
+
 	if (isAlphabetical(Lex::cList->peekValue())) {
-		
+
 		while (!Lex::cList->isEmpty() && (isAlphabetical(Lex::cList->peekValue()) || isNumerical(Lex::cList->peekValue()))) {
 			retValue += Lex::cList->peekValue();
 			Lex::cList->pop();
@@ -473,7 +473,7 @@ TokenNodePtr Lex::getToken() {
 		Lex::errorString += convertHex(Lex::cList->peekValue());
 		Lex::cList->pop();
 	}
-	
+
 	return newNode;
 }
 
@@ -483,23 +483,23 @@ string Lex::getNumber() {
 		342
 		0d90
 		0D342
-		
+
 		Hex:
 		0x3f
 		0h34
 		$3243
 		#5454
-		
+
 		Bin:
 		0b01110
 		0B101011
 	*/
-	
+
 	string retValue = "";
-	
+
 	switch (Lex::cList->peekValue()) {
 		case '0':
-			Lex:cList->pop();
+Lex:cList->pop();
 			if (!Lex::cList->isEmpty()) {
 				switch (Lex::cList->peekValue()) {
 					case 'd':
@@ -564,7 +564,7 @@ string Lex::getNumber() {
 			}
 			break;
 	}
-	
+
 	return retValue;
 }
 
@@ -574,7 +574,7 @@ void Lex::run() {
 		the TokenList. Part of a bug fix, see the end of this method.
 	*/
 	TOKEN_TYPE lastToken = 0;
-	
+
 	while (!Lex::errorState && !Lex::cList->isEmpty()) {
 		TokenNodePtr newPtr = Lex::getToken();
 		if (!Lex::errorState) {
@@ -582,7 +582,7 @@ void Lex::run() {
 			lastToken = newPtr->type;
 		}
 	}
-	
+
 	/* Bug fix, sometimes an END_OF_FILE token is not added to the end of the token list */
 	if (!Lex::errorState && lastToken != END_OF_FILE) {
 		TokenNodePtr newPtr = new TokenNode;

@@ -164,6 +164,9 @@ void testDW() {
 	printf("Attempt to run parser.\n");
 	pObj.run();
 	
+	if (pObj.checkState()) {
+		printf("ERROR:: %s\n", pObj.getError().c_str());
+	}
 	assert(pObj.checkState() == false);
 	
 	assert(bObj.getElement(0) == 0x45);

@@ -42,6 +42,8 @@ using namespace std;
 
 #include "../lex/tokenlist.hpp"
 #include "bytecode.hpp"
+#include "foundlist.hpp"
+#include "addresslist.hpp"
 #include "parser.hpp"
 
 void Z80Parser::init() {
@@ -458,8 +460,10 @@ void Z80Parser::run() {
 			Z80Parser::processOR();
 		} else if (Z80Parser::checkToken(XOR)) {
 			Z80Parser::processXOR();
-		} else {
-			Z80Parser::error("Invalid instruction.");
+		} else if (Z80Parser::checkToken(CP)) {
+			Z80Parser::processCP();
+		} else if (Z80Parser::checkToken(INC)) {
+			//Z80Parser::processINC();
 		}
 		
 		/*

@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 23/10/2012
+	date updated: 18/02/2013
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -315,8 +315,8 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = RRD;
 		} else if (!retValue.compare("RST") || !retValue.compare("Rst") || !retValue.compare("rst")) {
 			newNode->type = RST;
-		} else if (!retValue.compare("SBC") || !retValue.compare("Sbc") || !retValue.compare("sbc")) {
-			newNode->type = SBC;
+		} else if (!retValue.compare("SBC") || !retValue.compare("Sbc") || !retValue.compare("sbc") || !retValue.compare("SUBC") || !retValue.compare("Subc") || !retValue.compare("subc")) {
+			newNode->type = SUBC;
 		} else if (!retValue.compare("SCF") || !retValue.compare("Scf") || !retValue.compare("scf")) {
 			newNode->type = SCF;
 		} else if (!retValue.compare("SET") || !retValue.compare("Set") || !retValue.compare("set")) {
@@ -347,23 +347,25 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = H;
 		} else if (!retValue.compare("L") || !retValue.compare("l")) {
 			newNode->type = L;
-		} else if (!retValue.compare("BC") || !retValue.compare("bc")) {
+		} else if (!retValue.compare("BC") || !retValue.compare("bc") || !retValue.compare("Bc")) {
 			newNode->type = BC;
-		} else if (!retValue.compare("DE") || !retValue.compare("de")) {
+		} else if (!retValue.compare("DE") || !retValue.compare("de") || !retValue.compare("De")) {
 			newNode->type = DE;
-		} else if (!retValue.compare("HL") || !retValue.compare("hl")) {
+		} else if (!retValue.compare("HL") || !retValue.compare("hl") || !retValue.compare("Hl")) {
 			newNode->type = HL;
 		} else if (!retValue.compare("I") || !retValue.compare("i")) {
 			newNode->type = I;
 		} else if (!retValue.compare("R") || !retValue.compare("r")) {
 			newNode->type = R;
-		} else if (!retValue.compare("IX") || !retValue.compare("ix")) {
+		} else if (!retValue.compare("IX") || !retValue.compare("ix") || !retValue.compare("Ix")) {
 			newNode->type = IX;
-		} else if (!retValue.compare("IY") || !retValue.compare("iy")) {
+		} else if (!retValue.compare("IY") || !retValue.compare("iy") || !retValue.compare("Iy")) {
 			newNode->type = IY;
-		} else if (!retValue.compare("PC") || !retValue.compare("pc")) {
+		} else if (!retValue.compare("PC") || !retValue.compare("pc") || !retValue.compare("Pc")) {
 			newNode->type = PC;
-		} else if (!retValue.compare("SP") || !retValue.compare("sp")) {
+		} else if (!retValue.compare("SP") || !retValue.compare("sp") || !retValue.compare("Sp")) {
+			newNode->type = SP;
+		} else if (!retValue.compare("AF") || !retValue.compare("af") || !retValue.compare("Af")) {
 			newNode->type = SP;
 		} else if (!retValue.compare("CPU") || !retValue.compare("Cpu") || !retValue.compare("cpu")) {
 			newNode->type = CPU;

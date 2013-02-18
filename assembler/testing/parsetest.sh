@@ -16,7 +16,10 @@ g++ ../parser/instructions/SUBinstr.cpp -c
 g++ ../parser/instructions/SUBCinstr.cpp -c
 g++ ../parser/instructions/ANDinstr.cpp -c
 g++ ../parser/instructions/ORinstr.cpp -c
-g++ characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o testparser.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o unittest
+g++ ../parser/instructions/XORinstr.cpp -c
+g++ ../parser/instructions/CPinstr.cpp -c
+g++ ../parser/instructions/INCinstr.cpp -c
+g++ INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o testparser.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o unittest
 ./unittest
 rm characterlist.o 
 rm tokenlist.o 
@@ -36,5 +39,8 @@ rm SUBinstr.o
 rm SUBCinstr.o
 rm ANDinstr.o
 rm ORinstr.o
+rm XORinstr.o
+rm CPinstr.o
+rm INCinstr.o
 rm unittest
 

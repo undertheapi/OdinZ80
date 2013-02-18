@@ -27,9 +27,18 @@
 	either expressed or implied, of the FreeBSD Project.
 */
 
+/*
+	file name: parser.cpp
+	date created: 28/09/2012
+	date updated: 18/02/2013
+	author: Gareth Richardson
+	description: This is the main method for the zdis program.
+*/
+
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <fstream>
 #include <string>
 
 /*
@@ -52,6 +61,10 @@ using namespace std;
 ByteFile fileData;
 
 BYTE convertFromHex(char* array);
+
+#define BUFFER_SIZE 1024 * 1024
+
+unsigned char fileBuffer[BUFFER_SIZE];
 
 int main( int argc, char *argv[]) {
 	if (argc == 1) {
@@ -135,7 +148,7 @@ int main( int argc, char *argv[]) {
 			} else {
 				if (strlen(hexString) % 2 != 0) {
 					strcat(hexString, "0");
-					printf("ZDIS: Added a \"0\" to the end of the string to make it even.");
+					printf("ZDIS: Added a \"0\" to the end of the string to make it even.\n");
 				}
 				index = 0;
 				ByteFile smallList;
@@ -154,6 +167,7 @@ int main( int argc, char *argv[]) {
 			}
 		} else {
 			//we have a file
+			/*
 #ifdef __linux__
 
 #endif
@@ -161,6 +175,34 @@ int main( int argc, char *argv[]) {
 #ifdef _WIN32
 
 #endif
+			*/
+			ifstream file(inputFile, ios::binary);
+			if (!file) {
+				printf("ZDIS: The file \"%s\" does not exist.\n", inputFile);
+			} else {
+				file.read((char*)&fileBuffer[0], BUFFER_SIZE);
+				const unsigned int bytes = file.gcount();
+				ByteFile bList;
+				int index = 0;
+				while (index < bytes) {
+					bList.push(convertFromHex((char*)&fileBuffer[index]));
+					index++;
+				}
+				if (outputFile == 0) {
+					while (!bList.isEmpty()) {
+						string val = runZ80(bList);
+						printf("%s", val.c_str());	//No need to at a NEW LINE character.
+					}
+				} else {
+					ofstream outFile(outputFile);
+					while (!bList.isEmpty()) {
+						string val = runZ80(bList);
+						outFile << val.c_str();
+					}
+					outFile.close();
+				}
+				file.close();
+			}
 		}
 	}
 	exit(0);

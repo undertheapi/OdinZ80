@@ -62,6 +62,9 @@ class Z80Parser {
 			Keeps track of the address in the program.
 		*/
 		int address;
+		
+		AddressList aList;
+		FoundList fList;
 
 		/*
 			Put this into the constructor.
@@ -93,6 +96,7 @@ class Z80Parser {
 		void processAND();
 		void processOR();
 		void processXOR();
+		void processCP();
 
 	public:
 		Z80Parser(TokenList* tPointer, ByteCode* bPointer);

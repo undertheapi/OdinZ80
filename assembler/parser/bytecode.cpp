@@ -52,10 +52,14 @@ ByteCode::ByteCode() {
 	ByteCode::init();
 }
 
+int ByteCode::getSize() {
+	return ByteCode::size;
+}
+
 void ByteCode::pushElement(unsigned char value) {
 	ByteNodePtr newNode = new ByteNode;
 	newNode->byte = value;
-	newNode->byte = NULL;
+	newNode->next = NULL;
 	if (ByteCode::size == 0) {
 		ByteCode::head = newNode;
 		ByteCode::tail = newNode;
@@ -81,6 +85,8 @@ void ByteCode::setElement(int index, unsigned char value) {
 			counter++;
 		}
 		tempNode->byte = value;
+	} else {
+		ByteCode::pushElement(value);
 	}
 }
 
@@ -93,3 +99,4 @@ unsigned char ByteCode::getElement(int index) {
 	}
 	return tempNode->byte;
 }
+

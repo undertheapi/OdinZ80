@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 23/10/2012
+	date updated: 18/02/2013
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it.
@@ -52,38 +52,241 @@ void Z80Parser::init() {
 	Z80Parser::address = 0;
 }
 
-void Z80Parser::checkToken(TOKEN_TYPE tok) {
+bool Z80Parser::checkToken(TOKEN_TYPE tok) {
 	if (!Z80Parser::errorState) {
 		if (!Z80Parser::tList->isEmpty()) {
 			if (Z80Parser::tList->peekTokenType() != tok) {
-				Z80Parser::errorState = true;
+				return false;
+			} else {
+				Z80Parser::tList->pop();
+				return true;
 			}
 		} else {
-			Z80Parser::errorState = true;
+			return false;
 		}
 	}
+	return false;
 }
 
-void Z80Parser::checkEightBitNumber(unsigned char &number) {
+bool Z80Parser::checkAtom(string &value) {
+	if (!Z80Parser::errorState) {
+		if (!Z80Parser::tList->isEmpty()) {
+			if (Z80Parser::tList->peekTokenType() != ATOM) {
+				return false;
+			} else {
+				value = Z80Parser::tList->peekValue();
+				Z80Parser::tList->pop();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Z80Parser::checkEightBitNumber(unsigned char &number) {
 	if (!Z80Parser::errorState) {
 		if (!Z80Parser::tList->isEmpty()) {
 			if (Z80Parser::tList->peekTokenType() == NUMBER) {
-				string tokStr = Z80Parser::tList->peekValue();
-
-				/*
-					Processing the string here to make sure that
-					it is an 8 bit value.
-				*/
-				if (tokStr[0] == 'd') {
-
+				string value = Z80Parser::tList->peekValue();
+				number = 0;
+				if (value[0] == 'd') {
+					if (value.length() >= 2 && value.length() <= 4) {
+						int index = value.length() - 1;
+						int base = 1;
+						while (index > 0) {
+							number += (value[index] - 48) * base;
+							base *= 10;
+							index--;
+						}
+						Z80Parser::tList->pop();
+						return true;
+					} else {
+						return false;
+					}
+				} else if (value[0] == 'h') {
+					if (value.length() >= 2 && value.length() <= 3) {
+						int index = value.length() - 1;
+						int base = 1;
+						while (index > 0) {
+							if (value[index] >= 'a' && value[index] <= 'f') {
+								number += (value[index] - 87) * base;
+							} else if (value[index] >= 'A' && value[index] <= 'F') {
+								number += (value[index] - 55) * base;
+							} else {
+								number += (value[index] - 48) * base;
+							}
+							base *= 16;
+							index--;
+						}
+						Z80Parser::tList->pop();
+						return true;
+					} else {
+						return false;
+					}
+				} else if (value[0] == 'b') {
+					if (value.length() >= 2 && value.length() <= 9) {
+						int index = value.length() - 1;
+						int base = 1;
+						while (index > 0) {
+							number += (value[index] - 48) * base;
+							base *= 2;
+							index--;
+						}
+						Z80Parser::tList->pop();
+						return true;
+					} else {
+						return false;
+					}
+				}else {
+					return false;
 				}
 			} else {
-				Z80Parser::errorState = true;
+				return false;
 			}
 		} else {
 			Z80Parser::errorState = true;
+			Z80Parser::errorString = "Byte is out of range.";
 		}
 	}
+	return false;
+}
+
+bool Z80Parser::checkSixteenBitNumber(unsigned short &number) {
+	if (!Z80Parser::errorState) {
+		if (!Z80Parser::tList->isEmpty()) {
+			if (Z80Parser::tList->peekTokenType() == NUMBER) {
+				number = 0;
+				string value = Z80Parser::tList->peekValue();
+				if (value[0] == 'd') {
+					if (value.length() >= 2 && value.length() <= 6) {
+						int index = value.length() - 1;
+						int base = 1;
+						while (index > 0) {
+							number += (value[index] - 48) * base;
+							base *= 10;
+							index--;
+						}
+						Z80Parser::tList->pop();
+						return true;
+					} else {
+						Z80Parser::errorString = "Short is out of range.";
+						Z80Parser::errorState = true;
+					}
+				} else if (value[0] == 'h') {
+					if (value.length() >= 2 && value.length() <= 5) {
+						int index = value.length() - 1;
+						int base = 1;
+						while (index > 0) {
+							if (value[index] >= 'a' && value[index] <= 'f') {
+								number += (value[index] - 87) * base;
+							} else if (value[index] >= 'A' && value[index] <= 'F') {
+								number += (value[index] - 55) * base;
+							} else {
+								number += (value[index] - 48) * base;
+							}
+							base *= 16;
+							index--;
+						}
+						Z80Parser::tList->pop();
+						return true;
+					} else {
+						Z80Parser::errorString = "Short is out of range.";
+						Z80Parser::errorState = true;
+					}
+				} else if (value[0] == 'b') {
+					if (value.length() >= 2 && value.length() <= 17) {
+						int index = value.length() - 1;
+						int base = 1;
+
+						while (index > 0) {
+							number += (value[index] - 48) * base;
+							base *= 2;
+							index--;
+						}
+						Z80Parser::tList->pop();
+						return true;
+					} else {
+						Z80Parser::errorString = "Short is out of range.";
+						Z80Parser::errorState = true;
+					}
+				} else {
+					Z80Parser::errorString = "Short is out of range.";
+					Z80Parser::errorState = true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+bool Z80Parser::checkStringToken(string &value) {
+	if (!Z80Parser::errorState) {
+		if (!Z80Parser::tList->isEmpty()) {
+			if (Z80Parser::tList->peekTokenType() == STRING) {
+				value = Z80Parser::tList->peekValue();
+				Z80Parser::tList->pop();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void Z80Parser::addCode(unsigned char byte) {
+	Z80Parser::bCode->pushElement(byte);
+	Z80Parser::address++;
+}
+
+void Z80Parser::addCode(unsigned char byte1, unsigned char byte2) {
+	Z80Parser::bCode->pushElement(byte1);
+	Z80Parser::bCode->pushElement(byte2);
+	Z80Parser::address += 2;
+}
+
+void Z80Parser::addCode(unsigned char byte1, unsigned char byte2, unsigned char byte3) {
+	Z80Parser::bCode->pushElement(byte1);
+	Z80Parser::bCode->pushElement(byte2);
+	Z80Parser::bCode->pushElement(byte3);
+	Z80Parser::address += 3;
+}
+
+void Z80Parser::addAddress(string atom) {
+	if (Z80Parser::fList.doesNameExist(atom)) {
+		int index = 0;
+		while (index < Z80Parser::fList.getSize()) {
+			if (Z80Parser::fList.getName(index).compare(atom) == 0) {
+				break;
+			}
+			index++;
+		}
+		unsigned short num16 = Z80Parser::fList.getAddress(index);
+		Z80Parser::addCode((unsigned char) num16, (unsigned char) (num16 >> 8));
+	} else {
+		Z80Parser::aList.addAddress(atom, Z80Parser::address);
+		Z80Parser::addCode(0x00, 0x00);
+	}
+}
+
+string intToString(int value) {
+	if (value == 0) {
+		return "0";
+	}
+	
+	string retValue = "";
+	
+	while (value > 0) {
+		retValue += value % 10 + 48;
+		value /= 10;
+	}
+	
+	return retValue;
+}
+
+void Z80Parser::error(string value) {
+	Z80Parser::errorState = true;
+	Z80Parser::errorString = intToString(Z80Parser::tList->peekLineNumber());
+	Z80Parser::errorString += "::";
+	Z80Parser::errorString += value;
 }
 
 Z80Parser::Z80Parser(TokenList* tPointer, ByteCode* bPointer) {
@@ -93,7 +296,184 @@ Z80Parser::Z80Parser(TokenList* tPointer, ByteCode* bPointer) {
 }
 
 void Z80Parser::run() {
-	while (!Z80Parser::errorState && !Z80Parser::tList->peekTokenType() == END_OF_FILE) {
-
+	string strValue;
+	while (!Z80Parser::errorState && !Z80Parser::checkToken(END_OF_FILE) && !Z80Parser::tList->isEmpty()) {
+		if (Z80Parser::checkToken(DB)) {
+			unsigned char retValue;
+			if (Z80Parser::checkEightBitNumber(retValue)) {
+				if (Z80Parser::checkToken(NEW_LINE)) {
+					Z80Parser::addCode(retValue);
+				} else if (Z80Parser::checkToken(COMMA)) {
+					Z80Parser::addCode(retValue);
+					while (!Z80Parser::errorState) {
+						if (Z80Parser::checkEightBitNumber(retValue)) {
+							if (Z80Parser::checkToken(NEW_LINE)) {
+								Z80Parser::addCode(retValue);
+								break;
+							} else if (Z80Parser::checkToken(COMMA)) {
+								Z80Parser::addCode(retValue);
+							} else {
+								Z80Parser::error("You must declare a byte array separated by commas.");
+							}
+						} else {
+							Z80Parser::error("DB must declare a bytes.");
+						}
+					}
+				} else {
+					Z80Parser::error("DB must end with a new line.");
+				}
+			} else if (Z80Parser::checkStringToken(strValue)) {
+				if (Z80Parser::checkToken(NEW_LINE)) {
+					for (int index = 0; index < strValue.length(); index++) {
+						Z80Parser::addCode((unsigned char) strValue[index]);
+					}
+				} else {
+					Z80Parser::error("DB must end with a new line.");
+				}
+			} else {
+				Z80Parser::error("DB must declare a byte or an array of bytes.");
+			}
+		} else if (Z80Parser::checkToken(DW)) {
+			unsigned short retValue;
+			if (Z80Parser::checkSixteenBitNumber(retValue)) {
+				if (Z80Parser::checkToken(NEW_LINE)) {
+					Z80Parser::addCode((unsigned char) retValue, (unsigned char) (retValue >> 8));
+				} else if (Z80Parser::checkToken(COMMA)) {
+					Z80Parser::addCode((unsigned char) retValue, (unsigned char) (retValue >> 8));
+					while (!Z80Parser::errorState) {
+						if (Z80Parser::checkSixteenBitNumber(retValue)) {
+							if (Z80Parser::checkToken(NEW_LINE)) {
+								Z80Parser::addCode((unsigned char) retValue, (unsigned char) (retValue >> 8));
+								break;
+							} else if (Z80Parser::checkToken(COMMA)) {
+								Z80Parser::addCode((unsigned char) retValue, (unsigned char) (retValue >> 8));
+							} else {
+								Z80Parser::error("You must declare a Word array separated by commas.");
+							}
+						} else {
+							Z80Parser::error("DW must declare a bytes.");
+						}
+					}
+				} else {
+					Z80Parser::error("DW must end with a new line.");
+				}
+			} else {
+				Z80Parser::error("DW must declare a Word or an array of Words.");
+			}
+		} else if (Z80Parser::checkToken(ORG)) {
+			unsigned short newAddress;
+			if (Z80Parser::checkSixteenBitNumber(newAddress)) {
+				if (Z80Parser::checkToken(NEW_LINE)) {
+					Z80Parser::address = newAddress;
+				} else {
+					Z80Parser::error("ORG must end in a new line.");
+				}
+			} else {
+				Z80Parser::error("ORG must be followed by a Word for the Address.");
+			}
+		} else if (Z80Parser::checkToken(REP)) {
+			unsigned char count;
+			unsigned char byteValue;
+			unsigned short shortValue;
+			if (Z80Parser::checkEightBitNumber(count)) {
+				if (Z80Parser::checkToken(COMMA)) {
+					if (Z80Parser::checkEightBitNumber(byteValue)) {
+						//Got a byte to repeat.
+						if (Z80Parser::checkToken(NEW_LINE)) {
+							while (count != 0) {
+								Z80Parser::addCode(byteValue);
+								count--;
+							}
+						} else {
+							Z80Parser::error("REP is two parameters then a new line.");
+						}
+					} else if (Z80Parser::checkSixteenBitNumber(shortValue)) {
+						//Got a Short to repeat.
+						if (Z80Parser::checkToken(NEW_LINE)) {
+							while (count != 0) {
+								Z80Parser::addCode((unsigned char) shortValue, (unsigned char) (shortValue >> 8));
+								count--;
+							}
+						} else {
+							Z80Parser::error("REP is two parameters then a new line.");
+						}
+					} else {
+						Z80Parser::error("REP is two numeric parameters then a new line.");
+					}
+				} else {
+					Z80Parser::error("REP is two parameters then a new line separated by a comma.");
+				}
+			} else {
+				Z80Parser::error("REP must start with a byte that signifies how many times the value should repeat.");
+			}
+		} else if (Z80Parser::checkAtom(strValue)) {
+			if (Z80Parser::checkToken(COLON)) {
+				if (!Z80Parser::fList.doesNameExist(strValue)) {
+				
+					Z80Parser::fList.addAddress(strValue, Z80Parser::address);
+					Z80Parser::aList.processAddress(strValue, Z80Parser::address, bCode);
+				} else {
+					string val = "The Address \"";
+					val += strValue;
+					val += "\" already exists.";
+					Z80Parser::error(val);
+				}
+			} else {
+				Z80Parser::error("An Address has to be followed by a colon.");
+			}
+			
+		} else if (Z80Parser::checkToken(LD)) {
+			Z80Parser::processLD();
+		} else if (Z80Parser::checkToken(PUSH)) {
+			Z80Parser::processPUSH();
+		} else if (Z80Parser::checkToken(EXX)) {
+			Z80Parser::addCode(0xd9);
+		} else if (Z80Parser::checkToken(LDI)) {
+			Z80Parser::addCode(0xed, 0xa0);
+		} else if (Z80Parser::checkToken(LDIR)) {
+			Z80Parser::addCode(0xed, 0xb0);
+		} else if (Z80Parser::checkToken(LDD)) {
+			Z80Parser::addCode(0xed, 0xa8);
+		} else if (Z80Parser::checkToken(LDDR)) {
+			Z80Parser::addCode(0xed, 0xb8);
+		} else if (Z80Parser::checkToken(CPI)) {
+			Z80Parser::addCode(0xed, 0xa1);
+		} else if (Z80Parser::checkToken(CPIR)) {
+			Z80Parser::addCode(0xed, 0xb1);
+		} else if (Z80Parser::checkToken(CPD)) {
+			Z80Parser::addCode(0xed, 0xa9);
+		} else if (Z80Parser::checkToken(CPDR)) {
+			Z80Parser::addCode(0xed, 0xb9);
+		} else if (Z80Parser::checkToken(ADD)) {
+			Z80Parser::processADD();
+		} else if (Z80Parser::checkToken(ADC)) {
+			Z80Parser::processADC();
+		} else if (Z80Parser::checkToken(SUB)) {
+			Z80Parser::processSUB();
+		} else if (Z80Parser::checkToken(SUBC)) {
+			Z80Parser::processSUBC();
+		} else if (Z80Parser::checkToken(AND)) {
+			Z80Parser::processAND();
+		} else if (Z80Parser::checkToken(OR)) {
+			Z80Parser::processOR();
+		} else if (Z80Parser::checkToken(XOR)) {
+			Z80Parser::processXOR();
+		} else {
+			Z80Parser::error("Invalid instruction.");
+		}
+		
+		/*
+			This is for a situation were there is a line with no instruction:
+		*/
+		Z80Parser::checkToken(NEW_LINE);
 	}
 }
+
+bool Z80Parser::checkState() {
+	return Z80Parser::errorState;
+}
+
+string Z80Parser::getError() {
+	return Z80Parser::errorString;
+}
+

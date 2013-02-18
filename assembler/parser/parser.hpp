@@ -30,7 +30,7 @@
 /*
 	file name: parser.hpp
 	date created: 28/09/2012
-	date updated: 23/10/2012
+	date updated: 18/02/13
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it.
@@ -69,9 +69,30 @@ class Z80Parser {
 		void init();
 
 
-		void checkToken(TOKEN_TYPE tok);
-		void checkEightBitNumber(unsigned char &number);
-		void checkSixteenButNumber(unsigned short &number);
+		bool checkToken(TOKEN_TYPE tok);
+		bool checkEightBitNumber(unsigned char &number);
+		bool checkSixteenBitNumber(unsigned short &number);
+		bool checkStringToken(string &value);
+		bool checkAtom(string &value);
+		
+		void addCode(unsigned char);
+		void addCode(unsigned char, unsigned char);
+		void addCode(unsigned char, unsigned char, unsigned char);
+		
+		void addAddress(string atom);
+		void error(string value);
+		
+		void processLD();
+		void processPUSH();
+		void processPOP();
+		void processEX();
+		void processADD();
+		void processADC();
+		void processSUB();
+		void processSUBC();
+		void processAND();
+		void processOR();
+		void processXOR();
 
 	public:
 		Z80Parser(TokenList* tPointer, ByteCode* bPointer);

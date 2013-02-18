@@ -30,7 +30,7 @@
 /*
 	file name: tokentype.hpp
 	date created: 3/09/2012
-	date updated: 26/09/2012
+	date updated: 18/02/2013
 	author: Gareth Richardson
 	description: This is a file of definitions for the types of tokens that are valid
 	in the assembler. The TOkenNode data structure stores the type as an unsigned char,
@@ -98,7 +98,7 @@
 #define RRCA 55
 #define RRD 56
 #define RST 57
-#define SBC 58
+#define SUBC 58
 #define SCF 59
 #define SET 60
 #define SLA 61
@@ -127,6 +127,7 @@
 #define IY 80
 #define PC 81
 #define SP 82
+#define AF 153
 
 /*
 	these are assembler instructions:

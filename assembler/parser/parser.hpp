@@ -97,6 +97,8 @@ class Z80Parser {
 		void processOR();
 		void processXOR();
 		void processCP();
+		void processINC();
+		void processDEC();
 
 	public:
 		Z80Parser(TokenList* tPointer, ByteCode* bPointer);

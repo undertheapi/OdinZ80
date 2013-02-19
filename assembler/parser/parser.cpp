@@ -464,7 +464,7 @@ void Z80Parser::run() {
 			Z80Parser::processCP();
 		} else if (Z80Parser::checkToken(INC)) {
 			Z80Parser::processINC();
-		} else if (Z80Parser::checkToken(INC)) {
+		} else if (Z80Parser::checkToken(DEC)) {
 			Z80Parser::processDEC();
 		}
 		

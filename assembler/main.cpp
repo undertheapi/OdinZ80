@@ -30,7 +30,7 @@
 /*
 	file name: main.cpp
 	date created: 18/02/2012
-	date updated: 18/02/2013
+	date updated: 19/02/2013
 	author: Gareth Richardson
 	description: This is the main method for the zdis program.
 */
@@ -55,13 +55,19 @@
 
 using namespace std;
 
-#include "../character/characterlist.hpp"
-#include "../lex/tokenlist.hpp"
-#include "../lex/lex.hpp"
-#include "../parser/bytecode.hpp"
-#include "../parser/addresslist.hpp"
-#include "../parser/foundlist.hpp"
-#include "../parser/parser.hpp"
+#include "character/characterlist.hpp"
+#include "lex/tokenlist.hpp"
+#include "lex/lex.hpp"
+#include "parser/bytecode.hpp"
+#include "parser/addresslist.hpp"
+#include "parser/foundlist.hpp"
+#include "parser/parser.hpp"
+
+ifstream::pos_type size;
+char * memblock;
+char backupName[] = "output.bin";
+
+//unsigned char* asBytes(
 
 int main(int argc, char *argv[]) {
 	if (argc == 1) {
@@ -69,6 +75,88 @@ int main(int argc, char *argv[]) {
 	} else {
 		char* inputFile = 0;
 		char* outputFile = 0;
+		int opt = getopt(argc, argv, "o:");
+		//printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.\n");
+		while (opt != -1) {
+			switch(opt) {
+				case 'o':
+					outputFile = optarg;
+					break;
+				case ':':
+					printf("ODIN: There is an option that needs a value in the command prompt.\n");
+					//get out of system ASAP!
+					exit(0);
+					break;
+				case '?':
+					printf("ODIN: There is an unknown option \'%c\' in the command prompt.\n", opt);
+					exit(0);
+					break;
+			}
+			opt = getopt(argc, argv, "o:");
+		}
+		
+		if (optind != -1) {
+			inputFile = argv[optind];
+		} else {
+			printf("ODIN: No input file has been specified.\n");
+			exit(0);
+		}
+		
+		if (outputFile == 0) {
+			outputFile = &backupName[0];
+		}
+		
+		ifstream file(inputFile, ios::binary);
+		if (!file) {
+			printf("ODIN: The file \"%s\" does not exist.\n", inputFile);
+			exit(0);
+		}
+		
+    	CharacterList cList;
+    	
+    	char val;
+    	while (file.read(static_cast<char*>(&val), sizeof(unsigned char))) {
+    		cList.push(val);
+    	}
+    	
+    	file.close();
+    	
+    	
+    	if (cList.errorState) {
+    		printf("ODIN: Invalid character in the file.\n");
+    		exit(0);
+    	}
+    	
+    	cList.finishedFile();
+    	
+    	TokenList tList;
+	
+		Lex lexObj(&cList, &tList);
+	
+		lexObj.run();
+		
+		if (lexObj.checkForError()) {
+			printf("%s\n", lexObj.getError().c_str());
+			exit(0);
+		}
+		
+		ByteCode bObj;
+		
+		Z80Parser pObj(&tList, &bObj);
+		
+		pObj.run();
+		
+		if (pObj.checkState()) {
+			printf("%s\n", pObj.getError().c_str());
+			exit(0);
+		}
+		
+		ByteCode bCode;
+		ofstream out(outputFile, ios::binary);
+		for (int index = 0; index < bCode.getSize(); index++) {
+			out.put(bCode.getElement(index));
+		}
+		out.close();
 	}
 	return 0;
 }

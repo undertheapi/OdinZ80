@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 18/02/2013
+	date updated: 20/02/2013
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -299,6 +299,8 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = RL;
 		} else if (!retValue.compare("RLA") || !retValue.compare("Rla") || !retValue.compare("rla")) {
 			newNode->type = RLA;
+		} else if (!retValue.compare("RLC") || !retValue.compare("Rlc") || !retValue.compare("rlc")) {
+			newNode->type = RLC;
 		} else if (!retValue.compare("RLCA") || !retValue.compare("Rlca") || !retValue.compare("rlca")) {
 			newNode->type = RLCA;
 		} else if (!retValue.compare("RLD") || !retValue.compare("Rld") || !retValue.compare("rld")) {

@@ -32,7 +32,7 @@
 	date created: 20/02/2013
 	date updated: 20/02/2013
 	author: Gareth Richardson
-	description: The object file for the processRLC() method.
+	description: The object file for the processRL() method.
 */
 
 #include <string>
@@ -45,31 +45,31 @@ using namespace std;
 #include "../addresslist.hpp"
 #include "../parser.hpp"
 
-void Z80Parser::processRLC() {
+void Z80Parser::processRL() {
 	unsigned char num8;
 	if (Z80Parser::checkToken(A)) {
-		Z80Parser::addCode(0xcb, 0x07);
+		Z80Parser::addCode(0xcb, 0x17);
 	} else if (Z80Parser::checkToken(B)) {
-		Z80Parser::addCode(0xcb, 0x00);
+		Z80Parser::addCode(0xcb, 0x10);
 	} else if (Z80Parser::checkToken(C)) {
-		Z80Parser::addCode(0xcb, 0x01);
+		Z80Parser::addCode(0xcb, 0x11);
 	} else if (Z80Parser::checkToken(D)) {
-		Z80Parser::addCode(0xcb, 0x02);
+		Z80Parser::addCode(0xcb, 0x12);
 	} else if (Z80Parser::checkToken(E)) {
-		Z80Parser::addCode(0xcb, 0x03);
+		Z80Parser::addCode(0xcb, 0x13);
 	} else if (Z80Parser::checkToken(H)) {
-		Z80Parser::addCode(0xcb, 0x04);
+		Z80Parser::addCode(0xcb, 0x14);
 	} else if (Z80Parser::checkToken(L)) {
-		Z80Parser::addCode(0xcb, 0x05);
+		Z80Parser::addCode(0xcb, 0x15);
 	} else if (Z80Parser::checkToken(LEFT_BRACKET)) {
 		if (Z80Parser::checkToken(HL)) {
-			Z80Parser::addCode(0xcb, 0x06);
+			Z80Parser::addCode(0xcb, 0x16);
 		} else if (Z80Parser::checkToken(IX) && Z80Parser::checkToken(PLUS) && Z80Parser::checkEightBitNumber(num8)) {
 			Z80Parser::addCode(0xdd, 0xcb);
-			Z80Parser::addCode(num8, 0x06);
+			Z80Parser::addCode(num8, 0x16);
 		} else if (Z80Parser::checkToken(IY) && Z80Parser::checkToken(PLUS) && Z80Parser::checkEightBitNumber(num8)) {
 			Z80Parser::addCode(0xfd, 0xcb);
-			Z80Parser::addCode(num8, 0x06);
+			Z80Parser::addCode(num8, 0x16);
 		} else {
 			Z80Parser::error("The address is pointer to by either [HL], [IX + 8 bit offset] or [IY + 8 bit offset] only.");
 		}
@@ -78,11 +78,11 @@ void Z80Parser::processRLC() {
 			Z80Parser::error("Missing bracket.");
 		}
 	} else {
-		Z80Parser::error("The RLC instruction parameter is an 8-bit register or a pointer to an 8-bit number.");
+		Z80Parser::error("The RL instruction parameter is an 8-bit register or a pointer to an 8-bit number.");
 	}
 	
 	if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
-		Z80Parser::error("The RLC instruction has to end in a new line.");
+		Z80Parser::error("The RL instruction has to end in a new line.");
 	}
 }
 

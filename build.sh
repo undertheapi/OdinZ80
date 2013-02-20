@@ -27,8 +27,16 @@ g++ assembler/parser/instructions/INCinstr.cpp -c
 g++ assembler/parser/instructions/DECinstr.cpp -c
 g++ assembler/parser/instructions/RLCinstr.cpp -c
 g++ assembler/parser/instructions/RLinstr.cpp -c
+g++ assembler/parser/instructions/RRCinstr.cpp -c
+g++ assembler/parser/instructions/RRinstr.cpp -c
+g++ assembler/parser/instructions/SLAinstr.cpp -c
+g++ assembler/parser/instructions/SRAinstr.cpp -c
 g++ assembler/main.cpp -c
-g++ main.o RLinstr.o RLCinstr.o DECinstr.o INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o odin
+g++ main.o SLAinstr.o SRAinstr.o RRinstr.o RRCinstr.o RLinstr.o RLCinstr.o DECinstr.o INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o odin
+rm SLAinstr.o
+rm SRAinstr.o
+rm RRinstr.o
+rm RRCinstr.o
 rm characterlist.o 
 rm tokenlist.o 
 rm lex.o 

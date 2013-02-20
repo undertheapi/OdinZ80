@@ -128,20 +128,7 @@ void Z80Parser::processLD() {
 					}
 				} else if (Z80Parser::checkAtom(atom)) {
 					Z80Parser::addCode((unsigned char) 0x3a);
-					if (Z80Parser::fList.doesNameExist(atom)) {
-						int index = 0;
-						while (index < Z80Parser::fList.getSize()) {
-							if (Z80Parser::fList.getName(index).compare(atom) == 0) {
-								break;
-							}
-							index++;
-						}
-						num16 = Z80Parser::fList.getAddress(index);
-						Z80Parser::addCode((unsigned char) num16, (unsigned char) (num16 >> 8));
-					} else {
-						Z80Parser::aList.addAddress(atom, Z80Parser::address + 1);
-						Z80Parser::addCode(0x00, 0x00);
-					}
+					Z80Parser::addAddress(atom);
 					/*
 						Now for the rest of the checking:
 					*/

@@ -556,6 +556,14 @@ void Z80Parser::run() {
 			Z80Parser::processRLC();
 		} else if (Z80Parser::checkToken(RL)) {
 			Z80Parser::processRL();
+		} else if (Z80Parser::checkToken(RRC)) {
+			Z80Parser::processRRC();
+		} else if (Z80Parser::checkToken(RR)) {
+			Z80Parser::processRR();
+		} else if (Z80Parser::checkToken(SLA)) {
+			Z80Parser::processSLA();
+		} else if (Z80Parser::checkToken(SRA)) {
+			Z80Parser::processSRA();
 		} else {
 			Z80Parser::error("Incorrect instruction.");
 		}

@@ -466,6 +466,10 @@ void Z80Parser::run() {
 			Z80Parser::processINC();
 		} else if (Z80Parser::checkToken(DEC)) {
 			Z80Parser::processDEC();
+		} else if (Z80Parser::checkToken(NEW_LINE)) {
+			//Do nothing!!!!
+		} else {
+			error("Incorrect instruction.");
 		}
 		
 		/*

@@ -151,10 +151,18 @@ int main(int argc, char *argv[]) {
 			exit(0);
 		}
 		
-		ByteCode bCode;
-		ofstream out(outputFile, ios::binary);
-		for (int index = 0; index < bCode.getSize(); index++) {
-			out.put(bCode.getElement(index));
+		ofstream out;
+		out.open(outputFile, ios::out | ios::binary);
+		if(!out.is_open()) {
+			printf("ODIN: Cannot open the file %s", outputFile);
+			exit(0);
+		}
+		
+		
+		for (int index = 0; index < bObj.getSize(); index++) {
+			//char val = bObj.getElement(index);
+			out.put(bObj.getElement(index));
+			//out << bCode.getElement(index);
 		}
 		out.close();
 	}

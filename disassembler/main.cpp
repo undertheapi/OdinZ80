@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 18/02/2013
+	date updated: 20/02/2013
 	author: Gareth Richardson
 	description: This is the main method for the zdis program.
 */
@@ -180,14 +180,18 @@ int main( int argc, char *argv[]) {
 			if (!file) {
 				printf("ZDIS: The file \"%s\" does not exist.\n", inputFile);
 			} else {
-				file.read((char*)&fileBuffer[0], BUFFER_SIZE);
-				const unsigned int bytes = file.gcount();
+				//file.read((char*)&fileBuffer[0], BUFFER_SIZE);
+				//const unsigned int bytes = file.gcount();
 				ByteFile bList;
-				int index = 0;
-				while (index < bytes) {
-					bList.push(convertFromHex((char*)&fileBuffer[index]));
-					index++;
-				}
+				//int index = 0;
+				//while (index < bytes) {
+				//	bList.push(convertFromHex((char*)&fileBuffer[index]));
+				//	index++;
+				//}
+				char val;
+    			while (file.read(static_cast<char*>(&val), sizeof(unsigned char))) {
+    				bList.push(val);
+    			}
 				if (outputFile == 0) {
 					while (!bList.isEmpty()) {
 						string val = runZ80(bList);

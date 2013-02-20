@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 18/02/2013
+	date updated: 20/02/2013
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it.
@@ -299,6 +299,7 @@ Z80Parser::Z80Parser(TokenList* tPointer, ByteCode* bPointer) {
 
 void Z80Parser::run() {
 	string strValue;
+	
 	while (!Z80Parser::errorState && !Z80Parser::checkToken(END_OF_FILE) && !Z80Parser::tList->isEmpty()) {
 		if (Z80Parser::checkToken(DB)) {
 			unsigned char retValue;
@@ -468,8 +469,93 @@ void Z80Parser::run() {
 			Z80Parser::processDEC();
 		} else if (Z80Parser::checkToken(NEW_LINE)) {
 			//Do nothing!!!!
+		} else if (Z80Parser::checkToken(DAA)) {
+			Z80Parser::addCode(0x27);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("DAA instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(CPL)) {
+			Z80Parser::addCode(0x2f);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("CPL instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(NEG)) {
+			Z80Parser::addCode(0xed, 0x44);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("NEG instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(CCF)) {
+			Z80Parser::addCode(0x3f);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("CCF instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(SCF)) {
+			Z80Parser::addCode(0x37);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("SCF instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(NOP)) {
+			Z80Parser::addCode(0x00);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("NOP instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(HALT)) {
+			Z80Parser::addCode(0x76);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("HALT instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(DI)) {
+			Z80Parser::addCode(0xf3);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("DI instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(EI)) {
+			Z80Parser::addCode(0xfb);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("EI instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(IM)) {
+			unsigned char retValue;
+			if (Z80Parser::checkEightBitNumber(retValue)) {
+				if (retValue == 0) {
+					Z80Parser::addCode(0xed, 0x46);
+				} else if (retValue == 1) {
+					Z80Parser::addCode(0xed, 0x56);
+				} else if (retValue == 2) {
+					Z80Parser::addCode(0xed, 0x5e);
+				} else {
+					Z80Parser::error("The IM instruction can only have a number that is either 0, 1 or 2.");
+				}
+			} else {
+				Z80Parser::error("The IM instruction can only have a number as its parameter.");
+			}
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("IM instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(RLCA)) {
+			Z80Parser::addCode(0x07);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("EI instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(RLA)) {
+			Z80Parser::addCode(0x17);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("EI instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(RRCA)) {
+			Z80Parser::addCode(0x0f);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("EI instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(RRA)) {
+			Z80Parser::addCode(0x1f);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("EI instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(RLC)) {
+			Z80Parser::processRLC();
 		} else {
-			error("Incorrect instruction.");
+			Z80Parser::error("Incorrect instruction.");
 		}
 		
 		/*

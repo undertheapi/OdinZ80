@@ -30,7 +30,7 @@
 /*
 	file name: ADDinstr.cpp
 	date created: 17/02/2013
-	date updated: 17/02/2013
+	date updated: 20/02/2013
 	author: Gareth Richardson
 	description: The processor for ADD instructions.
 */
@@ -144,6 +144,54 @@ void Z80Parser::processADD() {
 		}
 	} else if (Z80Parser::checkEightBitNumber(num8)) {
 		Z80Parser::addCode(0xc6, num8);
+	} else if (Z80Parser::checkToken(HL)) {
+		if (Z80Parser::checkToken(COMMA)) {
+			if (Z80Parser::checkToken(BC)) {
+				Z80Parser::addCode(0x09);
+			} else if (Z80Parser::checkToken(DE)) {
+				Z80Parser::addCode(0x19);
+			} else if (Z80Parser::checkToken(HL)) {
+				Z80Parser::addCode(0x29);
+			} else if (Z80Parser::checkToken(SP)) {
+				Z80Parser::addCode(0x39);
+			} else {
+				Z80Parser::error("Incorrect useage of the ADD instruction, ADD HL, must be followed by a valid 16-bit register.");
+			}
+		} else {
+			Z80Parser::error("Missing a comma.");
+		}
+	} else if (Z80Parser::checkToken(IX)) {
+		if (Z80Parser::checkToken(COMMA)) {
+			if (Z80Parser::checkToken(BC)) {
+				Z80Parser::addCode(0xdd, 0x09);
+			} else if (Z80Parser::checkToken(DE)) {
+				Z80Parser::addCode(0xdd, 0x19);
+			} else if (Z80Parser::checkToken(HL)) {
+				Z80Parser::addCode(0xdd, 0x29);
+			} else if (Z80Parser::checkToken(SP)) {
+				Z80Parser::addCode(0xdd, 0x39);
+			} else {
+				Z80Parser::error("Incorrect useage of the ADD instruction, ADD HL, must be followed by a valid 16-bit register.");
+			}
+		} else {
+			Z80Parser::error("Missing a comma.");
+		}
+	} else if (Z80Parser::checkToken(IY)) {
+		if (Z80Parser::checkToken(COMMA)) {
+			if (Z80Parser::checkToken(BC)) {
+				Z80Parser::addCode(0xfd, 0x09);
+			} else if (Z80Parser::checkToken(DE)) {
+				Z80Parser::addCode(0xfd, 0x19);
+			} else if (Z80Parser::checkToken(HL)) {
+				Z80Parser::addCode(0xfd, 0x29);
+			} else if (Z80Parser::checkToken(SP)) {
+				Z80Parser::addCode(0xfd, 0x39);
+			} else {
+				Z80Parser::error("Incorrect useage of the ADD instruction, ADD HL, must be followed by a valid 16-bit register.");
+			}
+		} else {
+			Z80Parser::error("Missing a comma.");
+		}
 	} else {
 		Z80Parser::error("Incorrect useage of the ADD command.");
 	}

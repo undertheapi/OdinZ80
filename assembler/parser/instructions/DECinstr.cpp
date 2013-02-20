@@ -30,7 +30,7 @@
 /*
 	file name: DECinstr.cpp
 	date created: 18/02/2013
-	date updated: 18/02/2013
+	date updated: 20/02/2013
 	author: Gareth Richardson
 	description: The processor for DEC instructions.
 */
@@ -92,6 +92,18 @@ void Z80Parser::processDEC() {
 		if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
 			Z80Parser::error("Missing right bracket.");
 		}
+	} else if (Z80Parser::checkToken(BC)) {
+		Z80Parser::addCode(0x0b);
+	} else if (Z80Parser::checkToken(DE)) {
+		Z80Parser::addCode(0x1b);
+	} else if (Z80Parser::checkToken(HL)) {
+		Z80Parser::addCode(0x2b);
+	} else if (Z80Parser::checkToken(SP)) {
+		Z80Parser::addCode(0x3b);
+	} else if (Z80Parser::checkToken(IX)) {
+		Z80Parser::addCode(0xdd, 0x2b);
+	} else if (Z80Parser::checkToken(IY)) {
+		Z80Parser::addCode(0xfd, 0x2b);
 	} else {
 		Z80Parser::error("Invalid use of the INC instruction.");
 	}

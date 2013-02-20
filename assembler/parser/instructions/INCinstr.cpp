@@ -92,6 +92,18 @@ unsigned num16;
 		if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
 			Z80Parser::error("Missing right bracket.");
 		}
+	} else if (Z80Parser::checkToken(BC)) {
+		Z80Parser::addCode(0x03);
+	} else if (Z80Parser::checkToken(DE)) {
+		Z80Parser::addCode(0x13);
+	} else if (Z80Parser::checkToken(HL)) {
+		Z80Parser::addCode(0x23);
+	} else if (Z80Parser::checkToken(SP)) {
+		Z80Parser::addCode(0x33);
+	} else if (Z80Parser::checkToken(IX)) {
+		Z80Parser::addCode(0xdd, 0x23);
+	} else if (Z80Parser::checkToken(IY)) {
+		Z80Parser::addCode(0xfd, 0x23);
 	} else {
 		Z80Parser::error("Invalid use of the INC instruction.");
 	}

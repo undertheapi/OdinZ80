@@ -30,7 +30,7 @@
 /*
 	file name: parser.hpp
 	date created: 28/09/2012
-	date updated: 18/02/13
+	date updated: 20/02/13
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it.
@@ -99,6 +99,7 @@ class Z80Parser {
 		void processCP();
 		void processINC();
 		void processDEC();
+		void processRLC();
 
 	public:
 		Z80Parser(TokenList* tPointer, ByteCode* bPointer);

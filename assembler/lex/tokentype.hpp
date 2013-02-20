@@ -111,14 +111,14 @@
 /*
 	these are registers:
 */
-#define A 66
-#define F 67
-#define B 68
-#define C 69	// Also the Carry token as well
-#define D 70
-#define E 71
-#define H 72
-#define L 73
+#define F 66
+#define B 67
+#define C 68	// Also the Carry token as well
+#define D 69
+#define E 70
+#define H 71
+#define L 72
+#define A 73
 #define BC 74
 #define DE 75
 #define HL 76

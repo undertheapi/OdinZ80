@@ -564,6 +564,20 @@ void Z80Parser::run() {
 			Z80Parser::processSLA();
 		} else if (Z80Parser::checkToken(SRA)) {
 			Z80Parser::processSRA();
+		} else if (Z80Parser::checkToken(SRL)) {
+			Z80Parser::processSRL();
+		} else if (Z80Parser::checkToken(RLD)) {
+			Z80Parser::addCode(0xed, 0x6f);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("EI instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(RRD)) {
+			Z80Parser::addCode(0xed, 0x67);
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+				Z80Parser::error("EI instruction must end in a new line.");
+			}
+		} else if (Z80Parser::checkToken(BIT)) {
+			Z80Parser::processBIT();
 		} else {
 			Z80Parser::error("Incorrect instruction.");
 		}

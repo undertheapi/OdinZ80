@@ -107,6 +107,9 @@ class Z80Parser {
 		void processSRA();
 		void processSRL();
 		void processBIT();
+		void processSET();
+		void processRES();
+		void processJP();
 
 	public:
 		Z80Parser(TokenList* tPointer, ByteCode* bPointer);

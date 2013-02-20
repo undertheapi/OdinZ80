@@ -33,8 +33,14 @@ g++ assembler/parser/instructions/SLAinstr.cpp -c
 g++ assembler/parser/instructions/SRAinstr.cpp -c
 g++ assembler/parser/instructions/SRLinstr.cpp -c
 g++ assembler/parser/instructions/BITinstr.cpp -c
+g++ assembler/parser/instructions/SETinstr.cpp -c
+g++ assembler/parser/instructions/RESinstr.cpp -c
+g++ assembler/parser/instructions/JPinstr.cpp -c
 g++ assembler/main.cpp -c
-g++ main.o BITinstr.o SRLinstr.o SLAinstr.o SRAinstr.o RRinstr.o RRCinstr.o RLinstr.o RLCinstr.o DECinstr.o INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o odin
+g++ main.o JPinstr.o SETinstr.o RESinstr.o BITinstr.o SRLinstr.o SLAinstr.o SRAinstr.o RRinstr.o RRCinstr.o RLinstr.o RLCinstr.o DECinstr.o INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o odin
+rm JPinstr.o
+rm SETinstr.o
+rm RESinstr.o
 rm BITinstr.o
 rm SRLinstr.o
 rm SLAinstr.o

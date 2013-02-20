@@ -578,6 +578,12 @@ void Z80Parser::run() {
 			}
 		} else if (Z80Parser::checkToken(BIT)) {
 			Z80Parser::processBIT();
+		} else if (Z80Parser::checkToken(SET)) {
+			Z80Parser::processSET();
+		} else if (Z80Parser::checkToken(RES)) {
+			Z80Parser::processRES();
+		} else if (Z80Parser::checkToken(JP)) {
+			Z80Parser::processJP();
 		} else {
 			Z80Parser::error("Incorrect instruction.");
 		}

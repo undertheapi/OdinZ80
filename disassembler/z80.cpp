@@ -31,7 +31,7 @@
 	file name: z80.cpp
 	compiled name: z80.o
 	created date: 7/8/2012
-	date updated: 11/10/2012
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: the implementation of the disassembler
 	method.
@@ -1868,6 +1868,104 @@ string runZ80(ByteFile &obj) {
 							retString += "\n";
 						}
 						break;
+					case 0x70:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tLD [IX + ";
+							retString += temp;
+							retString += "H], B\n";
+							address++;
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x71:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tLD [IX + ";
+							retString += temp;
+							retString += "H], C\n";
+							address++;
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x72:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tLD [IX + ";
+							retString += temp;
+							retString += "H], D\n";
+							address++;
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x73:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tLD [IX + ";
+							retString += temp;
+							retString += "H], E\n";
+							address++;
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x74:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tLD [IX + ";
+							retString += temp;
+							retString += "H], H\n";
+							address++;
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x75:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tLD [IX + ";
+							retString += temp;
+							retString += "H], L\n";
+							address++;
+						} else {
+							retString += "\n";
+						}
+						break;
+					case 0x77:
+						if (!obj.isEmpty()) {
+							value = obj.pop();
+							temp = convertHex(value);
+							retString += " ";
+							retString += temp;
+							retString += "\t\tLD [IX + ";
+							retString += temp;
+							retString += "H], A\n";
+							address++;
+						} else {
+							retString += "\n";
+						}
+						break;
 					case 0x7e:
 						if (!obj.isEmpty()) {
 							value = obj.pop();
@@ -2893,7 +2991,7 @@ string runZ80(ByteFile &obj) {
 							temp = convertHex(value);
 							retString += " ";
 							retString += temp;
-							retString += "\t\tLD [IX + ";
+							retString += "\t\tLD [IY + ";
 							retString += temp;
 							retString += "H], B\n";
 							address += 2;
@@ -2903,7 +3001,7 @@ string runZ80(ByteFile &obj) {
 							temp = convertHex(value);
 							retString += " ";
 							retString += temp;
-							retString += "\t\tLD [IX + ";
+							retString += "\t\tLD [IY + ";
 							retString += temp;
 							retString += "H], C\n";
 							address += 2;
@@ -2913,7 +3011,7 @@ string runZ80(ByteFile &obj) {
 							temp = convertHex(value);
 							retString += " ";
 							retString += temp;
-							retString += "\t\tLD [IX + ";
+							retString += "\t\tLD [IY + ";
 							retString += temp;
 							retString += "H], D\n";
 							address += 2;
@@ -2923,7 +3021,7 @@ string runZ80(ByteFile &obj) {
 							temp = convertHex(value);
 							retString += " ";
 							retString += temp;
-							retString += "\t\tLD [IX + ";
+							retString += "\t\tLD [IY + ";
 							retString += temp;
 							retString += "H], E\n";
 							address += 2;
@@ -2933,7 +3031,7 @@ string runZ80(ByteFile &obj) {
 							temp = convertHex(value);
 							retString += " ";
 							retString += temp;
-							retString += "\t\tLD [IX + ";
+							retString += "\t\tLD [IY + ";
 							retString += temp;
 							retString += "H], H\n";
 							address += 2;
@@ -2943,7 +3041,7 @@ string runZ80(ByteFile &obj) {
 							temp = convertHex(value);
 							retString += " ";
 							retString += temp;
-							retString += "\t\tLD [IX + ";
+							retString += "\t\tLD [IY + ";
 							retString += temp;
 							retString += "H], L\n";
 							address += 2;
@@ -2953,20 +3051,22 @@ string runZ80(ByteFile &obj) {
 							temp = convertHex(value);
 							retString += " ";
 							retString += temp;
-							retString += "\t\tLD [IX + ";
+							retString += "\t\tLD [IY + ";
 							retString += temp;
 							retString += "H], A\n";
 							address += 2;
 							break;
 						case 0x7e:
-							value = obj.pop();
-							temp = convertHex(value);
-							retString += " ";
-							retString += temp;
-							retString += "\t\tLD A, [IY + ";
-							retString += temp;
-							retString += "H]\n";
-							address += 2;
+							if (!obj.isEmpty()) {
+								value = obj.pop();
+								temp = convertHex(value);
+								retString += " ";
+								retString += temp;
+								retString += "\t\tLD A, [IY + ";
+								retString += temp;
+								retString += "H]\n";
+								address += 2;
+							}
 							break;
 						case 0x86:
 							value = obj.pop();

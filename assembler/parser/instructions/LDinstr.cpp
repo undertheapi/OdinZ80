@@ -30,7 +30,7 @@
 /*
 	file name: LDinstr.cpp
 	date created: 14/02/2013
-	date updated: 17/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: This is the method to process an LD instruction.
 */
@@ -73,7 +73,7 @@ void Z80Parser::processLD() {
 				Z80Parser::addCode((unsigned char) 0xed, (unsigned char) 0x57);
 			} else if (Z80Parser::checkToken(R)) {
 				Z80Parser::addCode((unsigned char) 0xed, (unsigned char) 0x5f);
-			}else if (Z80Parser::checkEightBitNumber(num8)) {
+			} else if (Z80Parser::checkEightBitNumber(num8)) {
 				Z80Parser::addCode((unsigned char) 0x3e, num8);
 			} else if (Z80Parser::checkToken(LEFT_BRACKET)) {
 				if (Z80Parser::checkToken(BC)) {
@@ -187,28 +187,22 @@ void Z80Parser::processLD() {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xfd, (unsigned char) 0x46, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error( "The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+					Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+				Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "An LD instruction must use a COMMA between declared registers.";
+			Z80Parser::error("An LD instruction must use a COMMA between declared registers.");
 		}
 	} else if (Z80Parser::checkToken(C)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -233,52 +227,42 @@ void Z80Parser::processLD() {
 					if (Z80Parser::checkToken(RIGHT_BRACKET)) {
 						Z80Parser::addCode((unsigned char) 0x4e);
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+						Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 					}
-				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
-				}
-			} else if (Z80Parser::checkToken(IX)) {
-				if (Z80Parser::checkToken(PLUS)) {
-					if (Z80Parser::checkEightBitNumber(num8)) {
-						Z80Parser::addCode((unsigned char) 0xdd, (unsigned char) 0x4e, num8);
-						if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+				} else if (Z80Parser::checkToken(IX)) {
+					if (Z80Parser::checkToken(PLUS)) {
+						if (Z80Parser::checkEightBitNumber(num8)) {
+							Z80Parser::addCode((unsigned char) 0xdd, (unsigned char) 0x4e, num8);
+							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
+							}
+						} else {
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
-				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
-				}
-			} else if (Z80Parser::checkToken(IY)) {
+				} else if (Z80Parser::checkToken(IY)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xfd, (unsigned char) 0x4e, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "An LD instruction must use Registers, immediate values OR addresses.";
+					Z80Parser::error("An LD instruction must use Registers, immediate values OR addresses.");
+				}
+			} else {
+				Z80Parser::error("Invalid useage of the LD instruction.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "An LD instruction must use a COMMA between declared registers.";
+			Z80Parser::error("An LD instruction must use a COMMA between declared registers.");
 		}
 	} else if (Z80Parser::checkToken(D)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -303,52 +287,42 @@ void Z80Parser::processLD() {
 					if (Z80Parser::checkToken(RIGHT_BRACKET)) {
 						Z80Parser::addCode((unsigned char) 0x56);
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+						Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 					}
 				} else if (Z80Parser::checkToken(IX)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xdd, (unsigned char) 0x56, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else if (Z80Parser::checkToken(IY)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xfd, (unsigned char) 0x56, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+					Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+				Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "An LD instruction must use a COMMA between declared registers.";
+			Z80Parser::error("An LD instruction must use a COMMA between declared registers.");
 		}
 	} else if (Z80Parser::checkToken(E)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -373,52 +347,42 @@ void Z80Parser::processLD() {
 					if (Z80Parser::checkToken(RIGHT_BRACKET)) {
 						Z80Parser::addCode((unsigned char) 0x5e);
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+						Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 					}
 				} else if (Z80Parser::checkToken(IX)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xdd, (unsigned char) 0x5e, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else if (Z80Parser::checkToken(IY)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xfd, (unsigned char) 0x5e, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+					Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+				Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "An LD instruction must use a COMMA between declared registers.";
+			Z80Parser::error("An LD instruction must use a COMMA between declared registers.");
 		}
 	} else if (Z80Parser::checkToken(H)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -443,52 +407,42 @@ void Z80Parser::processLD() {
 					if (Z80Parser::checkToken(RIGHT_BRACKET)) {
 						Z80Parser::addCode((unsigned char) 0x66);
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+						Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 					}
 				} else if (Z80Parser::checkToken(IX)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xdd, (unsigned char) 0x66, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else if (Z80Parser::checkToken(IY)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xfd, (unsigned char) 0x66, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+					Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+				Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "An LD instruction must use a COMMA between declared registers.";
+			Z80Parser::error("An LD instruction must use a COMMA between declared registers.");
 		}
 	} else if (Z80Parser::checkToken(L)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -513,76 +467,62 @@ void Z80Parser::processLD() {
 					if (Z80Parser::checkToken(RIGHT_BRACKET)) {
 						Z80Parser::addCode((unsigned char) 0x6e);
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+						Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 					}
 				} else if (Z80Parser::checkToken(IX)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xdd, (unsigned char) 0x6e, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else if (Z80Parser::checkToken(IY)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
 							Z80Parser::addCode((unsigned char) 0xfd, (unsigned char) 0x6e, num8);
 							if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "The LD reg8, [IX + imm8] instruction must use brackets [].";
+								Z80Parser::error("The LD reg8, [IX + imm8] instruction must use brackets [].");
 							}
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "The LD reg8, [IX + imm8] requires a byte number.";
+							Z80Parser::error("The LD reg8, [IX + imm8] requires a byte number.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD reg8, [IX + imm8] requires an addition.";
+						Z80Parser::error("The LD reg8, [IX + imm8] requires an addition.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+					Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+				Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "An LD instruction must use a COMMA between declared registers.";
+			Z80Parser::error("An LD instruction must use a COMMA between declared registers.");
 		}
 	} else if (Z80Parser::checkToken(I)) {
 		if (Z80Parser::checkToken(COMMA)) {
 			if (Z80Parser::checkToken(A)) {
 				Z80Parser::addCode(0xed, 0x47);
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing a register after the comma.";
+				Z80Parser::error("Missing a register after the comma.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "Missing comma.";
+			Z80Parser::error("Missing comma.");
 		}
 	} else if (Z80Parser::checkToken(R)) {
 		if (Z80Parser::checkToken(COMMA)) {
 			if (Z80Parser::checkToken(A)) {
 				Z80Parser::addCode(0xed, 0x4f);
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing a register after the comma.";
+				Z80Parser::error("Missing a register after the comma.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "Missing comma.";
+			Z80Parser::error("Missing comma.");
 		}
 	} else if (Z80Parser::checkToken(BC)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -600,20 +540,16 @@ void Z80Parser::processLD() {
 					Z80Parser::addAddress(atom);
 					
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Incorrect usage of LD.";
+					Z80Parser::error("Incorrect usage of LD.");
 				}
 				if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Missing bracket.";
+					Z80Parser::error("Missing bracket.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing 16-bit number.";
+				Z80Parser::error("Missing 16-bit number.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "Missing comma.";
+			Z80Parser::error("Missing comma.");
 		}
 	} else if (Z80Parser::checkToken(DE)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -630,20 +566,16 @@ void Z80Parser::processLD() {
 					Z80Parser::addCode((unsigned char) 0xed, 0x5b);
 					Z80Parser::addAddress(atom);
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Incorrect usage of LD.";
+					Z80Parser::error("Incorrect usage of LD.");
 				}
 				if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Missing bracket.";
+					Z80Parser::error("Missing bracket.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing 16-bit number.";
+				Z80Parser::error("Missing 16-bit number.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "Missing comma.";
+			Z80Parser::error("Missing comma.");
 		}
 	} else if (Z80Parser::checkToken(HL)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -660,20 +592,16 @@ void Z80Parser::processLD() {
 					Z80Parser::addCode((unsigned char) 0xed, 0x6b);
 					Z80Parser::addAddress(atom);
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Incorrect usage of LD.";
+					Z80Parser::error("Incorrect usage of LD.");
 				}
 				if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Missing bracket.";
+					Z80Parser::error("Missing bracket.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing 16-bit number.";
+				Z80Parser::error("Missing 16-bit number.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "Missing comma.";
+			Z80Parser::error("Missing comma.");
 		}
 	} else if (Z80Parser::checkToken(SP)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -698,20 +626,16 @@ void Z80Parser::processLD() {
 					Z80Parser::addCode((unsigned char) 0xed, 0x7b);
 					Z80Parser::addAddress(atom);
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Incorrect usage of LD.";
+					Z80Parser::error("Incorrect usage of LD.");
 				}
 				if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Missing bracket.";
+					Z80Parser::error("Missing bracket.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing 16-bit number.";
+				Z80Parser::error("Missing 16-bit number.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "Missing comma.";
+			Z80Parser::error("Missing comma.");
 		}
 	} else if (Z80Parser::checkToken(HL)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -723,20 +647,16 @@ void Z80Parser::processLD() {
 					Z80Parser::addCode((unsigned char) 0xdd, 0x21);
 					Z80Parser::addAddress(atom);
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Incorrect usage of LD.";
+					Z80Parser::error("Incorrect usage of LD.");
 				}
 				if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Missing bracket.";
+					Z80Parser::error("Missing bracket.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing bracket.";
+				Z80Parser::error("Missing bracket.");
 			}
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "Missing comma.";
+			Z80Parser::error("Missing comma.");
 		}
 	} else if (Z80Parser::checkToken(IX)) {
 		if (Z80Parser::checkToken(COMMA)) {
@@ -797,16 +717,13 @@ void Z80Parser::processLD() {
 					if (Z80Parser::checkToken(A)) {
 						Z80Parser::addCode(0x02);
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "Missing Register.";
+						Z80Parser::error("Missing Register.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Missing comma.";
+					Z80Parser::error("Missing comma.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing bracket.";
+				Z80Parser::error("Missing bracket.");
 			}
 		} else if (Z80Parser::checkToken(DE)) {
 			if (Z80Parser::checkToken(RIGHT_BRACKET)) {
@@ -814,16 +731,13 @@ void Z80Parser::processLD() {
 					if (Z80Parser::checkToken(A)) {
 						Z80Parser::addCode(0x12);
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "Missing Register.";
+						Z80Parser::error( "Missing Register.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "Missing comma.";
+					Z80Parser::error("Missing comma.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "Missing bracket.";
+				Z80Parser::error("Missing bracket.");
 			}
 		} else if (Z80Parser::checkToken(HL)) {
 			if (Z80Parser::checkToken(RIGHT_BRACKET)) {
@@ -845,16 +759,13 @@ void Z80Parser::processLD() {
 					} else if (Z80Parser::checkEightBitNumber(num8)) {
 						Z80Parser::addCode(0x36, num8);
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "The LD [HL], reg8 instruction must only use an eight bit register.";
+						Z80Parser::error("The LD [HL], reg8 instruction must only use an eight bit register.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+					Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+				Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 			}
 		} else if (Z80Parser::checkToken(IX)) {
 			if (Z80Parser::checkToken(PLUS)) {
@@ -863,41 +774,35 @@ void Z80Parser::processLD() {
 						if (Z80Parser::checkToken(COMMA)) {
 							Z80Parser::addCode(0xdd);
 							if (Z80Parser::checkToken(A)) {
-								Z80Parser::addCode(0x77);
+								Z80Parser::addCode(0x77, num8);
 							} else if (Z80Parser::checkToken(B)) {
-								Z80Parser::addCode(0x70);
+								Z80Parser::addCode(0x70, num8);
 							} else if (Z80Parser::checkToken(C)) {
-								Z80Parser::addCode(0x71);
+								Z80Parser::addCode(0x71, num8);
 							} else if (Z80Parser::checkToken(D)) {
-								Z80Parser::addCode(0x72);
+								Z80Parser::addCode(0x72, num8);
 							} else if (Z80Parser::checkToken(E)) {
-								Z80Parser::addCode(0x73);
+								Z80Parser::addCode(0x73, num8);
 							} else if (Z80Parser::checkToken(H)) {
-								Z80Parser::addCode(0x74);
+								Z80Parser::addCode(0x74, num8);
 							} else if (Z80Parser::checkToken(L)) {
-								Z80Parser::addCode(0x75);
+								Z80Parser::addCode(0x75, num8);
 							} else if (Z80Parser::checkEightBitNumber(num8Two)) {
 								Z80Parser::addCode(0x36, num8, num8Two);
 							} else {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "LD [IX + imm], reg8 must end in an eight bit register.";
+								Z80Parser::error("LD [IX + imm], reg8 must end in an eight bit register.");
 							}
-							Z80Parser::addCode(num8);
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "Missing comma in LD instruction.";
+							Z80Parser::error("Missing comma in LD instruction.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "Missing right bracket.";
+						Z80Parser::error("Missing right bracket.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "The LD [IX + imm], reg8 has to have a byte.";
+					Z80Parser::error("The LD [IX + imm], reg8 has to have a byte.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "The LD [IX + imm], reg8 instruction needs an addition sign.";
+				Z80Parser::error("The LD [IX + imm], reg8 instruction needs an addition sign.");
 			}
 		} else if (Z80Parser::checkToken(IY)) {
 			if (Z80Parser::checkToken(PLUS)) {
@@ -906,41 +811,35 @@ void Z80Parser::processLD() {
 						if (Z80Parser::checkToken(COMMA)) {
 							Z80Parser::addCode(0xfd);
 							if (Z80Parser::checkToken(A)) {
-								Z80Parser::addCode(0x77);
+								Z80Parser::addCode(0x77, num8);
 							} else if (Z80Parser::checkToken(B)) {
-								Z80Parser::addCode(0x70);
+								Z80Parser::addCode(0x70, num8);
 							} else if (Z80Parser::checkToken(C)) {
-								Z80Parser::addCode(0x71);
+								Z80Parser::addCode(0x71, num8);
 							} else if (Z80Parser::checkToken(D)) {
-								Z80Parser::addCode(0x72);
+								Z80Parser::addCode(0x72, num8);
 							} else if (Z80Parser::checkToken(E)) {
-								Z80Parser::addCode(0x73);
+								Z80Parser::addCode(0x73, num8);
 							} else if (Z80Parser::checkToken(H)) {
-								Z80Parser::addCode(0x74);
+								Z80Parser::addCode(0x74, num8);
 							} else if (Z80Parser::checkToken(L)) {
-								Z80Parser::addCode(0x75);
+								Z80Parser::addCode(0x75, num8);
 							} else if (Z80Parser::checkEightBitNumber(num8Two)) {
 								Z80Parser::addCode(0x36, num8, num8Two);
 							} else {
-								Z80Parser::errorState = true;
-								Z80Parser::errorString = "LD [IY + imm], reg8 must end in an eight bit register.";
+								Z80Parser::error("LD [IY + imm], reg8 must end in an eight bit register.");
 							}
-							Z80Parser::addCode(num8);
 						} else {
-							Z80Parser::errorState = true;
-							Z80Parser::errorString = "Missing comma in LD instruction.";
+							Z80Parser::error("Missing comma in LD instruction.");
 						}
 					} else {
-						Z80Parser::errorState = true;
-						Z80Parser::errorString = "Missing right bracket.";
+						Z80Parser::error("Missing right bracket.");
 					}
 				} else {
-					Z80Parser::errorState = true;
-					Z80Parser::errorString = "The LD [IX + imm], reg8 has to have a byte.";
+					Z80Parser::error("The LD [IX + imm], reg8 has to have a byte.");
 				}
 			} else {
-				Z80Parser::errorState = true;
-				Z80Parser::errorString = "The LD [IX + imm], reg8 instruction needs an addition sign.";
+				Z80Parser::error("The LD [IX + imm], reg8 instruction needs an addition sign.");
 			}
 		} else if (Z80Parser::checkSixteenBitNumber(num16)) {
 			if (Z80Parser::checkToken(RIGHT_BRACKET)) {
@@ -1010,13 +909,11 @@ void Z80Parser::processLD() {
 			Z80Parser::error( "An LD instruction must used Registers, immediate values OR addresses.");
 		}
 	} else {
-		Z80Parser::errorState = true;
-		Z80Parser::errorString = "An LD instruction must used Registers, immediate values OR addresses.";
+		Z80Parser::error("An LD instruction must used Registers, immediate values OR addresses.");
 	}
 	
 	if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
-		Z80Parser::errorState = true;
-		Z80Parser::errorString = "An LD instruction must end in a new line.";
+		Z80Parser::error("An LD instruction must end in a new line.");
 	}
 	
 	/*

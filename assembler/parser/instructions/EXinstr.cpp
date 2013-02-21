@@ -30,7 +30,7 @@
 /*
 	file name: EXinstr.hpp
 	date created: 17/02/2013
-	date updated: 17/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: The processor for EX instructions.
 */
@@ -73,9 +73,9 @@ void Z80Parser::processEX() {
 			  ) {
 		if (Z80Parser::checkToken(HL)) {
 			Z80Parser::addCode(0xe3);
-		} else if (Z80Parser::checkToken(HL)) {
+		} else if (Z80Parser::checkToken(IX)) {
 			Z80Parser::addCode(0xdd, 0xe3);
-		} else if (Z80Parser::checkToken(HL)) {
+		} else if (Z80Parser::checkToken(IY)) {
 			Z80Parser::addCode(0xfd, 0xe3);
 		} else {
 			Z80Parser::error("The second parameter can only be HL, IX or IY.");

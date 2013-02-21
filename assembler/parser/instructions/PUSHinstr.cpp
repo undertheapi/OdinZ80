@@ -30,7 +30,7 @@
 /*
 	file name: PUSHinstr.hpp
 	date created: 16/02/2013
-	date updated: 16/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: The processor for PUSH instructions.
 */
@@ -59,7 +59,7 @@ void Z80Parser::processPUSH() {
 	} else if (Z80Parser::checkToken(IY)) {
 		Z80Parser::addCode(0xfd, 0xe5);
 	} else {
-		Z80Parser::error("Incorrect usage of the PUSH instruction You must push only registers.");
+		Z80Parser::error("The PUSH instruction can only these one of these 16-bit registers: BC, DE, HL or AF.");
 	}
 	
 	if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {

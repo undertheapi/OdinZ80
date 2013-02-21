@@ -30,9 +30,9 @@
 /*
 	file name: main.cpp
 	date created: 18/02/2012
-	date updated: 19/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
-	description: This is the main method for the zdis program.
+	description: This is the main method for the odin program.
 */
 
 #include <cstdlib>
@@ -67,8 +67,6 @@ ifstream::pos_type size;
 char * memblock;
 char backupName[] = "output.bin";
 
-//unsigned char* asBytes(
-
 int main(int argc, char *argv[]) {
 	if (argc == 1) {
 		printf("ODIN: There has been no file specified.\n");
@@ -76,7 +74,6 @@ int main(int argc, char *argv[]) {
 		char* inputFile = 0;
 		char* outputFile = 0;
 		int opt = getopt(argc, argv, "o:");
-		//printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@.\n");
 		while (opt != -1) {
 			switch(opt) {
 				case 'o':
@@ -147,7 +144,7 @@ int main(int argc, char *argv[]) {
 		pObj.run();
 		
 		if (pObj.checkState()) {
-			printf("%s\n", pObj.getError().c_str());
+			printf("ODIN: %s\n", pObj.getError().c_str());
 			exit(0);
 		}
 		
@@ -158,11 +155,8 @@ int main(int argc, char *argv[]) {
 			exit(0);
 		}
 		
-		
 		for (int index = 0; index < bObj.getSize(); index++) {
-			//char val = bObj.getElement(index);
 			out.put(bObj.getElement(index));
-			//out << bCode.getElement(index);
 		}
 		out.close();
 	}

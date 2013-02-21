@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 20/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -263,7 +263,7 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = LDD;
 		} else if (!retValue.compare("LDDR") || !retValue.compare("Lddr") || !retValue.compare("lddr")) {
 			newNode->type = LDDR;
-		} else if (!retValue.compare("LDI") || !retValue.compare("Ldi") || !retValue.compare("ldi")) {
+		} else if (!retValue.compare("LDI") || !retValue.compare("Ldi") || !retValue.compare("ldi") || !retValue.compare("LDDI") || !retValue.compare("Lddi") || !retValue.compare("lddi")) {
 			newNode->type = LDI;
 		} else if (!retValue.compare("LDIR") || !retValue.compare("Ldir") || !retValue.compare("ldir")) {
 			newNode->type = LDIR;
@@ -368,7 +368,7 @@ TokenNodePtr Lex::getToken() {
 		} else if (!retValue.compare("SP") || !retValue.compare("sp") || !retValue.compare("Sp")) {
 			newNode->type = SP;
 		} else if (!retValue.compare("AF") || !retValue.compare("af") || !retValue.compare("Af")) {
-			newNode->type = SP;
+			newNode->type = AF;
 		} else if (!retValue.compare("CPU") || !retValue.compare("Cpu") || !retValue.compare("cpu")) {
 			newNode->type = CPU;
 		} else if (!retValue.compare("DB") || !retValue.compare("Db") || !retValue.compare("db") || !retValue.compare("BYTE") || !retValue.compare("Byte") || !retValue.compare("byte")) {

@@ -30,9 +30,9 @@
 /*
 	file name: XORinstr.cpp
 	date created: 18/02/2013
-	date updated: 18/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
-	description: The processor for ADC instructions.
+	description: The processor for XOR instructions.
 */
 
 #include <string>
@@ -51,28 +51,28 @@ void Z80Parser::processXOR() {
 	if (Z80Parser::checkToken(A)) {
 		if (Z80Parser::checkToken(COMMA)) {
 			if (Z80Parser::checkToken(A)) {
-				Z80Parser::addCode(0xb7);
+				Z80Parser::addCode(0xaf);
 			} else if (Z80Parser::checkToken(B)) {
-				Z80Parser::addCode(0xb0);
+				Z80Parser::addCode(0xa8);
 			} else if (Z80Parser::checkToken(C)) {
-				Z80Parser::addCode(0xb1);
+				Z80Parser::addCode(0xa9);
 			} else if (Z80Parser::checkToken(D)) {
-				Z80Parser::addCode(0xb2);
+				Z80Parser::addCode(0xaa);
 			} else if (Z80Parser::checkToken(E)) {
-				Z80Parser::addCode(0xb3);
+				Z80Parser::addCode(0xab);
 			} else if (Z80Parser::checkToken(H)) {
-				Z80Parser::addCode(0xb4);
+				Z80Parser::addCode(0xac);
 			} else if (Z80Parser::checkToken(L)) {
-				Z80Parser::addCode(0xb5);
+				Z80Parser::addCode(0xad);
 			}  else if (Z80Parser::checkEightBitNumber(num8)) {
-				Z80Parser::addCode(0xf6, num8);
+				Z80Parser::addCode(0xee, num8);
 			} else if (Z80Parser::checkToken(LEFT_BRACKET)) {
 				if (Z80Parser::checkToken(HL)) {
-					Z80Parser::addCode(0xb6);
+					Z80Parser::addCode(0xae);
 				} else if (Z80Parser::checkToken(IX)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
-							Z80Parser::addCode(0xdd, 0xb6, num8);
+							Z80Parser::addCode(0xdd, 0xae, num8);
 						} else {
 							Z80Parser::error("Must be an 8-bit number.");
 						}
@@ -82,7 +82,7 @@ void Z80Parser::processXOR() {
 				} else if (Z80Parser::checkToken(IY)) {
 					if (Z80Parser::checkToken(PLUS)) {
 						if (Z80Parser::checkEightBitNumber(num8)) {
-							Z80Parser::addCode(0xfd, 0xb6, num8);
+							Z80Parser::addCode(0xfd, 0xae, num8);
 						} else {
 							Z80Parser::error("Must be an 8-bit number.");
 						}
@@ -99,27 +99,27 @@ void Z80Parser::processXOR() {
 				Z80Parser::error("ADC instruction has been used incorrectly.");
 			}
 		} else {
-			Z80Parser::addCode(0xb7);
+			Z80Parser::addCode(0xaf);
 		}
 	} else if (Z80Parser::checkToken(B)) {
-		Z80Parser::addCode(0xb0);
+		Z80Parser::addCode(0xa8);
 	} else if (Z80Parser::checkToken(C)) {
-		Z80Parser::addCode(0xb1);
+		Z80Parser::addCode(0xa9);
 	} else if (Z80Parser::checkToken(D)) {
-		Z80Parser::addCode(0xb2);
+		Z80Parser::addCode(0xaa);
 	} else if (Z80Parser::checkToken(E)) {
-		Z80Parser::addCode(0xb3);
+		Z80Parser::addCode(0xab);
 	} else if (Z80Parser::checkToken(H)) {
-		Z80Parser::addCode(0xb4);
+		Z80Parser::addCode(0xac);
 	} else if (Z80Parser::checkToken(L)) {
-		Z80Parser::addCode(0xb5);
+		Z80Parser::addCode(0xad);
 	} else if (Z80Parser::checkToken(LEFT_BRACKET)) {
 		if (Z80Parser::checkToken(HL)) {
-			Z80Parser::addCode(0xb6);
+			Z80Parser::addCode(0xae);
 		} else if (Z80Parser::checkToken(IX)) {
 			if (Z80Parser::checkToken(PLUS)) {
 				if (Z80Parser::checkEightBitNumber(num8)) {
-					Z80Parser::addCode(0xdd, 0xb6, num8);
+					Z80Parser::addCode(0xdd, 0xae, num8);
 				} else {
 					Z80Parser::error("Must be an 8-bit number.");
 				}
@@ -129,7 +129,7 @@ void Z80Parser::processXOR() {
 		} else if (Z80Parser::checkToken(IY)) {
 			if (Z80Parser::checkToken(PLUS)) {
 				if (Z80Parser::checkEightBitNumber(num8)) {
-					Z80Parser::addCode(0xfd, 0xb6, num8);
+					Z80Parser::addCode(0xfd, 0xae, num8);
 				} else {
 					Z80Parser::error("Must be an 8-bit number.");
 				}
@@ -143,7 +143,7 @@ void Z80Parser::processXOR() {
 			Z80Parser::error("Missing bracket.");
 		}
 	} else if (Z80Parser::checkEightBitNumber(num8)) {
-		Z80Parser::addCode(0xf6, num8);
+		Z80Parser::addCode(0xee, num8);
 	} else {
 		Z80Parser::error("Incorrect useage of the ADC command.");
 	}

@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 20/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it.
@@ -277,7 +277,7 @@ string intToString(int value) {
 	string retValue = "";
 	
 	while (value > 0) {
-		retValue += value % 10 + 48;
+		retValue = (char) (value % 10 + 48) + retValue;
 		value /= 10;
 	}
 	
@@ -429,6 +429,10 @@ void Z80Parser::run() {
 			Z80Parser::processLD();
 		} else if (Z80Parser::checkToken(PUSH)) {
 			Z80Parser::processPUSH();
+		} else if (Z80Parser::checkToken(POP)) {
+			Z80Parser::processPOP();
+		} else if (Z80Parser::checkToken(EX)) {
+			Z80Parser::processEX();
 		} else if (Z80Parser::checkToken(EXX)) {
 			Z80Parser::addCode(0xd9);
 		} else if (Z80Parser::checkToken(LDI)) {

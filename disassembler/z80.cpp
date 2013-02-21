@@ -508,6 +508,9 @@ string runZ80(ByteFile &obj) {
 				retString += "\n";
 			}
 			break;
+		case 0x37:
+			retString += "\t\tSCF\n";
+			break;
 		case 0x38:
 			if (!obj.isEmpty()) {
 				value = obj.pop();

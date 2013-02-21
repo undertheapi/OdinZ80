@@ -30,7 +30,7 @@
 /*
 	file name: INCinstr.cpp
 	date created: 18/02/2013
-	date updated: 18/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: The processor for INC instructions.
 */
@@ -68,7 +68,7 @@ unsigned num16;
 		} else if (Z80Parser::checkToken(IX)) {
 			if (Z80Parser::checkToken(PLUS)) {
 				if (Z80Parser::checkEightBitNumber(num8)) {
-					Z80Parser::addCode(0xdd, 0x34);
+					Z80Parser::addCode(0xdd, 0x34, num8);
 				} else {
 					Z80Parser::error("Number must be an 8-bit number.");
 				}
@@ -78,7 +78,7 @@ unsigned num16;
 		} else if (Z80Parser::checkToken(IY)) {
 			if (Z80Parser::checkToken(PLUS)) {
 				if (Z80Parser::checkEightBitNumber(num8)) {
-					Z80Parser::addCode(0xfd, 0x34);
+					Z80Parser::addCode(0xfd, 0x34, num8);
 				} else {
 					Z80Parser::error("Number must be an 8-bit number.");
 				}

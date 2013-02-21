@@ -30,7 +30,7 @@
 /*
 	file name: CPinstr.cpp
 	date created: 18/02/2013
-	date updated: 18/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: The processor for ADC instructions.
 */
@@ -115,7 +115,7 @@ void Z80Parser::processCP() {
 		Z80Parser::addCode(0xbd);
 	} else if (Z80Parser::checkToken(LEFT_BRACKET)) {
 		if (Z80Parser::checkToken(HL)) {
-			Z80Parser::addCode(0xfe);
+			Z80Parser::addCode(0xbe);
 		} else if (Z80Parser::checkToken(IX)) {
 			if (Z80Parser::checkToken(PLUS)) {
 				if (Z80Parser::checkEightBitNumber(num8)) {

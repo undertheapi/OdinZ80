@@ -129,6 +129,9 @@ string runZ80(ByteFile &obj) {
 				retString += "\n";
 			}
 			break;
+		case 0x07:
+			retString += "\t\tRLCA\n";
+			break;
 		case 0x08:
 			retString += "\t\tEX AF, AF\'\n";
 			break;
@@ -160,6 +163,9 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
+		case 0x0f:
+			retString += "\t\tRRCA\n";
 			break;
 		case 0x10:
 			if (!obj.isEmpty()) {
@@ -225,6 +231,9 @@ string runZ80(ByteFile &obj) {
 				retString += "\n";
 			}
 			break;
+		case 0x17:
+			retString += "\t\tRLA\n";
+			break;
 		case 0x18:
 			if (!obj.isEmpty()) {
 				value = obj.pop();
@@ -267,6 +276,9 @@ string runZ80(ByteFile &obj) {
 			} else {
 				retString += "\n";
 			}
+			break;
+		case 0x1f:
+			retString += "\t\tRRA\n";
 			break;
 		case 0x20:
 			if (!obj.isEmpty()) {
@@ -1096,6 +1108,30 @@ string runZ80(ByteFile &obj) {
 				retString += convertHex(value);
 				address++;
 				switch((unsigned char)value) {
+					case 0x00:
+						retString += "\t\tRLC B\n";
+						break;
+					case 0x01:
+						retString += "\t\tRLC C\n";
+						break;
+					case 0x02:
+						retString += "\t\tRLC D\n";
+						break;
+					case 0x03:
+						retString += "\t\tRLC E\n";
+						break;
+					case 0x04:
+						retString += "\t\tRLC H\n";
+						break;
+					case 0x05:
+						retString += "\t\tRLC L\n";
+						break;
+					case 0x06:
+						retString += "\t\tRLC [HL]\n";
+						break;
+					case 0x07:
+						retString += "\t\tRLC A\n";
+						break;
 					case 0x10:
 						retString += "\t\tRL B\n";
 						break;
@@ -2276,8 +2312,7 @@ string runZ80(ByteFile &obj) {
 									}
 									break;
 								default:
-									retString += " ";
-									retString += convertHex(value);
+									retString += "\n";
 							}
 						} else {
 							retString += "\n";
@@ -2475,6 +2510,9 @@ string runZ80(ByteFile &obj) {
 					case 0x41:
 						retString += "\t\tOUT [C], B\n";
 						break;
+					case 0x42:
+						retString += "\t\tSUBC HL, BC\n";
+						break;
 					case 0x43:
 						if (!obj.isEmpty()) {
 							value = obj.pop();
@@ -2554,6 +2592,9 @@ string runZ80(ByteFile &obj) {
 						break;
 					case 0x51:
 						retString += "\t\tOUT [C], D\n";
+						break;
+					case 0x52:
+						retString += "\t\tSUBC HL, DE\n";
 						break;
 					case 0x53:
 						if (!obj.isEmpty()) {
@@ -2636,6 +2677,9 @@ string runZ80(ByteFile &obj) {
 					case 0x61:
 						retString += "\t\tOUT [C], H\n";
 						break;
+					case 0x62:
+						retString += "\t\tSUBC HL, HL\n";
+						break;
 					case 0x63:
 						if (!obj.isEmpty()) {
 							value = obj.pop();
@@ -2692,6 +2736,9 @@ string runZ80(ByteFile &obj) {
 						} else {
 							retString += "\n";
 						}
+						break;
+					case 0x72:
+						retString += "\t\tSUBC HL, SP\n";
 						break;
 					case 0x73:
 						if (!obj.isEmpty()) {

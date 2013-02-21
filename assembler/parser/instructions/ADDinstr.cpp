@@ -166,7 +166,7 @@ void Z80Parser::processADD() {
 				Z80Parser::addCode(0xdd, 0x09);
 			} else if (Z80Parser::checkToken(DE)) {
 				Z80Parser::addCode(0xdd, 0x19);
-			} else if (Z80Parser::checkToken(HL)) {
+			} else if (Z80Parser::checkToken(IX)) {
 				Z80Parser::addCode(0xdd, 0x29);
 			} else if (Z80Parser::checkToken(SP)) {
 				Z80Parser::addCode(0xdd, 0x39);
@@ -182,7 +182,7 @@ void Z80Parser::processADD() {
 				Z80Parser::addCode(0xfd, 0x09);
 			} else if (Z80Parser::checkToken(DE)) {
 				Z80Parser::addCode(0xfd, 0x19);
-			} else if (Z80Parser::checkToken(HL)) {
+			} else if (Z80Parser::checkToken(IY)) {
 				Z80Parser::addCode(0xfd, 0x29);
 			} else if (Z80Parser::checkToken(SP)) {
 				Z80Parser::addCode(0xfd, 0x39);

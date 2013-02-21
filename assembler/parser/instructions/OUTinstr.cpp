@@ -28,12 +28,12 @@
 */
 
 /*
-	file name: RSTinstr.cpp
-	compiled name: RSTinstr.o
+	file name: OUTinstr.cpp
+	compiled name: OUTinstr.o
 	date created: 21/02/2013
 	date updated: 21/02/2013
 	author: Gareth Richardson
-	description: This is the object file for the processRST() method.
+	description: This is the object file for the processOUT() method.
 */
 
 #include <string>
@@ -46,30 +46,45 @@ using namespace std;
 #include "../addresslist.hpp"
 #include "../parser.hpp"
 
-void Z80Parser::processRST() {
+void Z80Parser::processOUT() {
 	unsigned char num8;
-	if (Z80Parser::checkEightBitNumber(num8)) {
-		if (num8 == 0x00) {
-			Z80Parser::addCode(0xc7);
-		} else if (num8 == 0x08) {
-			Z80Parser::addCode(0xcf);
-		} else if (num8 == 0x10) {
-			Z80Parser::addCode(0xd7);
-		} else if (num8 == 0x18) {
-			Z80Parser::addCode(0xdf);
-		} else if (num8 == 0x20) {
-			Z80Parser::addCode(0xe7);
-		} else if (num8 == 0x28) {
-			Z80Parser::addCode(0xef);
-		} else if (num8 == 0x30) {
-			Z80Parser::addCode(0xf7);
-		} else if (num8 == 0x38) {
-			Z80Parser::addCode(0xff);
+	if (Z80Parser::checkToken(LEFT_BRACKET)) {
+		if (Z80Parser::checkToken(C)) {
+			if (Z80Parser::checkToken(RIGHT_BRACKET) && Z80Parser::checkToken(COMMA)) {
+				if (Z80Parser::checkToken(A)) {
+					Z80Parser::addCode(0xed, 0x79);
+				} else if (Z80Parser::checkToken(B)) {
+					Z80Parser::addCode(0xed, 0x41);
+				} else if (Z80Parser::checkToken(C)) {
+					Z80Parser::addCode(0xed, 0x49);
+				} else if (Z80Parser::checkToken(D)) {
+					Z80Parser::addCode(0xed, 0x52);
+				} else if (Z80Parser::checkToken(E)) {
+					Z80Parser::addCode(0xed, 0x59);
+				} else if (Z80Parser::checkToken(H)) {
+					Z80Parser::addCode(0xed, 0x61);
+				} else if (Z80Parser::checkToken(L)) {
+					Z80Parser::addCode(0xed, 0x69);
+				} else {
+					Z80Parser::error("Wrong 8-bit register.");
+				}
+			} else {
+				Z80Parser::error("Incorrect useage of OUT.");
+			}
+		} else if (Z80Parser::checkEightBitNumber(num8)) {
+			if (Z80Parser::checkToken(RIGHT_BRACKET)
+				&& Z80Parser::checkToken(COMMA)
+				&& Z80Parser::checkToken(A)) {
+				Z80Parser::addCode(0xd3, num8);
+			} else {
+				Z80Parser::error("Incorrect useage of OUT.");
+			}
 		} else {
-			Z80Parser::error("Wrong number value in the RST instruction.");
+			Z80Parser::error("Incorrect useage of OUT.");
 		}
-		Z80Parser::newLine();
 	} else {
-		Z80Parser::error("The parameter for the RST instruction must be an 8-bit value only.");
+		Z80Parser::error("Missing bracket.");
 	}
+	
+	Z80Parser::newLine();
 }

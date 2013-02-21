@@ -120,6 +120,8 @@ class Z80Parser {
 		void processCALL();
 		void processRET();
 		void processRST();
+		void processIN();
+		void processOUT();
 
 	public:
 		Z80Parser(TokenList* tPointer, ByteCode* bPointer);

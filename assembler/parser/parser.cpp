@@ -595,8 +595,38 @@ void Z80Parser::run() {
 			Z80Parser::processRET();
 		} else if (Z80Parser::checkToken(RETI)) {
 			Z80Parser::addCode(0xed, 0x4d);
+			Z80Parser::newLine();
 		} else if (Z80Parser::checkToken(RETN)) {
 			Z80Parser::addCode(0xed, 0x45);
+			Z80Parser::newLine();
+		} else if (Z80Parser::checkToken(IN)) {
+			Z80Parser::processIN();
+		} else if (Z80Parser::checkToken(INI)) {
+			Z80Parser::addCode(0xed, 0xa2);
+			Z80Parser::newLine();
+		} else if (Z80Parser::checkToken(INIR)) {
+			Z80Parser::addCode(0xed, 0xb2);
+			Z80Parser::newLine();
+		} else if (Z80Parser::checkToken(IND)) {
+			Z80Parser::addCode(0xed, 0xaa);
+			Z80Parser::newLine();
+		} else if (Z80Parser::checkToken(INDR)) {
+			Z80Parser::addCode(0xed, 0xba);
+			Z80Parser::newLine();
+		} else if (Z80Parser::checkToken(OUT)) {
+			Z80Parser::processOUT();
+		} else if (Z80Parser::checkToken(OUTI)) {
+			Z80Parser::addCode(0xed, 0xa3);
+			Z80Parser::newLine();
+		} else if (Z80Parser::checkToken(OTIR)) {
+			Z80Parser::addCode(0xed, 0xb3);
+			Z80Parser::newLine();
+		} else if (Z80Parser::checkToken(OUTD)) {
+			Z80Parser::addCode(0xed, 0xab);
+			Z80Parser::newLine();
+		} else if (Z80Parser::checkToken(OTDR)) {
+			Z80Parser::addCode(0xed, 0xbb);
+			Z80Parser::newLine();
 		} else {
 			Z80Parser::error("Incorrect instruction.");
 		}

@@ -31,7 +31,7 @@
 	file name: JPinstr.cpp
 	compiled name: JPinstr.o
 	date created: 20/02/2013
-	date updated: 20/02/2013
+	date updated: 21/02/2013
 	author: Gareth Richardson
 	description: This is the object file for the processJP() method.
 */
@@ -158,12 +158,24 @@ void Z80Parser::processJP() {
 		} else {
 			Z80Parser::error("Missing comma.");
 		}
+	} else if (Z80Parser::checkToken(LEFT_BRACKET)) {
+		if (Z80Parser::checkToken(HL)) {
+			Z80Parser::addCode(0xe9);
+		} else if (Z80Parser::checkToken(IX)) {
+			Z80Parser::addCode(0xdd, 0xe9);
+		} else if (Z80Parser::checkToken(IY)) {
+			Z80Parser::addCode(0xfd, 0xe9);
+		} else {
+			Z80Parser::error("JP instruction can be [HL], [IX] or [IY].");
+		}
+		
+		if (!Z80Parser::checkToken(RIGHT_BRACKET) && !Z80Parser::errorState) {
+			Z80Parser::error("Missing Bracket.");
+		}
 	} else {
 		Z80Parser::error("Invalid use of the JP instruction.");
 	}
 	
-	if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
-		Z80Parser::error("The JP instruction requires a new line at the end.");
-	}
+	Z80Parser::newLine();
 }
 

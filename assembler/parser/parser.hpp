@@ -30,7 +30,7 @@
 /*
 	file name: parser.hpp
 	date created: 28/09/2012
-	date updated: 20/02/13
+	date updated: 21/02/13
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it.
@@ -85,6 +85,12 @@ class Z80Parser {
 		void addAddress(string atom);
 		void error(string value);
 		
+		/*
+			Mkaes sure that there is a new line, comes in handy for checking
+			if a new line exists.
+		*/
+		void newLine();
+		
 		void processLD();
 		void processPUSH();
 		void processPOP();
@@ -110,6 +116,10 @@ class Z80Parser {
 		void processSET();
 		void processRES();
 		void processJP();
+		void processJR();
+		void processCALL();
+		void processRET();
+		void processRST();
 
 	public:
 		Z80Parser(TokenList* tPointer, ByteCode* bPointer);

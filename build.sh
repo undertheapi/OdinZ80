@@ -36,8 +36,16 @@ g++ assembler/parser/instructions/BITinstr.cpp -c
 g++ assembler/parser/instructions/SETinstr.cpp -c
 g++ assembler/parser/instructions/RESinstr.cpp -c
 g++ assembler/parser/instructions/JPinstr.cpp -c
+g++ assembler/parser/instructions/JRinstr.cpp -c
+g++ assembler/parser/instructions/CALLinstr.cpp -c
+g++ assembler/parser/instructions/RETinstr.cpp -c
+g++ assembler/parser/instructions/RSTinstr.cpp -c
 g++ assembler/main.cpp -c
-g++ main.o JPinstr.o SETinstr.o RESinstr.o BITinstr.o SRLinstr.o SLAinstr.o SRAinstr.o RRinstr.o RRCinstr.o RLinstr.o RLCinstr.o DECinstr.o INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o odin
+g++ main.o RSTinstr.o RETinstr.o CALLinstr.o JRinstr.o JPinstr.o SETinstr.o RESinstr.o BITinstr.o SRLinstr.o SLAinstr.o SRAinstr.o RRinstr.o RRCinstr.o RLinstr.o RLCinstr.o DECinstr.o INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o odin
+rm RSTinstr.o
+rm RETinstr.o
+rm CALLinstr.o
+rm JRinstr.o
 rm JPinstr.o
 rm SETinstr.o
 rm RESinstr.o

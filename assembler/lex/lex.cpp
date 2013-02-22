@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 21/02/2013
+	date updated: 22/02/2013
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -183,6 +183,16 @@ TokenNodePtr Lex::getToken() {
 		newNode->lineNumber = -1;
 
 		return newNode;
+	}
+	
+	/*
+		This is here to fix a bug in the program
+	*/
+	if (!Lex::cList->isEmpty() && Lex::cList->peekValue()  == ';') {
+		Lex::cList->pop();
+		while (!Lex::cList->isEmpty() && Lex::cList->peekValue() != '\n') {
+			Lex::cList->pop();
+		}
 	}
 
 	/*

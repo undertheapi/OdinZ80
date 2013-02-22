@@ -31,7 +31,7 @@
 	file name: CALLinstr.cpp
 	compiled name: JRinstr.o
 	date created: 21/02/2013
-	date updated: 21/02/2013
+	date updated: 22/02/2013
 	author: Gareth Richardson
 	description: This is the object file for the processCALL() method.
 */
@@ -52,6 +52,7 @@ void Z80Parser::processCALL() {
 	if (Z80Parser::checkSixteenBitNumber(num16)) {
 		Z80Parser::addCode(0xcd, (unsigned char) num16, (unsigned char) (num16 >> 8));
 	} else if (Z80Parser::checkAtom(atom)) {
+		Z80Parser::addCode(0xcd);
 		Z80Parser::addAddress(atom);
 	} else {
 		if (Z80Parser::checkToken(NZ)) {

@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2012, Gareth Richardson
+	Copyright (c) 2013, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@
 	file name: z80.cpp
 	compiled name: z80.o
 	created date: 7/8/2012
-	date updated: 21/02/2013
+	date updated: 05/03/2013
 	author: Gareth Richardson
 	description: the implementation of the disassembler
 	method.

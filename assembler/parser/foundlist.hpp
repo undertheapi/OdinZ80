@@ -30,7 +30,7 @@
 /*
 	file name: foundlist.hpp
 	date created: 14/02/2013
-	date updated: 14/02/2013
+	date updated: 06/03/2013
 	author: Gareth Richardson
 	description: All the found addresses are in this list.
 */
@@ -39,22 +39,41 @@
 
 class FoundList {
 	private:
-		/*
+	/*
 			Structure of the singly linked list here:
 		*/
 		AddressNode* head;
 		AddressNode* tail;
 		
+		/*
+			Size of the list, increments by one everytime an
+			element is added.
+		*/
 		int size;
 		
+		/*
+			Initial code is put into this function. It is used within
+			the constructor.
+		*/
 		void init();
 	public:
 		FoundList();
 		
+		/*
+			When the FoundList object is empty, this returns a true.
+		*/
 		bool isEmpty();
 		
+		/*
+			Gets the size of the FoundList, use when wanting to know the exact
+			size of the FoundList object elements.
+		*/
 		int getSize();
 		
+		/*
+			Adds a new address to the end of the linked list. New element becomes
+			the new tail node in the linked list.
+		*/
 		void addAddress(string name, unsigned short addr);
 		
 		/*

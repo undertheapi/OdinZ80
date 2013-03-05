@@ -105,13 +105,12 @@ bool FoundList::doesNameExist(string value) {
 		return false;
 	}
 	bool found = false;
-	AddressNode* pointer = FoundList::head;
-	while (!found && pointer != NULL) {
-		if (pointer->value.compare(value) == 0) {
+	int index = 0;
+	while (index < FoundList::size && !found) {
+		if (FoundList::getName(index).compare(value) == 0) {
 			found = true;
-		} else {
-			pointer = pointer->next;
 		}
+		index++;
 	}
 	return found;
 }

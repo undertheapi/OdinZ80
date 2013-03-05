@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 22/02/2013
+	date updated: 05/03/2013
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -202,10 +202,11 @@ TokenNodePtr Lex::getToken() {
 
 	if (isAlphabetical(Lex::cList->peekValue())) {
 
-		while (!Lex::cList->isEmpty() && (isAlphabetical(Lex::cList->peekValue()) || isNumerical(Lex::cList->peekValue()))) {
+		while (!Lex::cList->isEmpty() && (Lex::cList->peekValue() == '_' || isAlphabetical(Lex::cList->peekValue()) || isNumerical(Lex::cList->peekValue()))) {
 			retValue += Lex::cList->peekValue();
 			Lex::cList->pop();
 		}
+		
 		/*
 			Here have some sort of token type checking to check for keywords. There has to be a more "effective" way
 			of doing this.

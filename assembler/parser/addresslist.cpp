@@ -30,7 +30,7 @@
 /*
 	file name: addresslist.cpp
 	date created: 14/02/2013
-	date updated: 14/02/2013
+	date updated: 06/03/2013
 	author: Gareth Richardson
 	description: This is a list of addresses not found yet.
 */
@@ -42,11 +42,50 @@ using namespace std;
 #include "bytecode.hpp"
 #include "addresslist.hpp"
 
-//#define NULL 0
+string AddressList::getElement(int index) {
+	int count = 0;
+	AddressNode* pointer = AddressList::head;
+	while (count != index) {
+		pointer = pointer->next;
+		count++;
+	}
+	return pointer->value;
+}
+
+unsigned short AddressList::getAddress(int index) {
+	int count = 0;
+	AddressNode* pointer = AddressList::head;
+	while (count != index) {
+		pointer = pointer->next;
+		count++;
+	}
+	return pointer->address;
+}
+
+void AddressList::deleteElement(int index) {
+	if (index == 0) {
+		if (AddressList::size == 1) {
+			AddressList::head = NULL;
+		} else {
+			AddressList::head = AddressList::head->next;
+		}
+	} else {
+		int count = 1;
+		AddressNode* previous = AddressList::head;
+		AddressNode* pointer = AddressList::head->next;
+		while (count != index) {
+			previous = pointer;
+			pointer = pointer->next;
+			count++;
+		}
+		previous->next = pointer->next;
+	}
+	AddressList::size--;
+}
 
 void AddressList::init() {
 	AddressList::head = NULL;
-	AddressList::tail = NULL;
+	AddressList::size = 0;
 }
 
 AddressList::AddressList() {
@@ -58,20 +97,20 @@ bool AddressList::isEmpty() {
 }
 
 void AddressList::addAddress(string value, unsigned short addr) {
-	AddressNode* newNode = new AddressNode;
-	newNode->value = value;
-	newNode->address = addr;
-	newNode->next = NULL;
 	if (AddressList::isEmpty()) {
+		AddressNode* newNode = new AddressNode;
+		newNode->value = value;
+		newNode->address = addr;
+		newNode->next = NULL;
 		AddressList::head = newNode;
-		AddressList::tail = newNode;
-	} else if (AddressList::head == AddressList::tail) {
-		AddressList::tail = newNode;
-		AddressList::head->next = AddressList::tail;
 	} else {
-		AddressList::tail->next = newNode;
-		AddressList::tail = newNode;
+		AddressNode* newNode = new AddressNode;
+		newNode->value = value;
+		newNode->address = addr;
+		newNode->next = AddressList::head;
+		AddressList::head = newNode;
 	}
+	AddressList::size++;
 }
 
 string AddressList::getLastName() {
@@ -79,25 +118,15 @@ string AddressList::getLastName() {
 }
 
 void AddressList::processAddress(string name, unsigned short newAddress, ByteCode* bCode) {
-	AddressNode* pointer = AddressList::head;
-	
-	while (pointer != NULL) {
-		if (pointer->value.compare(name) == 0) {
-			bCode->setElement((int)pointer->address, (unsigned char) newAddress);
-			bCode->setElement((int)(pointer->address + 1), (unsigned char) (newAddress>> 8));
-			
-			if (pointer == AddressList::head) {
-				AddressList::head = AddressList::head->next;
-			} else {
-				AddressNode* tmp = AddressList::head;
-				while (tmp->next != pointer) {
-					tmp = tmp->next;
-				}
-				tmp->next = pointer->next;
-			}
-			pointer = AddressList::head;
+	int index = 0;
+	while (index < AddressList::size) {
+		if (AddressList::getElement(index).compare(name) == 0) {
+			bCode->setElement(AddressList::getAddress(index), (unsigned char) newAddress);
+			bCode->setElement(AddressList::getAddress(index) + 1, (unsigned char) (newAddress >> 8));
+			AddressList::deleteElement(index);
+			index = 0;
 		} else {
-			pointer = pointer->next;
+			index++;
 		}
 	}
 }

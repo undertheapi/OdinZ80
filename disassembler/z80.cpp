@@ -92,10 +92,10 @@ string runZ80(ByteFile &obj) {
 					temp2 = convertHex(value);
 					retString += " ";
 					retString += temp2;
-					retString += "\t\tLD BC, [";
+					retString += "\t\tLD BC, ";
 					retString += temp2;
 					retString += temp;
-					retString += "H]\n";
+					retString += "H\n";
 				} else {
 					retString += "\n";
 				}
@@ -307,10 +307,10 @@ string runZ80(ByteFile &obj) {
 					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
-					retString += "\t\tLD HL, [";
+					retString += "\t\tLD HL, ";
 					retString += temp2;
 					retString += temp;
-					retString += "H]\n";
+					retString += "H\n";
 				} else {
 					retString += "\n";
 				}
@@ -462,10 +462,10 @@ string runZ80(ByteFile &obj) {
 					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
-					retString += "\t\tLD SP, [";
+					retString += "\t\tLD SP, ";
 					retString += temp2;
 					retString += temp;
-					retString += "H]\n";
+					retString += "H\n";
 				} else {
 					retString += "\n";
 				}
@@ -1647,6 +1647,7 @@ string runZ80(ByteFile &obj) {
 				retString += "\t\tOUT [";
 				retString += convertHex(value);
 				retString += "H], A\n";
+				address++;
 			} else {
 				retString += "\n";
 			}

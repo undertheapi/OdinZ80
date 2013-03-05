@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2012, Gareth Richardson
+	Copyright (c) 2013, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 21/02/2013
+	date updated: 05/03/2013
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it (returned in a ByteCode object).

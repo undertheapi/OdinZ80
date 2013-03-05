@@ -30,7 +30,7 @@
 /*
 	file name: addresslist.hpp
 	date created: 14/02/2013
-	date updated: 14/02/2013
+	date updated: 06/03/2013
 	author: Gareth Richardson
 	description: This is a list of addresses not found yet.
 */
@@ -39,15 +39,56 @@
 
 class AddressList {
 	private:
+		/*
+			Node pointing to the beginning of the linked list. Does not
+			need the typical tail node.
+		*/
 		AddressNode* head;
-		AddressNode* tail;
 		
+		/*
+			The size of the AddressList linked list. increments by one
+			everytime a node is added to the linked list.
+		*/
+		int size;
+		
+		/*
+			Gets the address name at the specified index. Make sure the
+			index value is within range as there is no error checking in
+			this method.
+		*/
+		string getElement(int index);
+		
+		/*
+			Get the address specified by the index in the linked list.
+			No error checking so make sure the index value is within
+			range.
+		*/
+		unsigned short getAddress(int index);
+		
+		/*
+			Deletes an element from the linked list. Make sure the index
+			is with range as there is no error checking.
+		*/
+		void deleteElement(int index);
+		
+		/*
+			The initiation method, called up in the constructor. Put all
+			the initail code in here.
+		*/
 		void init();
 	public:
 		AddressList();
 		
+		/*
+			Returns true if the AddressList is empty.
+		*/
 		bool isEmpty();
 		
+		/*
+			Adds an address to the beginning of the list, does not matter
+			were you input the address, so the new address becomes the head
+			of the linked list.
+		*/
 		void addAddress(string value, unsigned short addr);
 		
 		/*

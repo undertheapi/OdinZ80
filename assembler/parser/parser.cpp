@@ -636,6 +636,17 @@ void Z80Parser::run() {
 		*/
 		Z80Parser::checkToken(NEW_LINE);
 	}
+	
+	/*
+		Makes sure that all the address needed has been found, otherwise, it comes back with
+		an error.
+	*/
+	if (!Z80Parser::aList.isEmpty()) {
+		string errStr = "The address named ";
+		errStr += aList.getLastName();
+		errStr += " does not exist!";
+		Z80Parser::error(errStr);
+	}
 }
 
 bool Z80Parser::checkState() {

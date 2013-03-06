@@ -641,7 +641,7 @@ void Z80Parser::run() {
 		Makes sure that all the address needed has been found, otherwise, it comes back with
 		an error.
 	*/
-	if (!Z80Parser::aList.isEmpty()) {
+	if (!Z80Parser::errorState && !Z80Parser::aList.isEmpty()) {
 		string errStr = "The address named ";
 		errStr += aList.getLastName();
 		errStr += " does not exist!";

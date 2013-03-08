@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2012, Gareth Richardson
+	Copyright (c) 2013, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: addresslist.cpp
 	date created: 14/02/2013
-	date updated: 06/03/2013
+	date updated: 09/03/2013
 	author: Gareth Richardson
 	description: This is a list of addresses not found yet.
 */
@@ -114,7 +114,7 @@ void AddressList::addAddress(string value, unsigned short addr) {
 }
 
 string AddressList::getLastName() {
-	return AddressList::tail->value;
+	return AddressList::head->value;
 }
 
 void AddressList::processAddress(string name, unsigned short newAddress, ByteCode* bCode) {

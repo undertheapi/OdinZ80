@@ -68,7 +68,6 @@ void testADC() {
 
 	assert(lexObj.checkForError() == false);
 	printf("No error has come from the Lexical Analyser.\n");
-
 	assert(tList.peekTokenType() == ADC);
 	printf("\tFirst token is ADC.\n");
 	tList.pop();
@@ -207,7 +206,7 @@ void testBIT() {
 	assert(tList.peekTokenType() == BIT);
 	printf("\tThird token is BIT.\n");
 	tList.pop();
-
+	printf("%i\n", tList.peekTokenType());
 	assert(tList.peekTokenType() == BIT);
 	printf("\tFourth token is BIT.\n");
 	tList.pop();

@@ -138,3 +138,30 @@ string convertHex(char value) {
 	return retString;
 }
 
+string toUpper(string value) {
+	string retString = "";
+	for (int i = 0; i < value.size(); i++) {
+		if (value[i] >= 'a' && value[i] <= 'z') {
+			retString += value[i] - 32;
+		} else {
+			retString += value[i];
+		}
+	}
+	return retString;
+}
+
+string toFirstCharUpper(string value) {
+	string retString = "";
+	if (value[0] >= 'a' && value[0] <= 'z') {
+		retString += value[0] - 32;
+	} else {
+		retString += value[0];
+	}
+	
+	for (int i = 1; i < value.size(); i++) {
+		retString += value[i];
+	}
+	
+	return retString;
+}
+

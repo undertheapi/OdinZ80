@@ -66,3 +66,7 @@ string integerToString(int value);
 
 string convertHex(char value);
 
+string toUpper(string value);
+
+string toFirstCharUpper(string value);
+

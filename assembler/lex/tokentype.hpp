@@ -99,13 +99,13 @@
 #define RRCA 56
 #define RRD 57
 #define RST 58
-#define SUBC 59
-#define SCF 60
-#define SET 61
-#define SLA 62
-#define SRA 63
-#define SRL 64
-#define SUB 65
+#define SUB 59
+#define SUBC 60
+#define SCF 61
+#define SET 62
+#define SLA 63
+#define SRA 64
+#define SRL 65
 #define XOR 66
 
 /*

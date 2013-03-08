@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2012, Gareth Richardson
+	Copyright (c) 2013, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: tokentype.hpp
 	date created: 3/09/2012
-	date updated: 20/02/2013
+	date updated: 09/03/2013
 	author: Gareth Richardson
 	description: This is a file of definitions for the types of tokens that are valid
 	in the assembler. The TOkenNode data structure stores the type as an unsigned char,
@@ -90,82 +90,85 @@
 #define RETN 47
 #define RL 48
 #define RLA 49
-#define RLC 170
-#define RLCA 50
-#define RLD 51
-#define RR 52
-#define RRA 53
-#define RRC 54
-#define RRCA 55
-#define RRD 56
-#define RST 57
-#define SUBC 58
-#define SCF 59
-#define SET 60
-#define SLA 61
-#define SRA 62
-#define SRL 63
-#define SUB 64
-#define XOR 65
+#define RLC 50
+#define RLCA 51
+#define RLD 52
+#define RR 53
+#define RRA 54
+#define RRC 55
+#define RRCA 56
+#define RRD 57
+#define RST 58
+#define SUBC 59
+#define SCF 60
+#define SET 61
+#define SLA 62
+#define SRA 63
+#define SRL 64
+#define SUB 65
+#define XOR 66
 
 /*
 	these are registers:
 */
-#define F 66
-#define B 67
-#define C 68	// Also the Carry token as well
-#define D 69
-#define E 70
-#define H 71
-#define L 72
-#define A 73
-#define BC 74
-#define DE 75
-#define HL 76
-#define I 77
-#define R 78
-#define IX 79
-#define IY 80
-#define PC 81
-#define SP 82
-#define AF 153
+#define F 67
+#define B 68
+#define C 69	// Also the Carry token as well
+#define D 70
+#define E 71
+#define H 72
+#define L 73
+#define A 74
+#define BC 75
+#define DE 76
+#define HL 77
+#define I 78
+#define R 79
+#define IX 80
+#define IY 81
+#define PC 82
+#define SP 83
+#define AF 84
 
 /*
 	these are assembler instructions:
 */
-#define CPU 83		// CPU type (for future compatibility).
-#define DB 84		// Declare a byte in the output machine code.
-#define DW 85		// Declare a word in the output machine code.
-#define ORG 86		// The address the byte code will be executed from.
-#define REP 87		// Repeats a byte a specified amount of times.
-#define SPECREP 88	// A custom repeat command. Repeats a set of bytes instead of one.
+#define CPU 85		// CPU type (for future compatibility).
+#define DB 86		// Declare a byte in the output machine code.
+#define DW 87		// Declare a word in the output machine code.
+#define ORG 88		// The address the byte code will be executed from.
+#define REP 89		// Repeats a byte a specified amount of times.
+#define SPECREP 90	// A custom repeat command. Repeats a set of bytes instead of one.
 
 /*
 	grammar:
 */
-#define ATOM 89			// A none reserved word in the source code, includes numbers as well.
-#define COLON 90		// A ":" character, used for labels and addresses.
-#define COMMA 91		// A ',' character.
-#define NEW_LINE 92
-#define LEFT_BRACKET 93
-#define RIGHT_BRACKET 94
-#define PLUS 95
-#define MINUS 96
-#define MULTIPLY 97
+#define ATOM 91			// A none reserved word in the source code, includes numbers as well.
+#define COLON 92		// A ":" character, used for labels and addresses.
+#define COMMA 93		// A ',' character.
+#define NEW_LINE 94
+#define LEFT_BRACKET 95
+#define RIGHT_BRACKET 96
+#define PLUS 97
+#define MINUS 98
+#define MULTIPLY 99
 
 /*
 	This are the JMP condition Tokens:
 	(Note that the C "Carry" condition type is also the same as the C register,
 	so, it has been declared above in the Register section of this file).
 */
-#define M 98
-#define NC 99
-#define NZ 100
-#define P 101
-#define PE 102
-#define PO 103
-#define Z 104
+#define M 100
+#define NC 101
+#define NZ 102
+#define P 103
+#define PE 104
+#define PO 105
+#define Z 106
 
+/*
+	Other Token Types here:
+*/
 #define NUMBER 160
 #define STRING 161
 

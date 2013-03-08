@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2012, Gareth Richardson
+	Copyright (c) 2013, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,9 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 05/03/2013
+	date updated: 09/03/2013
 	author: Gareth Richardson
-	description: This is the Lexical Analysis for the Odin assembler.
+	description: This is the Lexical Analyserd for the Odin assembler.
 */
 
 #include <string>
@@ -40,103 +40,10 @@
 using namespace std;
 
 #include "../character/characterlist.hpp"
+#include "../general/ctype.hpp"
 #include "tokentype.hpp"
 #include "tokenlist.hpp"
 #include "lex.hpp"
-
-/*
-	This is a custom method that checks that a CHARACTER is an alphabetical character.
-	That is a character between A and Z or a and z.
-*/
-bool isAlphabetical(CHARACTER value) {
-	return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
-}
-
-/*
-	This is another custom method class that checks that a character is numerical in
-	the decimal sense. Between 0 and 9.
-*/
-bool isNumerical(CHARACTER value) {
-	return value >= '0' && value <= '9';
-}
-
-/*
-	This method checks if the character value is a printable character. That is, it is not
-	the first 32 ASCII values AND not the DEL character.
-*/
-bool isPrintable(CHARACTER value) {
-	return value >= 32 && value <= 126;
-}
-
-/*
-	This method checks if a CHARACTER value is a hexidecimal value:
-*/
-bool isHex(CHARACTER value) {
-	return (value >= '0' && value <= '9') || (value >= 'a' && value <= 'f') || (value >= 'A' && value <= 'F');
-}
-
-bool isBinary(CHARACTER value) {
-	return value == '0' || value == '1';
-}
-
-bool isDecimalString(string value) {
-	bool valid = true;
-	int index = 0;
-	while (valid && index < value.size()) {
-		if (!isNumerical(value.at(index))) {
-			valid = false;
-		}
-		index++;
-	}
-	return valid;
-}
-
-bool isHexString(string value) {
-	bool valid = true;
-	int index = 0;
-	while (valid && index < value.size()) {
-		if (!isHex(value.at(index))) {
-			valid = false;
-		}
-		index++;
-	}
-	return valid;
-}
-
-bool isBinaryString(string value) {
-	bool valid = true;
-	int index = 0;
-	while (valid && index < value.size()) {
-		if (!isBinary(value.at(index))) {
-			valid = false;
-		}
-		index++;
-	}
-	return valid;
-}
-
-string integerToString(int value) {
-	if (value == 0) {
-		return "0";
-	}
-
-	string retValue = "";
-
-	while (value > 0) {
-		retValue += value % 10 + 48;
-		value /= 10;
-	}
-
-	return retValue;
-}
-
-string convertHex(char value) {
-	string retString = "";
-	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-	retString += hexArray[(int)((value >> 4) & 0x000f)];
-	retString += hexArray[(int)((value) & 0x000f)];
-	return retString;
-}
 
 Lex::Lex(CharacterList* cList, TokenList* tList) {
 	Lex::cList = cList;

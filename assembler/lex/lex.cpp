@@ -119,32 +119,29 @@ TokenNodePtr Lex::getToken() {
 				"adc", "add", "and", "bit", "call", 
 				"ccf", "cp", "cpd", "cpdr", "cpi", 
 				"cpir", "cpl", "daa", "dec", "di",
-				"ei", "ex", "exx", "halt", "im", "in",
-				"inc", "ind", "indr", "ini", "inir",
-				"jp", "jr", "ld", "ldd", "lddr", "ldi",
-				"ldir", "neg", "nop", "or", "otdr", "otir",
-				"out", "outd", "outi", "pop", "push",
-				"res", "ret", "reti", "retn", "rl", "rla",
-				"rlc", "rlca", "rld", "rr", "rra", "rrc",
-				"rrca", "rrd", "rst", "sub", "subc", "scf", 
-				"set", "sla", "sra", "srl", "xor"
+				"ei", "ex", "exx", "halt", "im", 
+				"in", "inc", "ind", "indr", "ini",
+				"inir", "jp", "jr", "ld", "ldd", 
+				"lddr", "ldi", "ldir", "neg", "nop",
+				"or", "otdr", "otir", "out", "outd", 
+				"outi", "pop", "push", "res", "ret", 
+				"reti", "retn", "rl", "rla", "rlc", 
+				"rlca", "rld", "rr", "rra", "rrc",
+				"rrca", "rrd", "rst", "sub", "subc", 
+				"scf", "set", "sla", "sra", "srl", 
+				"xor"
 		};
 		
 		int tokenNumber = 0;
-		bool foundToken = false;
-		while (tokenNumber < 67 && !foundToken) {
-			if (!retValue.compare(instructionArray[tokenNumber]) || 
-				!retValue.compare(toUpper(instructionArray[tokenNumber])) ||
-				!retValue.compare(toFirstCharUpper(instructionArray[tokenNumber]))) {
+		while (tokenNumber < 66) {
+			if (retValue.compare(instructionArray[tokenNumber]) == 0 || 
+				retValue.compare(toUpper(instructionArray[tokenNumber])) == 0 ||
+				retValue.compare(toFirstCharUpper(instructionArray[tokenNumber])) == 0) {
 				newNode->type = tokenNumber;
-				foundToken = true;
+				return newNode;
 			}
 			tokenNumber++;
 		}
-		
-		 if (foundToken) {
-		 	return newNode;
-		 }
 		
 		/*
 			The rest of the key words are checked here. Such as unique ways of writing an

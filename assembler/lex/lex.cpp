@@ -204,7 +204,7 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = ORG;
 		} else if (!retValue.compare("REP") || !retValue.compare("Rep") || !retValue.compare("rep")) {
 			newNode->type = REP;
-		} else if (!retValue.compare("SPECREP") || !retValue.compare("SPECREP") || !retValue.compare("SPECREP")) {
+		} else if (!retValue.compare("SPECREP") || !retValue.compare("Specrep") || !retValue.compare("specrep")) {
 			newNode->type = SPECREP;
 		} else if (!retValue.compare("M") || !retValue.compare("m")) {
 			newNode->type = M;

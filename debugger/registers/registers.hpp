@@ -1,7 +1,6 @@
-
 class Registers {
   private:
-    unsigned short[6] registerArray;
+    unsigned char[8] registerArray;
   public:
     
 };

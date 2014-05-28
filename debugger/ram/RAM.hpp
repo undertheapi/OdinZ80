@@ -30,7 +30,7 @@
 /*
 	file name: RAM.hpp
 	date created: 22/02/2012
-	date updated: 22/02/2012
+	date updated: 29/05/2014
 	author: Gareth Richardson
 	description: This this the header file for the RAM object. Use this with
 	the debugger. Can also be used for other CPU simulators and emulators that
@@ -40,6 +40,12 @@
 
 #define MAX_ADDRESS 0xffff
 
+#define FEED_TYPE unsigned char
+#define HEX_FEED 0
+#define BIN_FEED 2
+#define DEC_FEED 3
+#define OCT_FEED 4
+
 class RAM {
 	private:
 		unsigned char memory[MAX_ADDRESS];
@@ -47,5 +53,6 @@ class RAM {
 		RAM();
 		unsigned char read(unsigned short address);
 		void write(unsigned short address, unsigned char value);
+		string memoryFeed(unsigned short start, FEED_TYPE type);
 };
 

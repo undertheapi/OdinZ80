@@ -30,7 +30,7 @@
 /*
 	file name: registers.hpp
 	date created: 21/10/2013
-	date updated: 21/10/2013
+	date updated: 29/05/2014
 	author: Gareth Richardson
 	description: The header file for the registers object
 */
@@ -39,11 +39,12 @@
 	8 BIT register definitions:
 */
 #define REGISTER8 unsigned char
-#define REG_A 7
+#define REG_A 6
 #define REG_B 0
 #define REG_C 1
 #define REG_D 2
 #define REG_E 3
+#define REG_F 7
 #define REG_H 4
 #define REG_L 5
 
@@ -57,18 +58,45 @@
 #define REG_SP 3
 
 class Registers {
-  private:
-    unsigned char[8] registerArray;
-    unsigned short IP;
-    unsigned short IX;
-    unsigned short IY;
-  public:
-  	unsigned short getIP();
-  	void incrementIP();
-  	
-  	unsigned short getIX();
-  	unsigned short getIY();
-  	
-    void load8Bit(REGISTER8 reg1, REGISTER8 reg2);
-    void load8BitImm(REGISTER8 reg, unsigned char value);
+	private:
+		/*
+			The register array works like this:
+			
+			B	C	D	E	H	L	A	F
+			0	1	2	3	4	5	6	7
+			
+			So, BC is made from [0] and [1], DE from [2] and [3],
+			HL from [4] and [5] and AF from [6] and [7].
+			
+			Should the flag be in here as well?
+		*/
+		unsigned char[8] registerArray;
+		unsigned short IP;
+		unsigned short IX;
+		unsigned short IY;
+		
+		void init();
+	public:
+		/*
+			Methods dealing with register IP:
+		*/
+		unsigned short getIP();
+		void incrementIP();
+		void decrementIP();
+		
+		/*
+			Methods dealing with the Extended Registers:
+		*/
+		unsigned short getIX();
+		unsigned short getIY();
+		
+		void load8Bit(REGISTER8 reg1, REGISTER8 reg2);
+		void load8BitImm(REGISTER8 reg, unsigned char value);
+		
+		Registers();
+		
+		/*
+			THis returns a string displaying the current state of the registers.
+		*/
+		string currentStateString();
 };

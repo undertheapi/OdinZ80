@@ -566,6 +566,44 @@ void testStrings() {
 	tList.pop();
 }
 
+void testDirectives() {
+	printf("**Testing Directives.\n");
+	CharacterList cList;
+	char array[] = ".db .Db .DB .Byte .DW        .Dw                   .dw \t\t\t\t.EQU";
+
+	int index = 0;
+
+	while (array[index] != 0) {
+		cList.push(array[index]);
+		index++;
+	}
+
+	cList.finishedFile();
+
+	TokenList tList;
+
+	Lex lexObj(&cList, &tList);
+
+	lexObj.run();
+	
+	assert(tList.peekTokenType() == DB);
+	tList.pop();
+	assert(tList.peekTokenType() == DB);
+	tList.pop();
+	assert(tList.peekTokenType() == DB);
+	tList.pop();
+	assert(tList.peekTokenType() == DB);
+	tList.pop();
+	assert(tList.peekTokenType() == DW);
+	tList.pop();
+	assert(tList.peekTokenType() == DW);
+	tList.pop();
+	assert(tList.peekTokenType() == DW);
+	tList.pop();
+	assert(tList.peekTokenType() == DIR_EQU);
+	tList.pop();
+}
+
 int main() {
 	testADC();
 	testADD();
@@ -577,5 +615,6 @@ int main() {
 	testString();
 	testLineCount();
 	testStrings();
+	testDirectives();
 	return 0;
 }

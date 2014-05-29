@@ -337,9 +337,9 @@ TokenNodePtr Lex::getToken() {
 			/*
 				We have a directive command:
 			*/
-			if (!retValue.compare(".db") || !retValue.compare(".Db") || !retValue.compare(".DB")) {
+			if (!retValue.compare(".db") || !retValue.compare(".Db") || !retValue.compare(".DB") || !retValue.compare(".byte") || !retValue.compare(".Byte") || !retValue.compare(".BYTE")) {
 				newNode->type = DB;
-			} else if (!retValue.compare(".dw") || !retValue.compare(".Dw") || !retValue.compare(".DW")) {
+			} else if (!retValue.compare(".dw") || !retValue.compare(".Dw") || !retValue.compare(".DW") || !retValue.compare(".word") || !retValue.compare(".Word") || !retValue.compare(".WORD")) {
 				newNode->type = DW;
 			} else if (!retValue.compare(".equ") || !retValue.compare(".Equ") || !retValue.compare(".EQU")) {
 				newNode->type = DIR_EQU;

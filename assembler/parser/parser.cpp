@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2013, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 05/03/2013
+	date updated: 29/05/2014
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it (returned in a ByteCode object).
@@ -426,6 +426,8 @@ void Z80Parser::run() {
 					val += "\" already exists.";
 					Z80Parser::error(val);
 				}
+			} else if (Z80Parser::checkToken(DIR_EQU)) {
+				
 			} else {
 				Z80Parser::error("An Address has to be followed by a colon.");
 			}

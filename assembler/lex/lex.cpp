@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2013, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,9 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 11/03/2013
+	date updated: 29/05/2014
 	author: Gareth Richardson
-	description: This is the Lexical Analyserd for the Odin assembler.
+	description: This is the Lexical Analyser for the Odin assembler.
 */
 
 #include <string>
@@ -321,6 +321,32 @@ TokenNodePtr Lex::getToken() {
 			*/
 			newNode->type = ATOM;
 			newNode->value = retValue;
+		}
+	} else if (Lex::cList->peekValue() == '.') {
+		retValue = Lex::cList->peekValue();
+		Lex::cList->pop();
+		
+		while (!Lex::cList->isEmpty() && isAlphabetical(Lex::cList->peekValue())) {
+			retValue += Lex::cList->peekValue();
+			Lex::cList->pop();
+		}
+		
+		if (!retValue.compare(".")) {
+			newNode->type = DOT_POINT;
+		} else {
+			/*
+				We have a directive command:
+			*/
+			if (!retValue.compare(".db") || !retValue.compare(".Db") || !retValue.compare(".DB")) {
+				newNode->type = DB;
+			} else if (!retValue.compare(".dw") || !retValue.compare(".Dw") || !retValue.compare(".DW")) {
+				newNode->type = DW;
+			} else if (!retValue.compare(".equ") || !retValue.compare(".Equ") || !retValue.compare(".EQU")) {
+				newNode->type = DIR_EQU;
+			} else {
+				newNode->type = ATOM;
+				newNode->value = retValue;
+			}
 		}
 	} else if (isNumerical(Lex::cList->peekValue()) || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#') {
 		newNode->type = NUMBER;

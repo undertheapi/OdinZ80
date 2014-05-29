@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2013, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: ctype.cpp
 	date created: 09/03/2012
-	date updated: 09/03/2013
+	date updated: 29/05/2014
 	author: Gareth Richardson
 	description: The object for string and character functions that the odin assembler will use.
 	Used for validation, manipulation and convertion.
@@ -40,7 +40,7 @@
 
 using namespace std;
 
-#include "../character/charnode.hpp"
+#include "../character/characterlist.hpp"
 #include "ctype.hpp"
 
 

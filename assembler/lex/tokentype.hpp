@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2013, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,10 +30,10 @@
 /*
 	file name: tokentype.hpp
 	date created: 3/09/2012
-	date updated: 09/03/2013
+	date updated: 29/05/2014
 	author: Gareth Richardson
 	description: This is a file of definitions for the types of tokens that are valid
-	in the assembler. The TOkenNode data structure stores the type as an unsigned char,
+	in the assembler. The TokenNode data structure stores the type as an unsigned char,
 	so make sure that the amount of tokens do not exceed 256.
 */
 
@@ -174,6 +174,14 @@
 
 #define LEFT_PARENT 162
 #define RIGHT_PARENT 163
+
+#define DOT_POINT 164 //a dot '.'
+
+/*
+	Directive Instruction set:
+*/
+#define DIR_EQU 165
+
 
 /*
 	an end of file token type:

@@ -222,14 +222,10 @@ bool Z80Parser::checkSixteenBitNumber(unsigned short &number) {
 }
 
 bool Z80Parser::checkStringToken(string &value) {
-	if (!Z80Parser::errorState) {
-		if (!Z80Parser::tList->isEmpty()) {
-			if (Z80Parser::tList->peekTokenType() == STRING) {
-				value = Z80Parser::tList->peekValue();
-				Z80Parser::tList->pop();
-				return true;
-			}
-		}
+	if (!Z80Parser::errorState && !Z80Parser::tList->isEmpty() && Z80Parser::tList->peekTokenType() == STRING) {
+		value = Z80Parser::tList->peekValue();
+		Z80Parser::tList->pop();
+		return true;
 	}
 	return false;
 }

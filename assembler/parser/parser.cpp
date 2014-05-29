@@ -435,6 +435,11 @@ void Z80Parser::run() {
 						if (!Z80Parser::fList.doesNotExist(strValue)) {
 							Z80Parser::fList.addAddress(strValue, retValue);
 							Z80Parser::aList.processAddress(strValue, retValue, bCode);
+						} else {
+							string val = "The Term \"";
+							val += strValue;
+							val += "\" already exists.";
+							Z80Parser::error(val);
 						}
 					} else {
 						Z80Parser::error("The EQU statement must end with a new line.");

@@ -28,11 +28,11 @@
 */
 
 /*
-	file name: lex.hpp
-	date created: 29/08/2012
-	date updated: 29/05/2014
-	author: Gareth Richardson
-	description: This is the Lexical Analyser for the Odin assembler.
+	file name:		lex.cpp
+	date created:	29/08/2012
+	date updated:	29/05/2014
+	author:			Gareth Richardson
+	description:	This is the Lexical Analyser object code for the Odin assembler.
 */
 
 #include <string>
@@ -315,6 +315,8 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = PO;
 		} else if (!retValue.compare("Z") || !retValue.compare("z")) {
 			newNode->type = Z;
+		} else if (!retValue.compare("EQU") || !retValue.compare("Equ") || !retValue.compare("equ")) {
+			newNode->type = DIR_EQU;
 		} else {
 			/*
 				if it is not a reserved word, it is an ATOM:

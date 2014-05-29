@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2012, Gareth Richardson
+	Copyright (c) 2013, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: testlex.cpp
 	date created: 4/10/2012
-	date updated: 23/10/2012
+	date updated: 29/05/2014
 	author: Gareth Richardson
 	description: This is the unit test for the Lex class.
 */
@@ -569,7 +569,7 @@ void testStrings() {
 void testDirectives() {
 	printf("**Testing Directives.\n");
 	CharacterList cList;
-	char array[] = ".db .Db .DB .Byte .DW        .Dw                   .dw \t\t\t\t.EQU";
+	char array[] = ".db .Db .DB .Byte .DW        .Dw                   .dw \t\t\t\t.EQU equ equ";
 
 	int index = 0;
 
@@ -599,6 +599,10 @@ void testDirectives() {
 	assert(tList.peekTokenType() == DW);
 	tList.pop();
 	assert(tList.peekTokenType() == DW);
+	tList.pop();
+	assert(tList.peekTokenType() == DIR_EQU);
+	tList.pop();
+	assert(tList.peekTokenType() == DIR_EQU);
 	tList.pop();
 	assert(tList.peekTokenType() == DIR_EQU);
 	tList.pop();

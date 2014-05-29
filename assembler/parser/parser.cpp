@@ -417,7 +417,6 @@ void Z80Parser::run() {
 		} else if (Z80Parser::checkAtom(strValue)) {
 			if (Z80Parser::checkToken(COLON)) {
 				if (!Z80Parser::fList.doesNameExist(strValue)) {
-				
 					Z80Parser::fList.addAddress(strValue, Z80Parser::address);
 					Z80Parser::aList.processAddress(strValue, Z80Parser::address, bCode);
 				} else {
@@ -427,7 +426,22 @@ void Z80Parser::run() {
 					Z80Parser::error(val);
 				}
 			} else if (Z80Parser::checkToken(DIR_EQU)) {
-				
+				/*
+					We have an EQU directive statement:
+				*/
+				unsigned short retValue;
+				if (Z80Parser::checkSixteenBitNumber(retValue)) {
+					if (Z80Parser::checkToken(NEW_LINE)) {
+						if (!Z80Parser::fList.doesNotExist(strValue)) {
+							Z80Parser::fList.addAddress(strValue, retValue);
+							Z80Parser::aList.processAddress(strValue, retValue, bCode);
+						}
+					} else {
+						Z80Parser::error("The EQU statement must end with a new line.");
+					}
+				} else {
+					Z80Parser::error("The incorrect way to use an EQU statement. <name> EQU <short number>");
+				}
 			} else {
 				Z80Parser::error("An Address has to be followed by a colon.");
 			}

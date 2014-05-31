@@ -102,3 +102,8 @@ const Registers operator =(const Registers& regObj1, const Registers& regObj2) {
 		regObj1.registerArray[i] = regObj2.registerArray[i];
 	}
 }
+
+friend Registers duplicate(const Registers& regObj) {
+	Registers retObj = regObj;
+	return retObj;
+}

@@ -101,4 +101,6 @@ class Registers {
 		void affectFlag(unsigned char flag, unsigned char status);
 		
 		friend const Registers operator =(const Registers& regObj1, const Registers& regObj2);
+		
+		friend Registers duplicate(const Registers& regObj);
 };

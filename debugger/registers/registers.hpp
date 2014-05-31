@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2013, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,10 @@
 /*
 	file name: registers.hpp
 	date created: 21/10/2013
-	date updated: 29/05/2014
+	date updated: 31/05/2014
 	author: Gareth Richardson
-	description: The header file for the registers object
+	description: The header file for the registers object. These registers are the Main Registers,
+	not the special purpose registers.
 */
 
 /*
@@ -55,7 +56,17 @@
 #define REG_BC 0
 #define REG_DE 1
 #define REG_HL 2
-#define REG_SP 3
+
+/*
+	The flag definitions:
+*/
+#define CARRY_FLAG 0
+#define ADD_SUBRACT_FLAG 1
+#define PARITY_OVERFLOW_FLAG 2
+#define HALF_CARRY_FLAG 4
+#define ZERO_FLAG 6
+#define SIGN_FLAG 7
+
 
 class Registers {
 	private:
@@ -71,32 +82,21 @@ class Registers {
 			Should the flag be in here as well?
 		*/
 		unsigned char[8] registerArray;
-		unsigned short IP;
-		unsigned short IX;
-		unsigned short IY;
 		
 		void init();
 	public:
-		/*
-			Methods dealing with register IP:
-		*/
-		unsigned short getIP();
-		void incrementIP();
-		void decrementIP();
-		
-		/*
-			Methods dealing with the Extended Registers:
-		*/
-		unsigned short getIX();
-		unsigned short getIY();
+		Registers();
 		
 		void load8Bit(REGISTER8 reg1, REGISTER8 reg2);
 		void load8BitImm(REGISTER8 reg, unsigned char value);
 		
-		Registers();
+		void load16Bit(REGISTER16 reg1, REGISTER16 reg2);
+		void load16BitImm(REGISTER16 reg, unsigned short value);
 		
-		/*
-			THis returns a string displaying the current state of the registers.
-		*/
-		string currentStateString();
+		unsigned char get8BitRegister(REGISTER8 reg);
+		unsigned short get16BitRegister(REGISTER16 reg);
+		
+		void setFlag(unsigned char flag);
+		void resetFlag(unsigned char flag);
+		void affectFlag(unsigned char flag, unsigned char status);
 };

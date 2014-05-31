@@ -28,75 +28,29 @@
 */
 
 /*
-	file name: registers.hpp
-	date created: 21/10/2013
+	file name: registers.cpp
+	date created: 31/05/2014
 	date updated: 31/05/2014
 	author: Gareth Richardson
-	description: The header file for the registers class. These registers are the Main Registers,
-	not the special purpose registers.
+	description: The object file for the registers class.
 */
 
-/*
-	8 BIT register definitions:
-*/
-#define REGISTER8 unsigned char
-#define REG_A 6
-#define REG_B 0
-#define REG_C 1
-#define REG_D 2
-#define REG_E 3
-#define REG_F 7
-#define REG_H 4
-#define REG_L 5
+#include "registers.hpp"
 
-/*
-	16 BIT register definitions:
-*/
-#define REGISTER16 unsigned char
-#define REG_BC 0
-#define REG_DE 1
-#define REG_HL 2
+void Registers::init() {
+	/*
+		We are clearing (resetting) the registers. In real life the registers can be set to whatever
+		was previously in them.
+	*/
+	for (int i = 0; i < 8; i++) {
+		Registers::registerArray[i] = 0;
+	}
+}
 
-/*
-	The flag definitions:
-*/
-#define CARRY_FLAG 0
-#define ADD_SUBRACT_FLAG 1
-#define PARITY_OVERFLOW_FLAG 2
-#define HALF_CARRY_FLAG 4
-#define ZERO_FLAG 6
-#define SIGN_FLAG 7
+Registers::Registers() {
+	Registers::init();
+}
 
-
-class Registers {
-	private:
-		/*
-			The register array works like this:
-			
-			B	C	D	E	H	L	A	F
-			0	1	2	3	4	5	6	7
-			
-			So, BC is made from [0] and [1], DE from [2] and [3],
-			HL from [4] and [5] and AF from [6] and [7].
-			
-			Should the flag be in here as well?
-		*/
-		unsigned char[8] registerArray;
-		
-		void init();
-	public:
-		Registers();
-		
-		void load8Bit(REGISTER8 reg1, REGISTER8 reg2);
-		void load8BitImm(REGISTER8 reg, unsigned char value);
-		
-		void load16Bit(REGISTER16 reg1, REGISTER16 reg2);
-		void load16BitImm(REGISTER16 reg, unsigned short value);
-		
-		unsigned char get8BitRegister(REGISTER8 reg);
-		unsigned short get16BitRegister(REGISTER16 reg);
-		
-		void setFlag(unsigned char flag);
-		void resetFlag(unsigned char flag);
-		void affectFlag(unsigned char flag, unsigned char status);
-};
+void Registers::load8Bit(REGISTER8 reg1, REGISTER8 reg2) {
+	
+}

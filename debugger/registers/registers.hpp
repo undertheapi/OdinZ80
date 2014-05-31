@@ -54,18 +54,18 @@
 */
 #define REGISTER16 unsigned char
 #define REG_BC 0
-#define REG_DE 1
-#define REG_HL 2
+#define REG_DE 2
+#define REG_HL 4
 
 /*
 	The flag definitions:
 */
 #define CARRY_FLAG 0
-#define ADD_SUBRACT_FLAG 1
-#define PARITY_OVERFLOW_FLAG 2
-#define HALF_CARRY_FLAG 4
-#define ZERO_FLAG 6
-#define SIGN_FLAG 7
+#define ADD_SUBRACT_FLAG 2
+#define PARITY_OVERFLOW_FLAG 4
+#define HALF_CARRY_FLAG 16
+#define ZERO_FLAG 64
+#define SIGN_FLAG 128
 
 
 class Registers {

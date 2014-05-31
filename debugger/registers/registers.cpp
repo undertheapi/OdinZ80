@@ -52,5 +52,47 @@ Registers::Registers() {
 }
 
 void Registers::load8Bit(REGISTER8 reg1, REGISTER8 reg2) {
-	
+	Registers::registerArray[reg1] = Registers::regiserArray[reg2];
+}
+
+void Registers::load8BitImm(REGISTER8 reg, unsigned char value) {
+	Registers::registerArray[reg] = value;
+}
+
+void Registers::load16Bit(REGISTER16 reg1, REGISTER16 reg2) {
+	Registers::registerArray[reg1] = Registers::registerArray[reg2];
+	Registers::registerArray[reg1 + 1] = Registers::registerArray[reg2 + 1];
+}
+
+void Registers::load16BitImm(REGISTER16 reg, unsigned short value) {
+	Registers::registerArray[reg1] = (unsigned char) value >> 8;
+	Registers::registerArray[reg1 + 1] = (unsigned char) value;
+}
+
+unsigned char Registers::get8BitRegister(REGISTER8 reg) {
+	return Registers::registerArray[reg];
+}
+
+unsigned short Registers::get16BitRegister(REGISTER16 reg) {
+	unsigned short retValue;
+	retValue = ((unsigned short) Registers::registerArray[reg]) << 8;
+	retValue |= (unsigned short) Registers::registerArray[reg + 1];
+	return retValue;
+}
+
+void Registers::setFlag(unsigned char flag) {
+	Registers::registerArray[REG_F] |= flag;
+}
+
+void Registers::resetFlag(unsigned char flag) {
+	Registers::setFlag(flag);
+	Registers::registerArray[REG_F] = flag xor Registers::registerArray[REG_F];
+}
+
+void Registers::affectFlag(unsigned char flag, unsigned char status) {
+	if (status) {
+		Registers::setFlag(flag);
+	} else {
+		Registers::resetFlag(flag);
+	}
 }

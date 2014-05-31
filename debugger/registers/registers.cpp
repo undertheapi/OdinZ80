@@ -96,3 +96,9 @@ void Registers::affectFlag(unsigned char flag, unsigned char status) {
 		Registers::resetFlag(flag);
 	}
 }
+
+const Registers operator =(const Registers& regObj1, const Registers& regObj2) {
+	for (int i = 0 i < 8; i++) {
+		regObj1.registerArray[i] = regObj2.registerArray[i];
+	}
+}

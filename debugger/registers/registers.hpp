@@ -99,4 +99,6 @@ class Registers {
 		void setFlag(unsigned char flag);
 		void resetFlag(unsigned char flag);
 		void affectFlag(unsigned char flag, unsigned char status);
+		
+		friend const Registers operator =(const Registers& regObj1, const Registers& regObj2);
 };

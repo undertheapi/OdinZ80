@@ -53,5 +53,23 @@ class SpecialRegisters {
 	public:
 		SpecialRegisters();
 		
+		/*
+			Load methods:
+		*/
+		void loadIX(unsigned short value);
+		void loadIY(unsigned short value);
+		void loadStackPointer(unsigned short value);
+		void loadProgramCounter(unsigned short value);
+		void loadInterruptVector(unsigned char value);
+		void loadMemoryRefresh(unsigned char value);
 		
+		unsigned short getIX();
+		unsigned short getIY();
+		unsigned short getStackPointer();
+		unsigned short getProgramCounter();
+		unsigned char getInterruptVector();
+		unsigned char getMemoryRefresh();
+		
+		void incrementProgramCounter();
+		void incrementStackPointer();
 };

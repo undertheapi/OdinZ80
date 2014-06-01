@@ -28,78 +28,30 @@
 */
 
 /*
-	file name: registers.hpp
-	date created: 21/10/2013
-	date updated: 31/05/2014
+	file name: specialregisters.hpp
+	date created: 01/06/2014
+	date updated: 01/06/2014
 	author: Gareth Richardson
-	description: The header file for the registers class. These registers are the Main Registers,
-	not the special purpose registers.
+	description: The header file for the special registers class.
 */
 
-/*
-	8 BIT register definitions:
-*/
-#define REGISTER8 unsigned char
-#define REG_A 6
-#define REG_B 0
-#define REG_C 1
-#define REG_D 2
-#define REG_E 3
-#define REG_F 7
-#define REG_H 4
-#define REG_L 5
-
-/*
-	16 BIT register definitions:
-*/
-#define REGISTER16 unsigned short
-#define REG_BC 0
-#define REG_DE 2
-#define REG_HL 4
-
-/*
-	The flag definitions:
-*/
-#define CARRY_FLAG 0
-#define ADD_SUBRACT_FLAG 2
-#define PARITY_OVERFLOW_FLAG 4
-#define HALF_CARRY_FLAG 16
-#define ZERO_FLAG 64
-#define SIGN_FLAG 128
-
-
-class Registers {
+class SpecialRegisters {
 	private:
 		/*
-			The register array works like this:
-			
-			B	C	D	E	H	L	A	F
-			0	1	2	3	4	5	6	7
-			
-			So, BC is made from [0] and [1], DE from [2] and [3],
-			HL from [4] and [5] and AF from [6] and [7].
-			
-			Should the flag be in here as well?
+			Index Registers:
 		*/
-		unsigned char registerArray[8];
+		unsigned short IX;
+		unsigned short IY;
+		unsigned short stackPointer;
+		
+		unsigned short programCounter;
+		
+		unsigned char interruptVector;
+		unsigned char memoryRefresh;
 		
 		void init();
 	public:
-		Registers();
+		SpecialRegisters();
 		
-		void load8Bit(REGISTER8 reg1, REGISTER8 reg2);
-		void load8BitImm(REGISTER8 reg, unsigned char value);
 		
-		void load16Bit(REGISTER16 reg1, REGISTER16 reg2);
-		void load16BitImm(REGISTER16 reg, unsigned short value);
-		
-		unsigned char get8BitRegister(REGISTER8 reg);
-		unsigned short get16BitRegister(REGISTER16 reg);
-		
-		void setFlag(unsigned char flag);
-		void resetFlag(unsigned char flag);
-		void affectFlag(unsigned char flag, unsigned char status);
-		
-		friend Registers &operator =(const Registers& regObj);
-		friend Registers duplicate(const Registers& regObj);
 };

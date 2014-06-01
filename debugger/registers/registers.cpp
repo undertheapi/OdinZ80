@@ -52,7 +52,7 @@ Registers::Registers() {
 }
 
 void Registers::load8Bit(REGISTER8 reg1, REGISTER8 reg2) {
-	Registers::registerArray[reg1] = Registers::regiserArray[reg2];
+	Registers::registerArray[reg1] = Registers::registerArray[reg2];
 }
 
 void Registers::load8BitImm(REGISTER8 reg, unsigned char value) {
@@ -65,8 +65,8 @@ void Registers::load16Bit(REGISTER16 reg1, REGISTER16 reg2) {
 }
 
 void Registers::load16BitImm(REGISTER16 reg, unsigned short value) {
-	Registers::registerArray[reg1] = (unsigned char) value >> 8;
-	Registers::registerArray[reg1 + 1] = (unsigned char) value;
+	Registers::registerArray[reg] = (unsigned char) value >> 8;
+	Registers::registerArray[reg + 1] = (unsigned char) value;
 }
 
 unsigned char Registers::get8BitRegister(REGISTER8 reg) {
@@ -97,13 +97,13 @@ void Registers::affectFlag(unsigned char flag, unsigned char status) {
 	}
 }
 
-const Registers operator =(const Registers& regObj1, const Registers& regObj2) {
-	for (int i = 0 i < 8; i++) {
-		regObj1.registerArray[i] = regObj2.registerArray[i];
+Registers &Registers::operator =(const Registers& regObj) {
+	for (int i = 0; i < 8; i++) {
+		Registers::registerArray[i] = regObj.registerArray[i];
 	}
 }
 
-friend Registers duplicate(const Registers& regObj) {
+Registers duplicate(const Registers& regObj) {
 	Registers retObj = regObj;
 	return retObj;
 }

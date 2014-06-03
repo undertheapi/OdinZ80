@@ -42,6 +42,8 @@ class Z80CPU {
 		SpecialRegisters specialPurposeRegisters;
 		RAM mainRAM;
 		
+		string instructionString;
+		
 		void init();
 		
 	public:

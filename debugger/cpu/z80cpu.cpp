@@ -30,7 +30,7 @@
 /*
 	file name: z80cpu.cpp
 	date created: 01/06/2014
-	date updated: 01/06/2014
+	date updated: 02/06/2014
 	author: Gareth Richardson
 	description: This is the header file for the model CPU in the debugger.
 */
@@ -42,13 +42,13 @@
 #include "z80cpu.hpp"
 
 void Z80CPU::init() {
-	
+	Z80CPU::instructionString = "";
 }
 
 Z80CPU::Z80CPU() {
 	Z80CPU::init();
 }
-		
+
 void Z80CPU::loadUpRAM(unsigned char *ramPosition, int ramSize) {
 	
 }
@@ -68,11 +68,18 @@ void Z80CPU::step() {
 			Does absolutely nothing except increment the PC.
 		*/
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-	} else if (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) | 0x40) {
-		//LD r, r'
-		REGISTER8 reg1 = 0x07 & (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3);
-		REGISTER8 reg2 = 0x07 & Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter());
-		Z80CPU::mainRegisterSet.load8Bit(reg1, reg2);
+	} else if (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) == 0x76) {
+		/*
+			HALT INSTRUCTION
+		*/
+		//Stays were it is.
+	} else if (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) & 0x40 == 0x40) {
+		
+	} else if (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) & 0x06 == 0x06) {
+		//LD r, IMM
+		REGISTER8 reg = Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3;
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		load8BitImm(reg, Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter());
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 	}
 }

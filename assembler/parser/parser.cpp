@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 29/05/2014
+	date updated: 05/06/2014
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it (returned in a ByteCode object).
@@ -428,7 +428,7 @@ void Z80Parser::run() {
 				unsigned short retValue;
 				if (Z80Parser::checkSixteenBitNumber(retValue)) {
 					if (Z80Parser::checkToken(NEW_LINE)) {
-						if (!Z80Parser::fList.doesNotExist(strValue)) {
+						if (!Z80Parser::fList.doesNameExist(strValue)) {
 							Z80Parser::fList.addAddress(strValue, retValue);
 							Z80Parser::aList.processAddress(strValue, retValue, bCode);
 						} else {

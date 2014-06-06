@@ -51,7 +51,7 @@ class Z80CPU {
 		
 		void loadUpRAM(unsigned char *ramPosition, int ramSize);
 		
-		void run(unsigned short steps());
+		void run(unsigned short steps);
 		
 		void step();
 		

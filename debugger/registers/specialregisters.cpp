@@ -37,72 +37,72 @@
 
 #include "specialregisters.hpp"
 
-void SpecialRegister::init() {
-	SpecialRegister::IX;
-	SpecialRegister::IY;
-	SpecialRegister::stackPointer;
-	SpecialRegister::programCounter;
-	SpecialRegister::interruptVector;
-	SpecialRegister::memoryRefresh;
+void SpecialRegisters::init() {
+	SpecialRegisters::IX;
+	SpecialRegisters::IY;
+	SpecialRegisters::stackPointer;
+	SpecialRegisters::programCounter;
+	SpecialRegisters::interruptVector;
+	SpecialRegisters::memoryRefresh;
 }
 
-SpecialRegister::SpecialRegister() {
-	SpecialRegister::init();
+SpecialRegisters::SpecialRegisters() {
+	SpecialRegisters::init();
 }
 
-void SpecialRegister::loadIX(unsigned short value) {
-	SpecialRegister::IX == value;
+void SpecialRegisters::loadIX(unsigned short value) {
+	SpecialRegisters::IX == value;
 }
 
-void SpecialRegister::loadIY(unsigned short value) {
-	SpecialRegister::IY;
+void SpecialRegisters::loadIY(unsigned short value) {
+	SpecialRegisters::IY;
 }
 
-void SpecialRegister::loadStackPointer(unsigned short value) {
-	SpecialRegister::stackPointer = value;
+void SpecialRegisters::loadStackPointer(unsigned short value) {
+	SpecialRegisters::stackPointer = value;
 }
 
-void SpecialRegister::loadProgramCounter(unsigned short value) {
-	SpecialRegister::programCounter = value;
+void SpecialRegisters::loadProgramCounter(unsigned short value) {
+	SpecialRegisters::programCounter = value;
 }
 
-void SpecialRegister::loadInterruptVector(unsigned char value) {
-	SpecialRegister::interruptVector = value;
+void SpecialRegisters::loadInterruptVector(unsigned char value) {
+	SpecialRegisters::interruptVector = value;
 }
 
-void SpecialRegister::loadMemoryRefresh(unsigned char value) {
-	SpecialRegister::memoryRefresh;
+void SpecialRegisters::loadMemoryRefresh(unsigned char value) {
+	SpecialRegisters::memoryRefresh;
 }
 
-unsigned short SpecialRegister::getIX() {
-	return SpecialRegister::IX;
+unsigned short SpecialRegisters::getIX() {
+	return SpecialRegisters::IX;
 }
 
-unsigned short SpecialRegister::getIY() {
-	return SpecialRegister::IY;
+unsigned short SpecialRegisters::getIY() {
+	return SpecialRegisters::IY;
 }
 
-unsigned short SpecialRegister::getStackPointer() {
-	return SpecialRegister::stackPointer;
+unsigned short SpecialRegisters::getStackPointer() {
+	return SpecialRegisters::stackPointer;
 }
 
-unsigned short SpecialRegister::getProgramCounter() {
-	return SpecialRegister::programCounter;
+unsigned short SpecialRegisters::getProgramCounter() {
+	return SpecialRegisters::programCounter;
 }
 
-unsigned char SpecialRegister::getInterruptVector() {
-	return SpecialRegister::interruptVector;
+unsigned char SpecialRegisters::getInterruptVector() {
+	return SpecialRegisters::interruptVector;
 }
 
-unsigned char SpecialRegister::getMemoryRefresh() {
-	return SpecialRegister::memoryRefresh;
+unsigned char SpecialRegisters::getMemoryRefresh() {
+	return SpecialRegisters::memoryRefresh;
 }
 
 
-void SpecialRegister::incrementProgramCounter() {
-	++SpecialRegister::programCounter;
+void SpecialRegisters::incrementProgramCounter() {
+	++SpecialRegisters::programCounter;
 }
 
-void SpecialRegister::incrementStackPointer() {
-	++SpecialRegister::stackPointer;
+void SpecialRegisters::incrementStackPointer() {
+	++SpecialRegisters::stackPointer;
 }

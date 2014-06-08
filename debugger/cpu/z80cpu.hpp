@@ -30,7 +30,7 @@
 /*
 	file name: z80cpu.hpp
 	date created: 01/06/2014
-	date updated: 01/06/2014
+	date updated: 08/06/2014
 	author: Gareth Richardson
 	description: This is the header file for the model CPU in the debugger.
 */
@@ -46,6 +46,7 @@ class Z80CPU {
 		
 		void init();
 		
+		unsigned char retrieveFromAddress();
 	public:
 		Z80CPU();
 		

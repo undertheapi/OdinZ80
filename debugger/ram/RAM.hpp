@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2013, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: RAM.hpp
 	date created: 22/02/2012
-	date updated: 29/05/2014
+	date updated: 08/06/2014
 	author: Gareth Richardson
 	description: This this the header file for the RAM object. Use this with
 	the debugger. Can also be used for other CPU simulators and emulators that

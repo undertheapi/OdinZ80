@@ -30,7 +30,7 @@
 /*
 	file name: registers.hpp
 	date created: 21/10/2013
-	date updated: 01/06/2014
+	date updated: 09/06/2014
 	author: Gareth Richardson
 	description: The header file for the registers class. These registers are the Main Registers,
 	not the special purpose registers.
@@ -56,6 +56,7 @@
 #define REG_BC 0
 #define REG_DE 2
 #define REG_HL 4
+#define REG_AF 6
 
 /*
 	The flag definitions:

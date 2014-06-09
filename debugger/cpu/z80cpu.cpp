@@ -47,7 +47,7 @@ using namespace std;
 
 string registerArray[8] = {
 	"B", "C", "D", "E", "H", "L", "[HL]", "A"
-}
+};
 
 void Z80CPU::init() {
 	Z80CPU::instructionString = "";
@@ -121,6 +121,24 @@ void Z80CPU::step() {
 	}
 }
 
+string convertHex(short value) {
+	string retString = "";
+	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	retString += hexArray[(int)(value >> 12)];
+	retString += hexArray[(int)((value >> 8) & 0x000f)];
+	retString += hexArray[(int)((value >> 4) & 0x000f)];
+	retString += hexArray[(int)((value) & 0x000f)];
+	return retString;
+}
+
 string Z80CPU::prettyPrint() {
-	
+	string retString = "AF:";
+	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_AF));
+	string retString = " BC:";
+	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC));
+	string retString = " DE:";
+	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE));
+	string retString = " HL:";
+	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_HL));
+	return retString;
 }

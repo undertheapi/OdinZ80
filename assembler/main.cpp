@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2012, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: main.cpp
 	date created: 18/02/2012
-	date updated: 21/02/2013
+	date updated: 10/06/2014
 	author: Gareth Richardson
 	description: This is the main method for the odin program.
 */
@@ -120,7 +120,13 @@ int main(int argc, char *argv[]) {
     	
     	
     	if (cList.errorState) {
-    		printf("ODIN: Invalid character in the file.\n");
+			if (cList.errorState & INVALID_CHAR == INVALID_CHAR) {
+				printf("ODIN: Invalid character in the file.\n");
+			} else if (cList.errorState & LIST_FULL == LIST_FULL) {
+				printf("ODIN: The source fill is too big.\n");
+			} else if (cList.errorState & LIST_EMPTY == LIST_EMPTY) {
+				printf("ODIN: An unexpected error has happen.\n");
+			}
     		exit(0);
     	}
     	

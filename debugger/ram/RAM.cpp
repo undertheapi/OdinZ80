@@ -30,7 +30,7 @@
 /*
 	file name: RAM.cpp
 	date created: 22/02/2012
-	date updated: 29/05/2014
+	date updated: 10/06/2014
 	author: Gareth Richardson
 	description: The object file for the RAM class.
 */
@@ -72,9 +72,9 @@ string RAM::memoryFeed(unsigned short start, unsigned short count, FEED_TYPE typ
 	if (type == HEX_FEED) {
 		int index = start;
 		while (index != start + count - 1) {
-			feedString += convertString(index);
+			feedString += convertHex(index);
 			feedString += " :: ";
-			feedString += convertString(RAM::memory[index]);
+			feedString += convertHex(RAM::memory[index]);
 			feedString += "\n";
 		}
 	} else if (type == BIN_FEED) {

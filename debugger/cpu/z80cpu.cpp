@@ -50,6 +50,7 @@ string registerArray[8] = {
 };
 
 void Z80CPU::init() {
+	Z80CPU::resetButton = false;
 	Z80CPU::instructionString = "";
 }
 
@@ -61,8 +62,8 @@ Z80CPU::Z80CPU() {
 	Z80CPU::init();
 }
 
-void Z80CPU::loadUpRAM(unsigned char *ramPosition, int ramSize) {
-	
+void Z80CPU::loadUpRAM(unsigned short index, unsigned char value) {
+	Z80CPU::mainRAM.write(index, value);
 }
 
 void Z80CPU::run(unsigned short steps) {
@@ -84,7 +85,10 @@ void Z80CPU::step() {
 		/*
 			HALT INSTRUCTION
 		*/
-		//Stays were it is.
+		if (Z80CPU::resetButton) {
+			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+			Z80CPU::toggleReset();
+		}
 	} else if (Z80CPU::retrieveFromAddress() >= 0x40 <= 0x7f) {
 		Z80CPU::instructionString = "LD ";
 		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
@@ -121,7 +125,11 @@ void Z80CPU::step() {
 	}
 }
 
-string convertHex(short value) {
+void Z80CPU::toggleReset() {
+	Z80CPU::resetButton = !Z80CPU::resetButton;
+}
+
+string Hex(short value) {
 	string retString = "";
 	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 	retString += hexArray[(int)(value >> 12)];
@@ -133,12 +141,12 @@ string convertHex(short value) {
 
 string Z80CPU::prettyPrint() {
 	string retString = "AF:";
-	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_AF));
-	string retString = " BC:";
-	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC));
-	string retString = " DE:";
-	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE));
-	string retString = " HL:";
-	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_HL));
+	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_AF));
+	retString = " BC:";
+	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC));
+	retString = " DE:";
+	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE));
+	retString = " HL:";
+	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_HL));
 	return retString;
 }

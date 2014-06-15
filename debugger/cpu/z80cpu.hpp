@@ -44,17 +44,21 @@ class Z80CPU {
 		
 		string instructionString;
 		
+		bool resetButton;
+		
 		void init();
 		
 		unsigned char retrieveFromAddress();
 	public:
 		Z80CPU();
 		
-		void loadUpRAM(unsigned char *ramPosition, int ramSize);
+		void loadUpRAM(unsigned short index, unsigned char value);
 		
 		void run(unsigned short steps);
 		
 		void step();
+		
+		void toggleReset();
 		
 		string prettyPrint();
 };

@@ -30,11 +30,16 @@
 /*
 	file name: main.cpp
 	date created: 09/06/2014
-	date updated: 09/06/2014
+	date updated: 10/06/2014
 	author: Gareth Richardson
 	description: This is the main program source. The program is to start here.
 */
 
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <fstream>
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -42,5 +47,50 @@ using namespace std;
 #include "ram/ram.hpp"
 #include "registers/registers.hpp"
 #include "registers/specialregisters.hpp"
+#include "cpu/z80cpu.hpp"
 
-
+int main(int argc, char *argv[]) {
+	if (argc == 1) {
+		printf("ZDEBUG: There has been no file specified.\n");
+		return 0;
+	} else {
+		string fileLocation = argv[1];
+		ifstream file(fileLocation.c_str(), ios::binary);
+		
+		if (!file) {
+			Z80CPU box;
+			
+			/*
+				Put the binary file into the ram.
+			*/
+			char val;
+			unsigned short index = 0;
+			while (file.read(static_cast<char*>(&val), sizeof(unsigned char))) {
+				box.loadUpRAM(index, val);
+				index++;
+			}
+			
+			/*
+				Now we end up in the command loop:
+			*/
+			bool invalidJump = false;
+			
+			while (!invalidJump) {
+				string command = "";
+				
+				cout << ">>";
+				cin >> command;
+				
+				if (!command.compare("step") || !command.compare("STEP") || !command.compare("s") || !command.compare("S")) {
+					box.step();
+				} else if (!command.compare("reg") || !command.compare("REG") || !command.compare("r") || !command.compare("R")) {
+					box.prettyPrint();
+				}
+			}
+		} else {
+			printf("ZDEBUG: The file location is incorrect.\n");
+			return 0;
+		}
+	}
+	return 0;
+}

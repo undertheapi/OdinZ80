@@ -97,13 +97,18 @@ void Registers::affectFlag(unsigned char flag, unsigned char status) {
 	}
 }
 
+/*
 Registers &Registers::operator =(const Registers& regObj) {
 	for (int i = 0; i < 8; i++) {
 		Registers::registerArray[i] = regObj.registerArray[i];
 	}
 }
+*/
 
-Registers duplicate(const Registers& regObj) {
-	Registers retObj = regObj;
+Registers Registers::duplicate() {
+	Registers retObj;
+	for (int i = 0; i < 8; i++) {
+		retObj.load8BitImm(i, Registers::registerArray[i]);
+	}
 	return retObj;
 }

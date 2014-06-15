@@ -30,7 +30,7 @@
 /*
 	file name: registers.hpp
 	date created: 21/10/2013
-	date updated: 09/06/2014
+	date updated: 10/06/2014
 	author: Gareth Richardson
 	description: The header file for the registers class. These registers are the Main Registers,
 	not the special purpose registers.
@@ -101,6 +101,9 @@ class Registers {
 		void resetFlag(unsigned char flag);
 		void affectFlag(unsigned char flag, unsigned char status);
 		
+		/*
 		friend Registers &operator =(const Registers& regObj);
-		friend Registers duplicate(const Registers& regObj);
+		*/
+		
+		Registers duplicate();
 };

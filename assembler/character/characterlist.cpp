@@ -42,7 +42,7 @@ bool CharacterList::isValidCharacter(CHARACTER value) {
 	/*
 		so far these are the only valid characters the Odin Assembler can deal with.
 	*/
-	return value == '\n' || value == '\t' || value >= 32 && value <= 126;
+	return value == '\n' || value == '\t' || value >= 32 && value <= 126 || value == 13;
 }
 
 void CharacterList::init() {

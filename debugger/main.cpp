@@ -30,7 +30,7 @@
 /*
 	file name: main.cpp
 	date created: 09/06/2014
-	date updated: 10/06/2014
+	date updated: 16/06/2014
 	author: Gareth Richardson
 	description: This is the main program source. The program is to start here.
 */
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
 		string fileLocation = argv[1];
 		ifstream file(fileLocation.c_str(), ios::binary);
 		
-		if (!file) {
+		if (file) {
 			Z80CPU box;
 			
 			/*
@@ -83,8 +83,13 @@ int main(int argc, char *argv[]) {
 				
 				if (!command.compare("step") || !command.compare("STEP") || !command.compare("s") || !command.compare("S")) {
 					box.step();
+					cout << box.getCurrentInstruction() << endl;
 				} else if (!command.compare("reg") || !command.compare("REG") || !command.compare("r") || !command.compare("R")) {
-					box.prettyPrint();
+					cout << box.prettyPrint() << endl;
+				} else if (!command.compare("exit") || !command.compare("Exit") || !command.compare("EXIT") || !command.compare("e") || !command.compare("E")) {
+					invalidJump = true;
+				} else {
+					continue;
 				}
 			}
 		} else {

@@ -52,25 +52,25 @@ Registers::Registers() {
 }
 
 void Registers::load8Bit(REGISTER8 reg1, REGISTER8 reg2) {
-	Registers::registerArray[reg1] = Registers::registerArray[reg2];
+	Registers::registerArray[(int) reg1] = Registers::registerArray[(int)reg2];
 }
 
 void Registers::load8BitImm(REGISTER8 reg, unsigned char value) {
-	Registers::registerArray[reg] = value;
+	Registers::registerArray[(int) reg] = value;
 }
 
 void Registers::load16Bit(REGISTER16 reg1, REGISTER16 reg2) {
-	Registers::registerArray[reg1] = Registers::registerArray[reg2];
-	Registers::registerArray[reg1 + 1] = Registers::registerArray[reg2 + 1];
+	Registers::registerArray[(int) reg1] = Registers::registerArray[(int) reg2];
+	Registers::registerArray[(int) (reg1 + 1)] = Registers::registerArray[(int) (reg2 + 1)];
 }
 
 void Registers::load16BitImm(REGISTER16 reg, unsigned short value) {
-	Registers::registerArray[reg] = (unsigned char) value >> 8;
-	Registers::registerArray[reg + 1] = (unsigned char) value;
+	Registers::registerArray[(int) reg] = (unsigned char) (value >> 8);
+	Registers::registerArray[(int) (reg + 1)] = (unsigned char) value;
 }
 
 unsigned char Registers::get8BitRegister(REGISTER8 reg) {
-	return Registers::registerArray[reg];
+	return Registers::registerArray[(int) reg];
 }
 
 unsigned short Registers::get16BitRegister(REGISTER16 reg) {

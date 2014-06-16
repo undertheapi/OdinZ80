@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2013, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@
 /*
 	file name: characterlist.cpp
 	date created: 28/08/2012
-	date updated: 22/02/2013
+	date updated: 16/06/2014
 	author: Gareth Richardson
 	description: This is the object file for the CharacterList class. Implement all
 	the class methods here.

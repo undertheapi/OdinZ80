@@ -73,27 +73,30 @@ void Z80CPU::run(unsigned short steps) {
 		--counter;
 	}
 }
-
+#include <cstdio>
 void Z80CPU::step() {
 	if (Z80CPU::retrieveFromAddress() == 0x00) {
 		/*
 			NOP instruction:
 			Does absolutely nothing except increment the PC.
 		*/
+		Z80CPU::instructionString = "NOP";
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 	} else if (Z80CPU::retrieveFromAddress() == 0x76) {
 		/*
 			HALT INSTRUCTION
 		*/
+		Z80CPU::instructionString = "HALT";
 		if (Z80CPU::resetButton) {
 			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 			Z80CPU::toggleReset();
 		}
-	} else if (Z80CPU::retrieveFromAddress() >= 0x40 <= 0x7f) {
+	} else if (Z80CPU::retrieveFromAddress() >= 0x40 && Z80CPU::retrieveFromAddress() <= 0x7f) {
 		Z80CPU::instructionString = "LD ";
 		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
 		Z80CPU::instructionString += ", ";
 		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() & 0x07];
+		printf("%x\n", Z80CPU::retrieveFromAddress() >> 3 & 0x07);
 		if (Z80CPU::retrieveFromAddress() & 0x07 == 0x06) {
 			// LD r, [hl]
 			Z80CPU::mainRegisterSet.load8Bit(
@@ -118,7 +121,9 @@ void Z80CPU::step() {
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 	} else if (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) & 0x06 == 0x06) {
 		//LD r, IMM
-		REGISTER8 reg = Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3;
+		Z80CPU::instructionString = "LD ";
+		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
+		REGISTER8 reg = Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3 & 0x07;
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 		Z80CPU::mainRegisterSet.load8BitImm(reg, Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()));
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
@@ -142,11 +147,18 @@ string Hex(short value) {
 string Z80CPU::prettyPrint() {
 	string retString = "AF:";
 	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_AF));
-	retString = " BC:";
+	retString += " BC:";
 	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC));
-	retString = " DE:";
+	retString += " DE:";
 	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE));
-	retString = " HL:";
+	retString += " HL:";
 	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_HL));
+	retString += "\n";
+	retString += "PC: ";
+	retString += Hex(Z80CPU::specialPurposeRegisters.getProgramCounter());
 	return retString;
+}
+
+string Z80CPU::getCurrentInstruction() {
+	return Z80CPU::instructionString;
 }

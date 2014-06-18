@@ -30,7 +30,7 @@
 /*
 	file name: z80cpu.cpp
 	date created: 01/06/2014
-	date updated: 08/06/2014
+	date updated: 19/06/2014
 	author: Gareth Richardson
 	description: This is the header file for the model CPU in the debugger.
 */
@@ -91,6 +91,31 @@ void Z80CPU::step() {
 			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 			Z80CPU::toggleReset();
 		}
+	} else if (Z80CPU::retrieveFromAddress() == 0xdd) {
+		/*
+			We have an Extended IX register instruction
+		*/
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		if (Z80CPU::retrieveFromAddress() != 0x76) {
+			Z80CPU::instructionString = "LD ";
+			Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
+			Z80CPU::instructionString += ", [IX + ";
+			//TODO: Add the immediate value here
+			Z80CPU::mainRegisterSet.load8BitImm(
+				Z80CPU::retrieveFromAddress() >> 3 & 0x07,
+				Z80CPU::specialPurposeRegisters.getIX() + Z80CPU::specialPurposeRegisters.getProgramCounter() + 1
+			);
+			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		}
+	} else if (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >= 0x06 && Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) <= 0x3e) {
+		//LD r, IMM
+		Z80CPU::instructionString = "LD ";
+		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
+		REGISTER8 reg = Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3 & 0x07;
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		Z80CPU::mainRegisterSet.load8BitImm(reg, Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()));
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 	} else if (Z80CPU::retrieveFromAddress() >= 0x40 && Z80CPU::retrieveFromAddress() <= 0x7f) {
 		Z80CPU::instructionString = "LD ";
 		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
@@ -119,13 +144,8 @@ void Z80CPU::step() {
 			);
 		}
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-	} else if (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) & 0x06 == 0x06) {
-		//LD r, IMM
-		Z80CPU::instructionString = "LD ";
-		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
-		REGISTER8 reg = Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3 & 0x07;
-		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-		Z80CPU::mainRegisterSet.load8BitImm(reg, Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()));
+	} else {
+		Z80CPU::instructionString = "NO INSTRUCTION";
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 	}
 }

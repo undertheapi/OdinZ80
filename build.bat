@@ -89,11 +89,13 @@ del main.o
 g++ debugger/ram/ram.cpp -c
 g++ debugger/registers/registers.cpp -c
 g++ debugger/registers/specialregisters.cpp -c
+g++ debugger/general/convert.cpp -c
 g++ debugger/cpu/z80cpu.cpp -c
 g++ debugger/main.cpp -c
-g++ ram.o registers.o specialregisters.o z80cpu.o main.o -o zdebug.exe
+g++ ram.o registers.o specialregisters.o z80cpu.o main.o convert.o -o zdebug.exe
 del ram.o
 del registers.o
 del specialregisters.o
 del z80cpu.o
+del convert.o
 del main.o

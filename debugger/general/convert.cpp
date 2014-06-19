@@ -28,54 +28,31 @@
 */
 
 /*
-	file name: RAM.cpp
-	date created: 22/02/2012
+	file name: convert.cpp
+	date created: 19/06/2014
 	date updated: 19/06/2014
 	author: Gareth Richardson
-	description: The object file for the RAM class.
+	description: This is the object file for the conversion methods.
 */
 
 #include <string>
 
 using namespace std;
 
-#include "../general/convert.hpp"
-
-#include "RAM.hpp"
-
-RAM::RAM() {
-	// empty constructor
+string convertHex(unsigned short value) {
+	string retString = "";
+	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	retString += hexArray[(int)(value >> 12)];
+	retString += hexArray[(int)((value >> 8) & 0x000f)];
+	retString += hexArray[(int)((value >> 4) & 0x000f)];
+	retString += hexArray[(int)((value) & 0x000f)];
+	return retString;
 }
 
-unsigned char RAM::read(unsigned short address) {
-	return RAM::memory[address];
+string convertHex(unsigned char value) {
+	string retString = "";
+	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	retString += hexArray[(int)((value >> 4) & 0x000f)];
+	retString += hexArray[(int)((value) & 0x000f)];
+	return retString;
 }
-
-void RAM::write(unsigned short address, unsigned char value) {
-	RAM::memory[address] = value;
-}
-
-string RAM::memoryFeed(unsigned short start, unsigned short count, FEED_TYPE type) {
-	string feedString = "";
-	if (type == HEX_FEED) {
-		unsigned short index = start;
-		while (index != start + count - 1) {
-			feedString += convertHex(index);
-			feedString += " :: ";
-			feedString += convertHex(RAM::memory[index]);
-			feedString += "\n";
-		}
-	} else if (type == BIN_FEED) {
-		
-	} else if (type == DEC_FEED) {
-		
-	} else if (type == OCT_FEED) {
-		
-	} else {
-		//get into an error state.
-		//Try not to get to this situation.
-		feedString = "ERROR";
-	}
-	return feedString;
-}
-

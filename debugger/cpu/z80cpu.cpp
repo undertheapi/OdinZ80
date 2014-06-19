@@ -39,6 +39,7 @@
 
 using namespace std;
 
+#include "../general/convert.hpp"
 #include "../ram/ram.hpp"
 #include "../registers/registers.hpp"
 #include "../registers/specialregisters.hpp"
@@ -93,27 +94,34 @@ void Z80CPU::step() {
 		}
 	} else if (Z80CPU::retrieveFromAddress() == 0xdd) {
 		/*
-			We have an Extended IX register instruction
+			We have an Extended IX register instruction:
 		*/
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 		if (Z80CPU::retrieveFromAddress() != 0x76) {
 			Z80CPU::instructionString = "LD ";
 			Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
 			Z80CPU::instructionString += ", [IX + ";
-			//TODO: Add the immediate value here
+			Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
 			Z80CPU::mainRegisterSet.load8BitImm(
 				Z80CPU::retrieveFromAddress() >> 3 & 0x07,
-				Z80CPU::specialPurposeRegisters.getIX() + Z80CPU::specialPurposeRegisters.getProgramCounter() + 1
+				Z80CPU::specialPurposeRegisters.getIX() + Z80CPU::retrieveFromAddress() + 1
 			);
 			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 		}
-	} else if (Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >= 0x06 && Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) <= 0x3e) {
+	} else if (Z80CPU::retrieveFromAddress() == 0xfd) {
+		/*
+			We have an Extended IY register instruction:
+		*/
+	} else if (Z80CPU::retrieveFromAddress() >= 0x06 && Z80CPU::retrieveFromAddress() <= 0x3e) {
 		//LD r, IMM
 		Z80CPU::instructionString = "LD ";
 		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
 		REGISTER8 reg = Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3 & 0x07;
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		Z80CPU::instructionString += ", ";
+		Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
+		Z80CPU::instructionString += "H";
 		Z80CPU::mainRegisterSet.load8BitImm(reg, Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()));
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 	} else if (Z80CPU::retrieveFromAddress() >= 0x40 && Z80CPU::retrieveFromAddress() <= 0x7f) {
@@ -154,28 +162,18 @@ void Z80CPU::toggleReset() {
 	Z80CPU::resetButton = !Z80CPU::resetButton;
 }
 
-string Hex(short value) {
-	string retString = "";
-	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-	retString += hexArray[(int)(value >> 12)];
-	retString += hexArray[(int)((value >> 8) & 0x000f)];
-	retString += hexArray[(int)((value >> 4) & 0x000f)];
-	retString += hexArray[(int)((value) & 0x000f)];
-	return retString;
-}
-
 string Z80CPU::prettyPrint() {
-	string retString = "AF:";
-	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_AF));
+	string retString = "A:";
+	retString += convertHex(Z80CPU::mainRegisterSet.get8BitRegister(REG_A));
 	retString += " BC:";
-	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC));
+	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC));
 	retString += " DE:";
-	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE));
+	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE));
 	retString += " HL:";
-	retString += Hex(Z80CPU::mainRegisterSet.get16BitRegister(REG_HL));
+	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_HL));
 	retString += "\n";
 	retString += "PC: ";
-	retString += Hex(Z80CPU::specialPurposeRegisters.getProgramCounter());
+	retString += convertHex(Z80CPU::specialPurposeRegisters.getProgramCounter());
 	return retString;
 }
 

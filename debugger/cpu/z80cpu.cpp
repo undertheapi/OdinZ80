@@ -30,7 +30,7 @@
 /*
 	file name: z80cpu.cpp
 	date created: 01/06/2014
-	date updated: 19/06/2014
+	date updated: 22/06/2014
 	author: Gareth Richardson
 	description: This is the header file for the model CPU in the debugger.
 */
@@ -45,6 +45,16 @@ using namespace std;
 #include "../registers/specialregisters.hpp"
 
 #include "z80cpu.hpp"
+
+/*
+	Preprocessors for the Debugger:
+	These preprocessors have come from Wikipedia. The link is:
+	http://en.wikipedia.org/wiki/Circular_shift
+*/
+#define CHAR_BIT 8
+
+#define ROTATE_LEFT(value, shift) (value << shift) | (value >> (sizeof(value) * CHAR_BIT - shift))
+#define ROTATE_RIGHT(value, shift) (value >> shift) | (value << (sizeof(value) * CHAR_BIT - shift))
 
 string registerArray[8] = {
 	"B", "C", "D", "E", "H", "L", "[HL]", "A"
@@ -77,83 +87,96 @@ void Z80CPU::run(unsigned short steps) {
 #include <cstdio>
 void Z80CPU::step() {
 	if (Z80CPU::retrieveFromAddress() == 0x00) {
-		/*
-			NOP instruction:
-			Does absolutely nothing except increment the PC.
-		*/
 		Z80CPU::instructionString = "NOP";
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-	} else if (Z80CPU::retrieveFromAddress() == 0x76) {
-		/*
-			HALT INSTRUCTION
-		*/
-		Z80CPU::instructionString = "HALT";
-		if (Z80CPU::resetButton) {
-			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-			Z80CPU::toggleReset();
-		}
-	} else if (Z80CPU::retrieveFromAddress() == 0xdd) {
-		/*
-			We have an Extended IX register instruction:
-		*/
+	} else if (Z80CPU::retrieveFromAddress() == 0x01) {
+		Z80CPU::instructionString = "LD BC, ";
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-		if (Z80CPU::retrieveFromAddress() != 0x76) {
-			Z80CPU::instructionString = "LD ";
-			Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
-			Z80CPU::instructionString += ", [IX + ";
-			Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
-			Z80CPU::mainRegisterSet.load8BitImm(
-				Z80CPU::retrieveFromAddress() >> 3 & 0x07,
-				Z80CPU::specialPurposeRegisters.getIX() + Z80CPU::retrieveFromAddress() + 1
-			);
-			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-		}
-	} else if (Z80CPU::retrieveFromAddress() == 0xfd) {
+		unsigned short immediateValue = (unsigned short) (Z80CPU::retrieveFromAddress());
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		immediateValue |= (unsigned short) (Z80CPU::retrieveFromAddress() << 8);
+		Z80CPU::mainRegisterSet.load16BitImm(REG_BC, immediateValue);
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		Z80CPU::instructionString += convertHex(immediateValue);
+	} else if (Z80CPU::retrieveFromAddress() == 0x02) {
+		Z80CPU::instructionString = "LD [BC], A";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		Z80CPU::mainRAM.write(
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_BC),
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_A)
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x03) {
+		Z80CPU::instructionString = "INC BC";
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_BC,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_BC) + 1
+		);
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x04) {
+		Z80CPU::instructionString = "INC B";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_B,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_B) + 1
+		);
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x05) {
+		Z80CPU::instructionString = "DEC B";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_B,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_B) - 1
+		);
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x06) {
+		Z80CPU::instructionString = "LD B, ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		unsigned char immediateValue = Z80CPU::retrieveFromAddress();
+		Z80CPU::instructionString += convertHex(immediateValue);
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x07) {
+		Z80CPU::instructionString = "RLCA";
+		
 		/*
-			We have an Extended IY register instruction:
+			Check if the left most bit is set on register A
 		*/
-	} else if (Z80CPU::retrieveFromAddress() >= 0x06 && Z80CPU::retrieveFromAddress() <= 0x3e) {
-		//LD r, IMM
-		Z80CPU::instructionString = "LD ";
-		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
-		REGISTER8 reg = Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3 & 0x07;
-		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-		Z80CPU::instructionString += ", ";
-		Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
-		Z80CPU::instructionString += "H";
-		Z80CPU::mainRegisterSet.load8BitImm(reg, Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()));
-		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-	} else if (Z80CPU::retrieveFromAddress() >= 0x40 && Z80CPU::retrieveFromAddress() <= 0x7f) {
-		Z80CPU::instructionString = "LD ";
-		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
-		Z80CPU::instructionString += ", ";
-		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() & 0x07];
-		printf("%x\n", Z80CPU::retrieveFromAddress() >> 3 & 0x07);
-		if (Z80CPU::retrieveFromAddress() & 0x07 == 0x06) {
-			// LD r, [hl]
-			Z80CPU::mainRegisterSet.load8Bit(
-				Z80CPU::retrieveFromAddress() >> 3 & 0x07,
-				Z80CPU::mainRAM.read(
-					Z80CPU::mainRegisterSet.get16BitRegister(REG_HL)
-				)
-			);
-		} else if (Z80CPU::retrieveFromAddress() & 0x38 == 0x30) {
-			// LD [hl], r
-			Z80CPU::mainRAM.write(
-				Z80CPU::mainRegisterSet.get16BitRegister(REG_HL),
-				Z80CPU::mainRegisterSet.get8BitRegister(Z80CPU::retrieveFromAddress() & 0x07)
-			);
+		if (Z80CPU::mainRegisterSet.get8BitRegister(REG_A) & 0x80) {
+			Z80CPU::mainRegisterSet.setFlag(CARRY_FLAG);
 		} else {
-			// LD r, r'
-			Z80CPU::mainRegisterSet.load8Bit(
-				Z80CPU::retrieveFromAddress() >> 3 & 0x07,
-				Z80CPU::retrieveFromAddress() & 0x07
-			);
+			Z80CPU::mainRegisterSet.resetFlag(CARRY_FLAG);
 		}
+		
+		ROTATE_LEFT(Z80CPU::mainRegisterSet.get8BitRegister(REG_A), 1);
+		
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
-	} else {
-		Z80CPU::instructionString = "NO INSTRUCTION";
+	} else if (Z80CPU::retrieveFromAddress() == 0x08) {
+		Z80CPU::instructionString = "EX AF, AF\'";
+		
+		unsigned short tmp = Z80CPU::mainRegisterSet.get16BitRegister(REG_AF);
+		
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_AF,
+			Z80CPU::alternateRegisterSet.get16BitRegister(REG_AF)
+		);
+		
+		Z80CPU::alternateRegisterSet.load16BitImm(REG_AF, tmp);
+		
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x09) {
+		Z80CPU::instructionString = "ADD HL, BC";
+		
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_HL,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_BC)
+		)
+		
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x0a) {
+		Z80CPU::instructionString = "LD A, [BC]";
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			Z80CPU::mainRAM.read(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC))
+		);
+		
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 	}
 }
@@ -171,9 +194,17 @@ string Z80CPU::prettyPrint() {
 	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE));
 	retString += " HL:";
 	retString += convertHex(Z80CPU::mainRegisterSet.get16BitRegister(REG_HL));
+	retString += " IX: ";
+	retString += convertHex(Z80CPU::specialPurposeRegisters.getIX());
+	retString += " IY: ";
+	retString += convertHex(Z80CPU::specialPurposeRegisters.getIY());
 	retString += "\n";
 	retString += "PC: ";
 	retString += convertHex(Z80CPU::specialPurposeRegisters.getProgramCounter());
+	retString += "\tSP: ";
+	retString += convertHex(Z80CPU::specialPurposeRegisters.getStackPointer());
+	retString += "\tInterrupt Vector: ";
+	retString += convertHex(Z80CPU::specialPurposeRegisters.getInterruptVector());
 	return retString;
 }
 

@@ -1,5 +1,5 @@
 /*
-	Copyright (c) 2013, Gareth Richardson
+	Copyright (c) 2014, Gareth Richardson
 	All rights reserved.
 
 	Redistribution and use in source and binary forms, with or without
@@ -30,8 +30,8 @@
 /*
 	file name: z80.cpp
 	compiled name: z80.o
-	created date: 7/8/2012
-	date updated: 05/03/2013
+	created date: 07/08/2012
+	date updated: 22/06/2014
 	author: Gareth Richardson
 	description: the implementation of the disassembler
 	method.
@@ -194,10 +194,10 @@ string runZ80(ByteFile &obj) {
 					temp2 += convertHex(value);
 					retString += " ";
 					retString += temp2;
-					retString += "\t\tLD DE, [";
+					retString += "\t\tLD DE, ";
 					retString += temp2;
 					retString += temp;
-					retString += "H]\n";
+					retString += "H\n";
 				} else {
 					retString += "\n";
 				}

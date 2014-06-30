@@ -30,7 +30,7 @@
 /*
 	file name: registers.cpp
 	date created: 31/05/2014
-	date updated: 31/05/2014
+	date updated: 23/06/2014
 	author: Gareth Richardson
 	description: The object file for the registers class.
 */
@@ -95,6 +95,10 @@ void Registers::affectFlag(unsigned char flag, unsigned char status) {
 	} else {
 		Registers::resetFlag(flag);
 	}
+}
+
+bool Registers::getFlag(unsigned char flag) {
+	return flag & Registers::get8BitRegister(REG_F);
 }
 
 /*

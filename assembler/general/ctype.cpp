@@ -30,10 +30,10 @@
 /*
 	file name: ctype.cpp
 	date created: 09/03/2012
-	date updated: 29/05/2014
+	date updated: 30/06/2014
 	author: Gareth Richardson
-	description: The object for string and character functions that the odin assembler will use.
-	Used for validation, manipulation and convertion.
+	description: The object for string and character functions that the Odin assembler will use.
+	Used for validation, manipulation and conversion.
 */
 
 #include <string>
@@ -123,7 +123,7 @@ string integerToString(int value) {
 	string retValue = "";
 
 	while (value > 0) {
-		retValue += value % 10 + 48;
+		retValue = (char) (value % 10 + 48) + retValue;
 		value /= 10;
 	}
 

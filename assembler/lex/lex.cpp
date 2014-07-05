@@ -30,7 +30,7 @@
 /*
 	file name:		lex.cpp
 	date created:	29/08/2012
-	date updated:	29/05/2014
+	date updated:	05/07/2014
 	author:			Gareth Richardson
 	description:	This is the Lexical Analyser object code for the Odin assembler.
 */
@@ -350,7 +350,7 @@ TokenNodePtr Lex::getToken() {
 				newNode->value = retValue;
 			}
 		}
-	} else if (isNumerical(Lex::cList->peekValue()) || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#') {
+	} else if (isNumerical(Lex::cList->peekValue()) || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#' || Lex::cList->peekValue() == '%') {
 		newNode->type = NUMBER;
 		newNode->value = Lex::getNumber();
 	} else if (Lex::cList->peekValue() == '\"') {
@@ -360,7 +360,7 @@ TokenNodePtr Lex::getToken() {
 				retValue += Lex::cList->peekValue();
 			} else if (Lex::cList->isEmpty()) {
 				/*
-					incase we reach no more character in the file,
+					In case we reach no more characters in the file,
 					obviously, a string left open and not closed.
 					Sets error state accordingly.
 				*/
@@ -445,6 +445,7 @@ string Lex::getNumber() {
 		Bin:
 		0b01110
 		0B101011
+		%1000000
 	*/
 
 	string retValue = "";
@@ -502,6 +503,14 @@ string Lex::getNumber() {
 			retValue += 'h';
 			Lex::cList->pop();
 			while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+				retValue += Lex::cList->peekValue();
+				Lex::cList->pop();
+			}
+			break;
+		case '%':
+			retValue += 'b';
+			Lex::cList->pop();
+			while (!Lex::cList->isEmpty() && isBinary(Lex::cList->peekValue())) {
 				retValue += Lex::cList->peekValue();
 				Lex::cList->pop();
 			}

@@ -55,6 +55,7 @@
 
 using namespace std;
 
+#include "general/meta.hpp"
 #include "character/characterlist.hpp"
 #include "lex/tokenlist.hpp"
 #include "lex/lex.hpp"
@@ -73,9 +74,17 @@ int main(int argc, char *argv[]) {
 	} else {
 		char* inputFile = 0;
 		char* outputFile = 0;
-		int opt = getopt(argc, argv, "o:");
+		int opt = getopt(argc, argv, "aho:");
 		while (opt != -1) {
 			switch(opt) {
+				case 'a':
+					aboutPrettyPrint();
+					exit(0);
+					break;
+				case 'h':
+					helpPrettyPrint();
+					exit();
+					break;
 				case 'o':
 					outputFile = optarg;
 					break;

@@ -30,7 +30,7 @@
 /*
 	file name: main.cpp
 	date created: 18/02/2012
-	date updated: 10/06/2014
+	date updated: 05/07/2014
 	author: Gareth Richardson
 	description: This is the main method for the odin program.
 */
@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 					break;
 				case 'h':
 					helpPrettyPrint();
-					exit();
+					exit(0);
 					break;
 				case 'o':
 					outputFile = optarg;

@@ -40,18 +40,6 @@
 */
 
 /*
-	This is the version of the release.
-*/
-string version = "1.0";
-
-/*
-	The exact time and date when the source code was compiled.
-*/
-string timeCreated = __TIME__;
-
-string dateCreated = __DATE__;
-
-/*
 	These are pretty print methods for the help and about functions of the assembler.
 */
 void helpPrettyPrint();

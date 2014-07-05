@@ -45,7 +45,7 @@ g++ assembler/parser/instructions/OUTinstr.cpp -c
 g++ assembler/general/ctype.cpp -c
 g++ assembler/general/meta.cpp -c
 g++ assembler/main.cpp -c
-g++ main.o ctype.o INinstr.o OUTinstr.o RSTinstr.o RETinstr.o CALLinstr.o JRinstr.o JPinstr.o SETinstr.o RESinstr.o BITinstr.o SRLinstr.o SLAinstr.o SRAinstr.o RRinstr.o RRCinstr.o RLinstr.o RLCinstr.o DECinstr.o INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o odin.exe
+g++ main.o meta.o ctype.o INinstr.o OUTinstr.o RSTinstr.o RETinstr.o CALLinstr.o JRinstr.o JPinstr.o SETinstr.o RESinstr.o BITinstr.o SRLinstr.o SLAinstr.o SRAinstr.o RRinstr.o RRCinstr.o RLinstr.o RLCinstr.o DECinstr.o INCinstr.o XORinstr.o CPinstr.o characterlist.o tokenlist.o lex.o bytecode.o parser.o addresslist.o foundlist.o LDinstr.o PUSHinstr.o POPinstr.o EXinstr.o ADDinstr.o ADCinstr.o SUBinstr.o SUBCinstr.o ANDinstr.o ORinstr.o -o odin.exe
 del INinstr.o
 del OUTinstr.o
 del RSTinstr.o
@@ -85,6 +85,7 @@ del DECinstr.o
 del RLCinstr.o
 del RLinstr.o
 del ctype.o
+del meta.o
 del main.o
 
 g++ debugger/ram/ram.cpp -c

@@ -35,11 +35,24 @@
 	description: The object file of the meta methods.
 */
 
+#include <cstdio>
 #include <string>
 
 using namespace std;
 
 #include "meta.hpp"
+
+/*
+	This is the version of the release.
+*/
+string version = "1.0";
+
+/*
+	The exact time and date when the source code was compiled.
+*/
+string timeCreated = __TIME__;
+
+string dateCreated = __DATE__;
 
 void helpPrettyPrint() {
 	printf("odin <file_location> will output a binary file called output.bin.\n");

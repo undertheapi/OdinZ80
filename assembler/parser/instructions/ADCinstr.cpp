@@ -30,7 +30,7 @@
 /*
 	file name: ADCinstr.cpp
 	date created: 17/02/2013
-	date updated: 20/02/2013
+	date updated: 19/11/2014
 	author: Gareth Richardson
 	description: The processor for ADC instructions.
 */
@@ -155,13 +155,13 @@ void Z80Parser::processADC() {
 			} else if (Z80Parser::checkToken(SP)) {
 				Z80Parser::addCode(0xed, 0x7a);
 			} else {
-				Z80Parser::error("Incorrect useage of the ADD instruction, ADD HL, must be followed by a valid 16-bit register.");
+				Z80Parser::error("Incorrect use of the ADD instruction, ADD HL, must be followed by a valid 16-bit register.");
 			}
 		} else {
 			Z80Parser::error("Missing a comma.");
 		}
 	} else {
-		Z80Parser::error("Incorrect useage of the ADC command.");
+		Z80Parser::error("Incorrect use of the ADC command.");
 	}
 	
 	if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {

@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 05/06/2014
+	date updated: 20/11/2014
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it (returned in a ByteCode object).
@@ -55,32 +55,18 @@ void Z80Parser::init() {
 }
 
 bool Z80Parser::checkToken(TOKEN_TYPE tok) {
-	if (!Z80Parser::errorState) {
-		if (!Z80Parser::tList->isEmpty()) {
-			if (Z80Parser::tList->peekTokenType() != tok) {
-				return false;
-			} else {
-				Z80Parser::tList->pop();
-				return true;
-			}
-		} else {
-			return false;
-		}
+	if (!Z80Parser::errorState && !Z80Parser::tList->isEmpty() && Z80Parser::tList->peekTokenType() == tok) {
+		Z80Parser::tList->pop();
+		return true;
 	}
 	return false;
 }
 
 bool Z80Parser::checkAtom(string &value) {
-	if (!Z80Parser::errorState) {
-		if (!Z80Parser::tList->isEmpty()) {
-			if (Z80Parser::tList->peekTokenType() != ATOM) {
-				return false;
-			} else {
-				value = Z80Parser::tList->peekValue();
-				Z80Parser::tList->pop();
-				return true;
-			}
-		}
+	if (!Z80Parser::errorState && !Z80Parser::tList->isEmpty() && Z80Parser::tList->peekTokenType() == ATOM) {
+		value = Z80Parser::tList->peekValue();
+		Z80Parser::tList->pop();
+		return true;
 	}
 	return false;
 }
@@ -102,9 +88,8 @@ bool Z80Parser::checkEightBitNumber(unsigned char &number) {
 						}
 						Z80Parser::tList->pop();
 						return true;
-					} else {
-						return false;
 					}
+					return false;
 				} else if (value[0] == 'h') {
 					if (value.length() >= 2 && value.length() <= 3) {
 						int index = value.length() - 1;
@@ -122,9 +107,8 @@ bool Z80Parser::checkEightBitNumber(unsigned char &number) {
 						}
 						Z80Parser::tList->pop();
 						return true;
-					} else {
-						return false;
 					}
+					return false;
 				} else if (value[0] == 'b') {
 					if (value.length() >= 2 && value.length() <= 9) {
 						int index = value.length() - 1;
@@ -136,18 +120,14 @@ bool Z80Parser::checkEightBitNumber(unsigned char &number) {
 						}
 						Z80Parser::tList->pop();
 						return true;
-					} else {
-						return false;
 					}
-				}else {
 					return false;
 				}
-			} else {
 				return false;
 			}
+			return false;
 		} else {
-			Z80Parser::errorState = true;
-			Z80Parser::errorString = "Byte is out of range.";
+			Z80Parser::error("Byte is out of range.");
 		}
 	}
 	return false;
@@ -232,7 +212,7 @@ bool Z80Parser::checkStringToken(string &value) {
 
 void Z80Parser::addCode(unsigned char byte) {
 	Z80Parser::bCode->pushElement(byte);
-	Z80Parser::address++;
+	++Z80Parser::address;
 }
 
 void Z80Parser::addCode(unsigned char byte1, unsigned char byte2) {
@@ -252,23 +232,20 @@ void Z80Parser::addAddress(string atom) {
 	if (Z80Parser::fList.doesNameExist(atom)) {
 		int index = 0;
 		while (index < Z80Parser::fList.getSize()) {
-			if (Z80Parser::fList.getName(index).compare(atom) == 0) {
+			if (Z80Parser::fList.getName(index).compare(atom) == 0)
 				break;
-			}
 			index++;
 		}
 		unsigned short num16 = Z80Parser::fList.getAddress(index);
 		Z80Parser::addCode((unsigned char) num16, (unsigned char) (num16 >> 8));
-	} else {
-		Z80Parser::aList.addAddress(atom, Z80Parser::address);
-		Z80Parser::addCode(0x00, 0x00);
 	}
+	Z80Parser::aList.addAddress(atom, Z80Parser::address);
+	Z80Parser::addCode(0x00, 0x00);
 }
 
 void Z80Parser::newLine() {
-	if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+	if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 		Z80Parser::error("Missing a new line.");
-	}
 }
 
 string intToString(int value) {
@@ -456,9 +433,17 @@ void Z80Parser::run() {
 		} else if (Z80Parser::checkToken(EX)) {
 			Z80Parser::processEX();
 		} else if (Z80Parser::checkToken(EXX)) {
-			Z80Parser::addCode(0xd9);
+			if (Z80Parser::checkToken(NEW_LINE)) {
+				Z80Parser::addCode(0xd9);
+			} else {
+				Z80Parser::error("EXX instruction must end in a new line.");
+			}
 		} else if (Z80Parser::checkToken(LDI)) {
-			Z80Parser::addCode(0xed, 0xa0);
+			if (Z80Parser::checkToken(NEW_LINE)) {
+				Z80Parser::addCode(0xed, 0xa0);
+			} else {
+				Z80Parser::error("LDI instruction must end in a new line.");
+			}
 		} else if (Z80Parser::checkToken(LDIR)) {
 			Z80Parser::addCode(0xed, 0xb0);
 		} else if (Z80Parser::checkToken(LDD)) {
@@ -497,49 +482,40 @@ void Z80Parser::run() {
 			//Do nothing!!!!
 		} else if (Z80Parser::checkToken(DAA)) {
 			Z80Parser::addCode(0x27);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("DAA instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(CPL)) {
 			Z80Parser::addCode(0x2f);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("CPL instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(NEG)) {
 			Z80Parser::addCode(0xed, 0x44);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("NEG instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(CCF)) {
 			Z80Parser::addCode(0x3f);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("CCF instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(SCF)) {
 			Z80Parser::addCode(0x37);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("SCF instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(NOP)) {
 			Z80Parser::addCode(0x00);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("NOP instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(HALT)) {
 			Z80Parser::addCode(0x76);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("HALT instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(DI)) {
 			Z80Parser::addCode(0xf3);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("DI instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(EI)) {
 			Z80Parser::addCode(0xfb);
-			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState) {
+			if (!Z80Parser::checkToken(NEW_LINE) && !Z80Parser::errorState)
 				Z80Parser::error("EI instruction must end in a new line.");
-			}
 		} else if (Z80Parser::checkToken(IM)) {
 			unsigned char retValue;
 			if (Z80Parser::checkEightBitNumber(retValue)) {

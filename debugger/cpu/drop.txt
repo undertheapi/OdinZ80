@@ -1,0 +1,102 @@
+if (Z80CPU::retrieveFromAddress() == 0x00) {
+		/*
+			NOP instruction:
+			Does absolutely nothing except increment the PC.
+		*/
+		Z80CPU::instructionString = "NOP";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x0a) {
+		Z80CPU::instructionString = "LD A, [BC]";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			Z80CPU::mainRAM.read(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC))
+		);
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x1a) {
+		Z80CPU::instructionString = "LD A, [DE]";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			Z80CPU::mainRAM.read(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE))
+		);
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() == 0x3a) {
+		Z80CPU::instructionString = "LD A, [";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		unsigned short immediateValue = (unsigned short) (Z80CPU::retrieveFromAddress());
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		immediateValue |= (unsigned short) (Z80CPU::retrieveFromAddress() << 8);
+		Z80CPU::instructionString += convertHex(immediateValue);
+		Z80CPU::instructionString += "]";
+	} else if (Z80CPU::retrieveFromAddress() == 0x76) {
+		/*
+			HALT INSTRUCTION
+		*/
+		Z80CPU::instructionString = "HALT";
+		if (Z80CPU::resetButton) {
+			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+			Z80CPU::toggleReset();
+		}
+	} else if (Z80CPU::retrieveFromAddress() == 0xdd) {
+		/*
+			We have an Extended IX register instruction:
+		*/
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		if (Z80CPU::retrieveFromAddress() != 0x76) {
+			Z80CPU::instructionString = "LD ";
+			Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
+			Z80CPU::instructionString += ", [IX + ";
+			Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
+			Z80CPU::mainRegisterSet.load8BitImm(
+				Z80CPU::retrieveFromAddress() >> 3 & 0x07,
+				Z80CPU::specialPurposeRegisters.getIX() + Z80CPU::retrieveFromAddress() + 1
+			);
+			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+			Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		}
+	} else if (Z80CPU::retrieveFromAddress() == 0xfd) {
+		/*
+			We have an Extended IY register instruction:
+		*/
+	} else if (Z80CPU::retrieveFromAddress() >= 0x06 && Z80CPU::retrieveFromAddress() <= 0x3e) {
+		//LD r, IMM
+		Z80CPU::instructionString = "LD ";
+		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
+		REGISTER8 reg = Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()) >> 3 & 0x07;
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		Z80CPU::instructionString += ", ";
+		Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
+		Z80CPU::instructionString += "H";
+		Z80CPU::mainRegisterSet.load8BitImm(reg, Z80CPU::mainRAM.read(Z80CPU::specialPurposeRegisters.getProgramCounter()));
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else if (Z80CPU::retrieveFromAddress() >= 0x40 && Z80CPU::retrieveFromAddress() <= 0x7f) {
+		Z80CPU::instructionString = "LD ";
+		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() >> 3 & 0x07];
+		Z80CPU::instructionString += ", ";
+		Z80CPU::instructionString += registerArray[Z80CPU::retrieveFromAddress() & 0x07];
+		printf("%x\n", Z80CPU::retrieveFromAddress() >> 3 & 0x07);
+		if (Z80CPU::retrieveFromAddress() & 0x07 == 0x06) {
+			// LD r, [hl]
+			Z80CPU::mainRegisterSet.load8Bit(
+				Z80CPU::retrieveFromAddress() >> 3 & 0x07,
+				Z80CPU::mainRAM.read(
+					Z80CPU::mainRegisterSet.get16BitRegister(REG_HL)
+				)
+			);
+		} else if (Z80CPU::retrieveFromAddress() & 0x38 == 0x30) {
+			// LD [hl], r
+			Z80CPU::mainRAM.write(
+				Z80CPU::mainRegisterSet.get16BitRegister(REG_HL),
+				Z80CPU::mainRegisterSet.get8BitRegister(Z80CPU::retrieveFromAddress() & 0x07)
+			);
+		} else {
+			// LD r, r'
+			Z80CPU::mainRegisterSet.load8Bit(
+				Z80CPU::retrieveFromAddress() >> 3 & 0x07,
+				Z80CPU::retrieveFromAddress() & 0x07
+			);
+		}
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	} else {
+		Z80CPU::instructionString = "NO INSTRUCTION";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+	}

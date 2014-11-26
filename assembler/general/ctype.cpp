@@ -150,6 +150,17 @@ string toUpper(string value) {
 	return retString;
 }
 
+string toLower(string value) {
+	string retString = "";
+	for (int i = 0; i < value.size(); i++) {
+		if (value[i] >= 'A' && value[i] <= 'Z') {
+			retString += value[i] + 32;
+		} else {
+			retString += value[i];
+		}
+	}
+}
+
 string toFirstCharUpper(string value) {
 	string retString = "";
 	if (value[0] >= 'a' && value[0] <= 'z') {

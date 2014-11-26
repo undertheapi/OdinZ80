@@ -30,7 +30,7 @@
 /*
 	file name: main.cpp
 	date created: 18/02/2012
-	date updated: 05/07/2014
+	date updated: 20/11/2014
 	author: Gareth Richardson
 	description: This is the main method for the odin program.
 */
@@ -56,17 +56,13 @@
 using namespace std;
 
 #include "general/meta.hpp"
-#include "character/characterlist.hpp"
-#include "lex/tokenlist.hpp"
-#include "lex/lex.hpp"
-#include "parser/bytecode.hpp"
-#include "parser/addresslist.hpp"
-#include "parser/foundlist.hpp"
-#include "parser/parser.hpp"
+#include "assembler/assembler.hpp"
 
 ifstream::pos_type size;
 char * memblock;
 char backupName[] = "output.bin";
+
+void processFiles(char* fileToProcess, char* fileToCreate);
 
 int main(int argc, char *argv[]) {
 	if (argc == 1) {
@@ -108,73 +104,39 @@ int main(int argc, char *argv[]) {
 			exit(0);
 		}
 		
-		if (outputFile == 0) {
+		if (outputFile == 0)
 			outputFile = &backupName[0];
-		}
 		
-		ifstream file(inputFile, ios::binary);
-		if (!file) {
-			printf("ODIN: The file \"%s\" does not exist.\n", inputFile);
-			exit(0);
-		}
-		
-    	CharacterList cList;
-    	
-    	char val;
-    	while (file.read(static_cast<char*>(&val), sizeof(unsigned char))) {
-    		cList.push(val);
-    	}
-    	
-    	file.close();
-    	
-    	
-    	if (cList.errorState) {
-			if (cList.errorState & INVALID_CHAR == INVALID_CHAR) {
-				printf("ODIN: Invalid character in the file.\n");
-			} else if (cList.errorState & LIST_FULL == LIST_FULL) {
-				printf("ODIN: The source fill is too big.\n");
-			} else if (cList.errorState & LIST_EMPTY == LIST_EMPTY) {
-				printf("ODIN: An unexpected error has happen.\n");
-			}
-    		exit(0);
-    	}
-    	
-    	cList.finishedFile();
-    	
-    	TokenList tList;
-	
-		Lex lexObj(&cList, &tList);
-	
-		lexObj.run();
-		
-		if (lexObj.checkForError()) {
-			printf("%s\n", lexObj.getError().c_str());
-			exit(0);
-		}
-		
-		ByteCode bObj;
-		
-		Z80Parser pObj(&tList, &bObj);
-		
-		pObj.run();
-		
-		if (pObj.checkState()) {
-			printf("ODIN: %s\n", pObj.getError().c_str());
-			exit(0);
-		}
-		
-		ofstream out;
-		out.open(outputFile, ios::out | ios::binary);
-		if(!out.is_open()) {
-			printf("ODIN: Cannot open the file %s", outputFile);
-			exit(0);
-		}
-		
-		for (int index = 0; index < bObj.getSize(); index++) {
-			out.put(bObj.getElement(index));
-		}
-		out.close();
+		processFiles(inputFile, outputFile);
 	}
 	return 0;
 }
 
+
+void processFiles(char* fileToProcess, char* fileToCreate) {
+	ifstream file(fileToProcess, ios::binary);
+		
+	if (!file) {
+		printf("ODIN: The file \"%s\" does not exist.\n", fileToProcess);
+		exit(0);
+	}
+	
+	Assembler assemblerObj(fileToProcess);
+	
+	if (assemblerObj.error()) {
+		printf("ODIN: %s\n", assemblerObj.getError().c_str());
+		exit(0);
+	}
+	
+	ofstream out;
+	out.open(fileToCreate, ios::out | ios::binary);
+	if(!out.is_open()) {
+		printf("ODIN: Cannot open the file %s", fileToCreate);
+		exit(0);
+	}
+	
+	for (int index = 0; index < assemblerObj.getCode()->getSize(); index++) {
+		out.put(assemblerObj.getCode()->getElement(index));
+	}
+	out.close();
+}

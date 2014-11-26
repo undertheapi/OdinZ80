@@ -56,6 +56,15 @@ Lex::Lex(CharacterList* cList, TokenList* tList) {
 	Lex::lineNumber = 1;
 }
 
+bool Lex::checkKeyword(string value, string checker) {
+	if (!toUpper(checker).compare(value) || 
+		!toLower(checker).compare(value) || 
+		!toFirstCharUpper(checker).compare(value)) {
+		return true;
+	}
+	return 0;
+}
+
 TokenNodePtr Lex::getToken() {
 	TokenNodePtr newNode = new TokenNode;
 	newNode->type = 170;
@@ -115,12 +124,24 @@ TokenNodePtr Lex::getToken() {
 			Lex::cList->pop();
 		}
 		
+		// int keywordIndex = 0;
+		
+		// while (keywordIndex != 91) {
+			// if (Lex::checkKeyword(retValue, keywordArray[keywordIndex])) {
+				// newNode->type = keywordIndex;
+			// } else {
+				// newNode->type = ATOM;
+				// newNode->value = retValue;
+			// }
+			// ++keywordIndex;
+		// }
 		
 		/*
 			Here have some sort of token type checking to check for keywords. There has to be a more "effective" way
 			of doing this.
 			If the string does not match anything here, it will return a Token Type of ATOM.
 		*/
+		
 		if (!retValue.compare("ADC") || !retValue.compare("Adc") || !retValue.compare("adc")) {
 			newNode->type = ADC;
 		} else if (!retValue.compare("ADD") || !retValue.compare("Add") || !retValue.compare("add")) {
@@ -318,12 +339,13 @@ TokenNodePtr Lex::getToken() {
 		} else if (!retValue.compare("EQU") || !retValue.compare("Equ") || !retValue.compare("equ")) {
 			newNode->type = DIR_EQU;
 		} else {
-			/*
-				if it is not a reserved word, it is an ATOM:
-			*/
+			
+				//if it is not a reserved word, it is an ATOM:
+			
 			newNode->type = ATOM;
 			newNode->value = retValue;
 		}
+		
 	} else if (Lex::cList->peekValue() == '.') {
 		retValue = Lex::cList->peekValue();
 		Lex::cList->pop();

@@ -30,7 +30,7 @@
 /*
 	file name: lex.hpp
 	date created: 29/08/2012
-	date updated: 15/10/2012
+	date updated: 23/10/2014
 	author: Gareth Richardson
 	description: This is the Lexical Analysis for the Odin assembler.
 */
@@ -70,12 +70,18 @@ class Lex {
 			are any problems.
 		*/
 		string getNumber();
+		
+		/*
+			This is for checking a string is a keyword:
+		*/
+		bool checkKeyword(string value, string checker);
 
 		/*
 			Gets a unique token from the CharacterList object being pointed to. Sets errorString and errorState
 			if there is an error. Called up in run().
 		*/
 		TokenNodePtr getToken();
+		
 	public:
 		Lex(CharacterList* cList, TokenList* tList);
 

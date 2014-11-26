@@ -30,9 +30,10 @@
 /*
 	file name: tokenlist.hpp
 	date created: 29/08/2012
-	date updated: 22/10/2012
+	date updated: 26/11/2014
 	author: Gareth Richardson
-	description: Were all the Tokens fron the Lex class will be stored.
+	description: Were all the Tokens from the Lex class will be stored. The data structure used
+	is a Queue.
 */
 
 #include "tokennode.hpp"
@@ -41,7 +42,7 @@
 class TokenList {
 	private:
 		/*
-			The TOkenList class is a Singly Linked List of TokenNodes. These
+			The TokenList class is a Singly Linked List of TokenNodes. These
 			two TokenNode pointers are the typical 'head' and 'tail' parts of
 			one of these data structures.
 		*/
@@ -61,7 +62,16 @@ class TokenList {
 		*/
 		bool isEmpty();
 
+		/*
+			This method will push a Token Node Pointer to the back of the Queue.
+		*/
 		void push(TokenNodePtr obj);
+		
+		/*
+			This method will push a Token Node Pointer to the front of the Queue.
+			This will be used in the parser.
+		*/
+		void pushFront(TokenNodePtr obj);
 
 		void pop();
 

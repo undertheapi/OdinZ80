@@ -28,47 +28,46 @@
 */
 
 /*
-	file name: ctype.hpp
-	date created: 09/03/2012
-	date updated: 23/10/2014
+	file name: assembler.hpp
+	date created: 11/11/2014
+	date updated: 19/11/2014
 	author: Gareth Richardson
-	description: The header file for the ctype functions.
+	description: The class header for Assembler. Used as the container for the components
+	of the rest of the Z80 Assembler.
 */
 
-bool isAlphabetical(CHARACTER value);
+#include "../character/characterlist.hpp"
+#include "../lex/tokenlist.hpp"
+#include "../lex/lex.hpp"
+#include "../parser/bytecode.hpp"
+#include "../parser/addresslist.hpp"
+#include "../parser/foundlist.hpp"
+#include "../parser/parser.hpp"
 
-/*
-	This is another custom method class that checks that a character is numerical in
-	the decimal sense. Between 0 and 9.
-*/
-bool isNumerical(CHARACTER value);
-
-/*
-	This method checks if the character value is a printable character. That is, it is not
-	the first 32 ASCII values AND not the DEL character.
-*/
-bool isPrintable(CHARACTER value);
-
-/*
-	This method checks if a CHARACTER value is a hexadecimal value:
-*/
-bool isHex(CHARACTER value);
-
-bool isBinary(CHARACTER value);
-
-bool isDecimalString(string value);
-
-bool isHexString(string value);
-
-bool isBinaryString(string value);
-
-string integerToString(int value);
-
-string convertHex(char value);
-
-string toUpper(string value);
-
-string toLower(string value);
-
-string toFirstCharUpper(string value);
-
+class Assembler {
+	private:
+		string fileName;
+		bool errorState;
+		string errorString;
+		CharacterList* cList;
+		TokenList* tList;
+		ByteCode* bCodeObj;
+		
+		void init();
+		void execute();
+		
+		void populateCharacterList();
+		void populateTokens();
+		void runParser();
+	public:
+		/*
+			Make sure that the file exists before putting it in the constructor.
+		*/
+		Assembler(string fileLocation);
+		
+		ByteCode* getCode();
+		
+		bool error();
+		
+		string getError();
+};

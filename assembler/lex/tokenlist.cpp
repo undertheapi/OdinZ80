@@ -32,7 +32,7 @@
 	date created: 29/08/2012
 	date updated: 25/10/2012
 	author: Garth Richardson
-	description: The implementation of the TokenList class.
+	description: The implementation of the TokenList class. The data structure used is a Queue.
 */
 
 #include <string>
@@ -58,12 +58,19 @@ void TokenList::push(TokenNodePtr obj) {
 	if (TokenList::isEmpty()) {
 		TokenList::head = obj;
 		TokenList::tail = obj;
-	} else if (TokenList::head == TokenList::tail) {
-		TokenList::head->next = obj;
-		TokenList::tail = obj;
 	} else {
 		TokenList::tail->next = obj;
 		TokenList::tail = obj;
+	}
+}
+
+void TokenList::pushFront(TokenNodePtr obj) {
+	if (TokenList::isEmpty()) {
+		TokenList::head = obj;
+		TokenList::tail = obj;
+	} else {
+		obj->next = TokenList::tail;
+		TokenList::head = obj;
 	}
 }
 
@@ -92,7 +99,6 @@ string TokenList::peekValue() {
 int TokenList::peekLineNumber() {
 	if (!TokenList::isEmpty()) {
 		return TokenList::head->lineNumber;
-	} else {
-		return -1;
 	}
+	return -1;
 }

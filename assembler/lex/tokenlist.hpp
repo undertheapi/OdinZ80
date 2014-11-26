@@ -74,6 +74,12 @@ class TokenList {
 		void pushFront(TokenNodePtr obj);
 
 		void pop();
+		
+		/*
+			This method will pop the top Token Node Pointer from the front of the Queue and return it.
+			This will be used in the parser.
+		*/
+		TokenNodePtr pop();
 
 		TOKEN_TYPE peekTokenType();
 

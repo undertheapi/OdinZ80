@@ -74,6 +74,15 @@ void TokenList::pushFront(TokenNodePtr obj) {
 	}
 }
 
+TokenNodePtr TokenList::pop() {
+	if (!TokenList::isEmpty()) {
+		TokenNodePtr pointer = TokenList::head;
+		TokenList::head = pointer->next;
+		return pointer
+	}
+	return NULL;
+}
+
 /*
 	TODO Some error state code and validation just in case.
 */

@@ -30,7 +30,7 @@
 /*
 	file name: foundlist.cpp
 	date created: 14/02/2013
-	date updated: 14/02/2013
+	date updated: 05/12/2014
 	author: Gareth Richardson
 	description: All the found addresses are in this list,this is the object file.
 */
@@ -68,8 +68,7 @@ void FoundList::addAddress(string name, unsigned short addr) {
 	newNode->address = addr;
 	newNode->next = NULL;
 	if (FoundList::isEmpty()) {
-		FoundList::head = newNode;
-		FoundList::tail = newNode;
+		FoundList::head = FoundList::tail = newNode;
 	} else if (FoundList::head == FoundList::tail) {
 		FoundList::tail = newNode;
 		FoundList::head->next = newNode;
@@ -77,7 +76,7 @@ void FoundList::addAddress(string name, unsigned short addr) {
 		FoundList::tail->next = newNode;
 		FoundList::tail = newNode;
 	}
-	FoundList::size++;
+	++FoundList::size;
 }
 
 string FoundList::getName(int index) {

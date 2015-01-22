@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.cpp
 	date created: 29/08/2012
-	date updated: 25/10/2012
+	date updated: 05/12/2014
 	author: Garth Richardson
 	description: The implementation of the TokenList class. The data structure used is a Queue.
 */
@@ -54,36 +54,49 @@ bool TokenList::isEmpty() {
 	return TokenList::head == NULL;
 }
 
+/*
+	Push the TokenNodePtr structure to the BACK of the Singly Linked List.
+	This is used in the Lexical Analyser.
+*/
 void TokenList::push(TokenNodePtr obj) {
 	if (TokenList::isEmpty()) {
-		TokenList::head = obj;
-		TokenList::tail = obj;
+		TokenList::head = TokenList::tail = obj;
 	} else {
-		TokenList::tail->next = obj;
-		TokenList::tail = obj;
+		TokenList::tail->next = TokenList::tail = obj;
 	}
 }
 
+/*
+	The is for the Parser. THis method will push a TokenNodePtr structure
+	to the front of the SinglyLinkedList. The Parser uses this when validating
+	the Assembly Source Code.
+*/
 void TokenList::pushFront(TokenNodePtr obj) {
 	if (TokenList::isEmpty()) {
-		TokenList::head = obj;
-		TokenList::tail = obj;
+		TokenList::head = TokenList::tail = obj;
 	} else {
 		obj->next = TokenList::tail;
 		TokenList::head = obj;
 	}
 }
 
-TokenNodePtr TokenList::pop() {
+/*
+	This will remove the top Token on the list (in its head).
+	It also returns the TokenNodePtr.
+	Use in conjunction with the pushFront() method and the
+	parser.
+*/
+TokenNodePtr TokenList::specialPop() {
 	if (!TokenList::isEmpty()) {
 		TokenNodePtr pointer = TokenList::head;
 		TokenList::head = pointer->next;
-		return pointer
+		return pointer;
 	}
 	return NULL;
 }
 
 /*
+	Removes the top Token from the Singly Linked List.
 	TODO Some error state code and validation just in case.
 */
 void TokenList::pop() {
@@ -94,6 +107,11 @@ void TokenList::pop() {
 	}
 }
 
+/*
+	Returns the token type of the token that is in the front of the Queue.
+	It will return a negative number if the token list is empty as a way to capture
+	any errors.
+*/
 TOKEN_TYPE TokenList::peekTokenType() {
 	if (!TokenList::isEmpty()) {
 		return TokenList::head->type;
@@ -101,6 +119,10 @@ TOKEN_TYPE TokenList::peekTokenType() {
 	return -1;
 }
 
+/*
+	This gets the value of the token at the front of the Queue.
+	Make sure you can handle the error if the Queue is empty.
+*/
 string TokenList::peekValue() {
 	return TokenList::head->value;
 }

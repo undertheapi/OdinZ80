@@ -30,7 +30,7 @@
 /*
 	file name: addresslist.cpp
 	date created: 14/02/2013
-	date updated: 09/03/2013
+	date updated: 05/12/2014
 	author: Gareth Richardson
 	description: This is a list of addresses not found yet.
 */
@@ -42,6 +42,12 @@ using namespace std;
 #include "bytecode.hpp"
 #include "addresslist.hpp"
 
+/*
+	Returns the string element in the AddressList that is at the index.
+	The string is the name of the address that is in the AddressList.
+	You need to do an array index check before giving the index value to
+	this parameter.
+*/
 string AddressList::getElement(int index) {
 	int count = 0;
 	AddressNode* pointer = AddressList::head;
@@ -52,6 +58,11 @@ string AddressList::getElement(int index) {
 	return pointer->value;
 }
 
+/*
+	Returns the integer address element in the AddressList that is at the index.
+	You need to do an array index check before giving the index value to
+	this parameter.
+*/
 unsigned short AddressList::getAddress(int index) {
 	int count = 0;
 	AddressNode* pointer = AddressList::head;
@@ -62,6 +73,10 @@ unsigned short AddressList::getAddress(int index) {
 	return pointer->address;
 }
 
+/*
+	Removes the element at the specified index.
+	Do an array bounds check before giving hte index parameter.
+*/
 void AddressList::deleteElement(int index) {
 	if (index == 0) {
 		if (AddressList::size == 1) {
@@ -76,11 +91,11 @@ void AddressList::deleteElement(int index) {
 		while (count != index) {
 			previous = pointer;
 			pointer = pointer->next;
-			count++;
+			++count;
 		}
 		previous->next = pointer->next;
 	}
-	AddressList::size--;
+	--AddressList::size;
 }
 
 void AddressList::init() {
@@ -110,7 +125,7 @@ void AddressList::addAddress(string value, unsigned short addr) {
 		newNode->next = AddressList::head;
 		AddressList::head = newNode;
 	}
-	AddressList::size++;
+	++AddressList::size;
 }
 
 string AddressList::getLastName() {
@@ -126,7 +141,7 @@ void AddressList::processAddress(string name, unsigned short newAddress, ByteCod
 			AddressList::deleteElement(index);
 			index = 0;
 		} else {
-			index++;
+			++index;
 		}
 	}
 }

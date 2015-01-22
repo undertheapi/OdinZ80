@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.hpp
 	date created: 29/08/2012
-	date updated: 26/11/2014
+	date updated: 27/11/2014
 	author: Gareth Richardson
 	description: Were all the Tokens from the Lex class will be stored. The data structure used
 	is a Queue.
@@ -79,7 +79,7 @@ class TokenList {
 			This method will pop the top Token Node Pointer from the front of the Queue and return it.
 			This will be used in the parser.
 		*/
-		TokenNodePtr pop();
+		TokenNodePtr specialPop();
 
 		TOKEN_TYPE peekTokenType();
 

@@ -82,11 +82,16 @@ class Z80Parser {
 		void addCode(unsigned char, unsigned char);
 		void addCode(unsigned char, unsigned char, unsigned char);
 		
+		/*
+			Adds an Address to the Address List. The string parameter is the name
+			and the actual value comes from the current address attribute in the
+			Z80Parser class.
+		*/
 		void addAddress(string atom);
 		void error(string value);
 		
 		/*
-			Mkaes sure that there is a new line, comes in handy for checking
+			Makes sure that there is a new line, comes in handy for checking
 			if a new line exists.
 		*/
 		void newLine();

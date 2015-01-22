@@ -30,15 +30,16 @@
 /*
 	file name: tokentype.hpp
 	date created: 3/09/2012
-	date updated: 29/05/2014
+	date updated: 05/12/2014
 	author: Gareth Richardson
 	description: This is a file of definitions for the types of tokens that are valid
 	in the assembler. The TokenNode data structure stores the type as an unsigned char,
 	so make sure that the amount of tokens do not exceed 256.
+	TODO: Turn this into an enumeration.
 */
 
 /*
-	these are the opcode types:
+	these are the op-code types:
 */
 #define ADC 0
 #define ADD 1
@@ -136,35 +137,36 @@
 #define CPU 85		// CPU type (for future compatibility).
 #define DB 86		// Declare a byte in the output machine code.
 #define DW 87		// Declare a word in the output machine code.
-#define ORG 88		// The address the byte code will be executed from.
-#define REP 89		// Repeats a byte a specified amount of times.
-#define SPECREP 90	// A custom repeat command. Repeats a set of bytes instead of one.
+#define DDW 88		// Declare a double word in the output machine code.
+#define ORG 89		// The address the byte code will be executed from.
+#define REP 90		// Repeats a byte a specified amount of times.
+#define SPECREP 91	// A custom repeat command. Repeats a set of bytes instead of one.
 
 /*
 	grammar:
 */
-#define ATOM 91			// A none reserved word in the source code, includes numbers as well.
-#define COLON 92		// A ":" character, used for labels and addresses.
-#define COMMA 93		// A ',' character.
-#define NEW_LINE 94
-#define LEFT_BRACKET 95
-#define RIGHT_BRACKET 96
-#define PLUS 97
-#define MINUS 98
-#define MULTIPLY 99
+#define ATOM 92			// A none reserved word in the source code, includes numbers as well.
+#define COLON 93		// A ":" character, used for labels and addresses.
+#define COMMA 94		// A ',' character.
+#define NEW_LINE 95
+#define LEFT_BRACKET 96
+#define RIGHT_BRACKET 97
+#define PLUS 98
+#define MINUS 99
+#define MULTIPLY 100
 
 /*
 	This are the JMP condition Tokens:
 	(Note that the C "Carry" condition type is also the same as the C register,
 	so, it has been declared above in the Register section of this file).
 */
-#define M 100
-#define NC 101
-#define NZ 102
-#define P 103
-#define PE 104
-#define PO 105
-#define Z 106
+#define M 101
+#define NC 102
+#define NZ 103
+#define P 104
+#define PE 105
+#define PO 106
+#define Z 107
 
 /*
 	Other Token Types here:

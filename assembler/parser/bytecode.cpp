@@ -30,7 +30,7 @@
 /*
 	file name: bytecode.cpp
 	date created: 28/09/2012
-	date updated: 28/09/2012
+	date updated: 05/12/2014
 	author: Gareth Richardson
 	description: This is the machine code, the output of the assembler.
 */
@@ -38,13 +38,12 @@
 #include "bytecode.hpp"
 
 /*
-	we make out own NULL definition so we do not have to include any standard c libraries.
+	we make our own NULL definition so we do not have to include any standard c libraries.
 */
 #define NULL 0
 
 void ByteCode::init() {
-	ByteCode::head = NULL;
-	ByteCode::tail = NULL;
+	ByteCode::head = ByteCode::tail = NULL;
 	ByteCode::size = 0;
 }
 
@@ -56,21 +55,22 @@ int ByteCode::getSize() {
 	return ByteCode::size;
 }
 
+/*
+	Push an element of the byte code (a BYTE of data) onto the back of the
+	Queue.
+*/
 void ByteCode::pushElement(unsigned char value) {
 	ByteNodePtr newNode = new ByteNode;
 	newNode->byte = value;
 	newNode->next = NULL;
 	if (ByteCode::size == 0) {
-		ByteCode::head = newNode;
-		ByteCode::tail = newNode;
+		ByteCode::head = ByteCode::tail = newNode;
 	} else if (ByteCode::head == ByteCode::tail) {
-		ByteCode::head->next = newNode;
-		ByteCode::tail = newNode;
+		ByteCode::head->next = ByteCode::tail = newNode;
 	} else {
-		ByteCode::tail->next = newNode;
-		ByteCode::tail = newNode;
+		ByteCode::tail->next = ByteCode::tail = newNode;
 	}
-	ByteCode::size++;
+	++ByteCode::size;
 }
 
 void ByteCode::setElement(int index, unsigned char value) {
@@ -82,7 +82,7 @@ void ByteCode::setElement(int index, unsigned char value) {
 		ByteNodePtr tempNode = ByteCode::head;
 		while (counter != index) {
 			tempNode = tempNode->next;
-			counter++;
+			++counter;
 		}
 		tempNode->byte = value;
 	} else {
@@ -95,7 +95,7 @@ unsigned char ByteCode::getElement(int index) {
 	ByteNodePtr tempNode = ByteCode::head;
 	while (counter != index) {
 		tempNode = tempNode->next;
-		counter++;
+		++counter;
 	}
 	return tempNode->byte;
 }

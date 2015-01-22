@@ -30,7 +30,7 @@
 /*
 	file name:		lex.cpp
 	date created:	29/08/2012
-	date updated:	05/07/2014
+	date updated:	05/12/2014
 	author:			Gareth Richardson
 	description:	This is the Lexical Analyser object code for the Odin assembler.
 */
@@ -53,6 +53,9 @@ Lex::Lex(CharacterList* cList, TokenList* tList) {
 		set the errorState.
 	*/
 	Lex::errorState = false;
+	/*
+		Lex always starts at Line One in the file.
+	*/
 	Lex::lineNumber = 1;
 }
 
@@ -316,6 +319,8 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = DB;
 		} else if (!retValue.compare("DW") || !retValue.compare("Dw") || !retValue.compare("dw") || !retValue.compare("WORD") || !retValue.compare("Word") || !retValue.compare("word")) {
 			newNode->type = DW;
+		} else if (!retValue.compare("DDW") || !retValue.compare("Ddw") || !retValue.compare("ddw") || !retValue.compare("DWORD") || !retValue.compare("Dword") || !retValue.compare("dword")) {
+			newNode->type = DDW
 		} else if (!retValue.compare("ORG") || !retValue.compare("Org") || !retValue.compare("org")) {
 			newNode->type = ORG;
 		} else if (!retValue.compare("REP") || !retValue.compare("Rep") || !retValue.compare("rep")) {
@@ -324,15 +329,15 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = SPECREP;
 		} else if (!retValue.compare("M") || !retValue.compare("m")) {
 			newNode->type = M;
-		} else if (!retValue.compare("NC") || !retValue.compare("nc")) {
+		} else if (!retValue.compare("NC") || !retValue.compare("nc") || !retValue.compare("Nc")) {
 			newNode->type = NC;
-		} else if (!retValue.compare("NZ") || !retValue.compare("nz")) {
+		} else if (!retValue.compare("NZ") || !retValue.compare("nz") || !retValue.compare("Nz")) {
 			newNode->type = NZ;
 		} else if (!retValue.compare("P") || !retValue.compare("p")) {
 			newNode->type = P;
-		} else if (!retValue.compare("PE") || !retValue.compare("pe")) {
+		} else if (!retValue.compare("PE") || !retValue.compare("pe") || !retValue.compare("Pe")) {
 			newNode->type = PE;
-		} else if (!retValue.compare("PO") || !retValue.compare("po")) {
+		} else if (!retValue.compare("PO") || !retValue.compare("po") || !retValue.compare("Po")) {
 			newNode->type = PO;
 		} else if (!retValue.compare("Z") || !retValue.compare("z")) {
 			newNode->type = Z;

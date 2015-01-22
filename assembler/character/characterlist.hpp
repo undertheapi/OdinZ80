@@ -29,7 +29,7 @@
 
 /*
 	file name: characterlist.hpp
-	date craeted: 28/8/2012
+	date created: 28/8/2012
 	date updated: 19/10/2012
 	author: Gareth Richardson
 	description: This is the header file for the class CharacterList. This stores an entire
@@ -39,7 +39,7 @@
 
 /*
 	We define the amount of bytes in a Megabyte here, use this to define the Maximum size of
-	the resverved memory for a file.
+	the reserved memory for a file.
 */
 #define MEGABYTE 1024 * 1024
 
@@ -49,10 +49,11 @@
 	Add more megabyte like this:
 		*if you want 3 megabytes reserved, you type:
 			MAX_SIZE (MEGABYTE * 3)
-	Warning: 2 Megabytes or more crash a Windows system. Maybe stick it to just a megabyte
-	of memory for a file.
+	Warning: 2 Megabytes or more crashes a Windows system. Maybe stick it to just a megabyte
+	of memory for a file. We do not know the crash size of a Linux or Mac System.
+	THIS CRASH HAS BEEN TESTED ON A WINDOWS 7 64-BIT SYSTEM
 
-	**TODO: What is the maximum size we can possiblyy have for the file in memory? One megabyte
+	**TODO: What is the maximum size we can possibly have for the file in memory? One megabyte
 	does seem to be the right size, then again, the biggest file size of source code in this
 	programming project is 72kB.
 */
@@ -60,7 +61,7 @@
 
 /*
 	The definition of a character in the list. We can change it to anything we want as
-	long as the code can handle it. We can alter it to unicode if we wanted to.
+	long as the code can handle it. We can alter it to Unicode if we wanted to.
 */
 #define CHARACTER unsigned char
 

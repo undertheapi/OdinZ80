@@ -30,7 +30,7 @@
 /*
 	file name:		lex.cpp
 	date created:	29/08/2012
-	date updated:	05/12/2014
+	date updated:	16/04/2015
 	author:			Gareth Richardson
 	description:	This is the Lexical Analyser object code for the Odin assembler.
 */
@@ -65,7 +65,7 @@ bool Lex::checkKeyword(string value, string checker) {
 		!toFirstCharUpper(checker).compare(value)) {
 		return true;
 	}
-	return 0;
+	return false;
 }
 
 TokenNodePtr Lex::getToken() {
@@ -81,17 +81,15 @@ TokenNodePtr Lex::getToken() {
 	*/
 	if (!Lex::cList->isEmpty() && Lex::cList->peekValue()  == ';') {
 		Lex::cList->pop();
-		while (!Lex::cList->isEmpty() && Lex::cList->peekValue() != '\n') {
+		while (!Lex::cList->isEmpty() && Lex::cList->peekValue() != '\n')
 			Lex::cList->pop();
-		}
 	}
 
 	/*
 		this is getting rid of the space characters from the CharacterList class.
 	*/
-	while (!Lex::cList->isEmpty() && (Lex::cList->peekValue() == '\t' || Lex::cList->peekValue() == ' ')) {
+	while (!Lex::cList->isEmpty() && (Lex::cList->peekValue() == '\t' || Lex::cList->peekValue() == ' '))
 		Lex::cList->pop();
-	}
 
 	/*
 		This is here to stop ANY errors happening.
@@ -110,9 +108,8 @@ TokenNodePtr Lex::getToken() {
 	*/
 	if (!Lex::cList->isEmpty() && Lex::cList->peekValue()  == ';') {
 		Lex::cList->pop();
-		while (!Lex::cList->isEmpty() && Lex::cList->peekValue() != '\n') {
+		while (!Lex::cList->isEmpty() && Lex::cList->peekValue() != '\n')
 			Lex::cList->pop();
-		}
 	}
 
 	/*
@@ -320,7 +317,7 @@ TokenNodePtr Lex::getToken() {
 		} else if (!retValue.compare("DW") || !retValue.compare("Dw") || !retValue.compare("dw") || !retValue.compare("WORD") || !retValue.compare("Word") || !retValue.compare("word")) {
 			newNode->type = DW;
 		} else if (!retValue.compare("DDW") || !retValue.compare("Ddw") || !retValue.compare("ddw") || !retValue.compare("DWORD") || !retValue.compare("Dword") || !retValue.compare("dword")) {
-			newNode->type = DDW
+			newNode->type = DDW;
 		} else if (!retValue.compare("ORG") || !retValue.compare("Org") || !retValue.compare("org")) {
 			newNode->type = ORG;
 		} else if (!retValue.compare("REP") || !retValue.compare("Rep") || !retValue.compare("rep")) {

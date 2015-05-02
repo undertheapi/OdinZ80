@@ -30,7 +30,7 @@
 /*
 	file name: parser.cpp
 	date created: 28/09/2012
-	date updated: 20/11/2014
+	date updated: 16/04/2015
 	author: Gareth Richardson
 	description: This is the Z80 parser. Give it a TokenList object and it will
 	parse it and output the machine code for it (returned in a ByteCode object).
@@ -249,9 +249,8 @@ void Z80Parser::newLine() {
 }
 
 string intToString(int value) {
-	if (value == 0) {
+	if (value == 0)
 		return "0";
-	}
 	
 	string retValue = "";
 	
@@ -305,9 +304,8 @@ void Z80Parser::run() {
 				}
 			} else if (Z80Parser::checkStringToken(strValue)) {
 				if (Z80Parser::checkToken(NEW_LINE)) {
-					for (int index = 0; index < strValue.length(); index++) {
+					for (int index = 0; index < strValue.length(); index++)
 						Z80Parser::addCode((unsigned char) strValue[index]);
-					}
 				} else {
 					Z80Parser::error("DB must end with a new line.");
 				}
@@ -445,7 +443,11 @@ void Z80Parser::run() {
 				Z80Parser::error("LDI instruction must end in a new line.");
 			}
 		} else if (Z80Parser::checkToken(LDIR)) {
-			Z80Parser::addCode(0xed, 0xb0);
+			if (Z80Parser::checkToken(NEW_LINE)) {
+				Z80Parser::addCode(0xed, 0xb0);
+			} else {
+				Z80Parser::error("LDIR instruction must end in a new line.");
+			}
 		} else if (Z80Parser::checkToken(LDD)) {
 			Z80Parser::addCode(0xed, 0xa8);
 		} else if (Z80Parser::checkToken(LDDR)) {

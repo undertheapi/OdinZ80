@@ -30,7 +30,7 @@
 /*
 	file name: addresslist.cpp
 	date created: 14/02/2013
-	date updated: 05/12/2014
+	date updated: 16/04/2015
 	author: Gareth Richardson
 	description: This is a list of addresses not found yet.
 */
@@ -53,7 +53,7 @@ string AddressList::getElement(int index) {
 	AddressNode* pointer = AddressList::head;
 	while (count != index) {
 		pointer = pointer->next;
-		count++;
+		++count;
 	}
 	return pointer->value;
 }
@@ -68,14 +68,14 @@ unsigned short AddressList::getAddress(int index) {
 	AddressNode* pointer = AddressList::head;
 	while (count != index) {
 		pointer = pointer->next;
-		count++;
+		++count;
 	}
 	return pointer->address;
 }
 
 /*
 	Removes the element at the specified index.
-	Do an array bounds check before giving hte index parameter.
+	Do an array bounds check before giving the index parameter.
 */
 void AddressList::deleteElement(int index) {
 	if (index == 0) {
@@ -98,6 +98,9 @@ void AddressList::deleteElement(int index) {
 	--AddressList::size;
 }
 
+/*
+	Initiates the Singly Linked List for the Addresses.
+*/
 void AddressList::init() {
 	AddressList::head = NULL;
 	AddressList::size = 0;

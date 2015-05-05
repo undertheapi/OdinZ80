@@ -100,3 +100,430 @@ if (Z80CPU::retrieveFromAddress() == 0x00) {
 		Z80CPU::instructionString = "NO INSTRUCTION";
 		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	 else if (Z80CPU::retrieveFromAddress() == 0x01) {
+		Z80CPU::instructionString = "LD BC, ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		unsigned short immediateValue = (unsigned short) (Z80CPU::retrieveFromAddress());
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		immediateValue |= (unsigned short) (Z80CPU::retrieveFromAddress() << 8);
+		Z80CPU::mainRegisterSet.load16BitImm(REG_BC, immediateValue);
+		Z80CPU::instructionString += convertHex(immediateValue);
+	} else if (Z80CPU::retrieveFromAddress() == 0x02) {
+		Z80CPU::instructionString = "LD [BC], A";
+		Z80CPU::mainRAM.write(
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_BC),
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_A)
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x03) {
+		Z80CPU::instructionString = "INC BC";
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_BC,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_BC) + 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x04) {
+		Z80CPU::instructionString = "INC B";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_B,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_B) + 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x05) {
+		Z80CPU::instructionString = "DEC B";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_B,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_B) - 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x06) {
+		Z80CPU::instructionString = "LD B, ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		unsigned char immediateValue = Z80CPU::retrieveFromAddress();
+		Z80CPU::instructionString += convertHex(immediateValue);
+	} else if (Z80CPU::retrieveFromAddress() == 0x07) {
+		Z80CPU::instructionString = "RLCA";
+		
+		/*
+			Check if the left most bit is set on register A
+		*/
+		if (Z80CPU::mainRegisterSet.get8BitRegister(REG_A) & 0x80) {
+			Z80CPU::mainRegisterSet.setFlag(CARRY_FLAG);
+		} else {
+			Z80CPU::mainRegisterSet.resetFlag(CARRY_FLAG);
+		}
+		
+		Z80CPU::mainRegisterSet.resetFlag(ADD_SUBRACT_FLAG);
+		Z80CPU::mainRegisterSet.resetFlag(HALF_CARRY_FLAG);
+		
+		unsigned char immediateValue = Z80CPU::mainRegisterSet.get8BitRegister(REG_A);
+		
+		ROTATE_LEFT(immediateValue, 1);
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			immediateValue
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x08) {
+		Z80CPU::instructionString = "EX AF, AF\'";
+		
+		unsigned short tmp = Z80CPU::mainRegisterSet.get16BitRegister(REG_AF);
+		
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_AF,
+			Z80CPU::alternateRegisterSet.get16BitRegister(REG_AF)
+		);
+		
+		Z80CPU::alternateRegisterSet.load16BitImm(REG_AF, tmp);
+	} else if (Z80CPU::retrieveFromAddress() == 0x09) {
+		Z80CPU::instructionString = "ADD HL, BC";
+		
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_HL,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_BC)
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x0a) {
+		Z80CPU::instructionString = "LD A, [BC]";
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			Z80CPU::mainRAM.read(Z80CPU::mainRegisterSet.get16BitRegister(REG_BC))
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x0b) {
+		Z80CPU::instructionString = "DEC BC";
+		
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_BC,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_BC) - 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x0c) {
+		Z80CPU::instructionString = "INC C";
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_C,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_C) + 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x0d) {
+		Z80CPU::instructionString = "DEC C";
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_C,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_C) - 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x0e) {
+		Z80CPU::instructionString = "LD C, ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_C,
+			Z80CPU::retrieveFromAddress()
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x0f) {
+		Z80CPU::instructionString = "RRCA";
+		
+		/*
+			Check if the left most bit is set on register A
+		*/
+		if (Z80CPU::mainRegisterSet.get8BitRegister(REG_A) & 0x01) {
+			Z80CPU::mainRegisterSet.setFlag(CARRY_FLAG);
+		} else {
+			Z80CPU::mainRegisterSet.resetFlag(CARRY_FLAG);
+		}
+		
+		Z80CPU::mainRegisterSet.resetFlag(ADD_SUBRACT_FLAG);
+		Z80CPU::mainRegisterSet.resetFlag(HALF_CARRY_FLAG);
+		
+		unsigned char immediateValue = Z80CPU::mainRegisterSet.get8BitRegister(REG_A);
+		
+		ROTATE_RIGHT(immediateValue, 1);
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			immediateValue
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x10) {
+		Z80CPU::instructionString = "DJNZ ";
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_B,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_B) - 1
+		);
+		
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		
+		Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
+		
+		if (Z80CPU::mainRegisterSet.get8BitRegister(REG_B) != 0) {
+			Z80CPU::specialPurposeRegisters.loadProgramCounter(
+				Z80CPU::specialPurposeRegisters.getProgramCounter() + Z80CPU::retrieveFromAddress()
+			);
+		}
+	} else if (Z80CPU::retrieveFromAddress() == 0x11) {
+		Z80CPU::instructionString = "LD DE, ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		unsigned short immediateValue = (unsigned short) Z80CPU::retrieveFromAddress();
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		immediateValue |= (unsigned short) (Z80CPU::retrieveFromAddress() << 8);
+		Z80CPU::instructionString += convertHex(immediateValue);
+		
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_DE,
+			immediateValue
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x12) {
+		Z80CPU::instructionString = "LD [DE], A";
+		
+		Z80CPU::mainRAM.write(
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_DE),
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_A)
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x13) {
+		Z80CPU::instructionString = "INC DE";
+		
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_DE,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_DE) + 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x14) {
+		Z80CPU::instructionString = "INC D";
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_D,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_D) + 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x15) {
+		Z80CPU::instructionString = "DEC D";
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_D,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_D) - 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x16) {
+		Z80CPU::instructionString = "LD D, ";
+		
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		
+		Z80CPU::instructionString += (Z80CPU::retrieveFromAddress());
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_D,
+			Z80CPU::retrieveFromAddress()
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x17) {
+		Z80CPU::instructionString = "RLA";
+		
+		unsigned char accumValue = Z80CPU::mainRegisterSet.get8BitRegister(REG_A);
+		
+		unsigned char carryOverValue = 0x00;
+		
+		if (Z80CPU::mainRegisterSet.getFlag(CARRY_FLAG)) {
+			carryOverValue = 0x01;
+		}
+		
+		if (accumValue & 0x80 != 0) {
+			Z80CPU::mainRegisterSet.setFlag(CARRY_FLAG);
+		} else {
+			Z80CPU::mainRegisterSet.resetFlag(CARRY_FLAG);
+		}
+		
+		accumValue = accumValue << 1;
+		
+		accumValue |= carryOverValue;
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			accumValue
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x18) {
+		Z80CPU::instructionString = "JR ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		Z80CPU::instructionString = convertHex(Z80CPU::retrieveFromAddress());
+		Z80CPU::specialPurposeRegisters.loadProgramCounter(
+			Z80CPU::specialPurposeRegisters.getProgramCounter() + Z80CPU::retrieveFromAddress()
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x19) {
+		Z80CPU::instructionString = "ADD HL, DE";
+		
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_HL,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_HL) + Z80CPU::mainRegisterSet.get16BitRegister(REG_DE)
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x1a) {
+		Z80CPU::instructionString = "ADD A, [DE]";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			Z80CPU::mainRAM.read(Z80CPU::mainRegisterSet.get16BitRegister(REG_DE))
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x1b) {
+		Z80CPU::instructionString = "DEC DE";
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_DE,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_DE) - 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x1c) {
+		Z80CPU::instructionString = "INC E";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_E,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_E) + 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x1d) {
+		Z80CPU::instructionString = "DEC E";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_E,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_E) - 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x1e) {
+		Z80CPU::instructionString = "LD E, ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_E,
+			Z80CPU::retrieveFromAddress()
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x1f) {
+		Z80CPU::instructionString = "RRA";
+		
+		unsigned char accumValue = Z80CPU::mainRegisterSet.get8BitRegister(REG_A);
+		
+		unsigned char carryOverValue = 0x00;
+		
+		if (Z80CPU::mainRegisterSet.getFlag(CARRY_FLAG)) {
+			carryOverValue = 0x80;
+		}
+		
+		if (accumValue & 0x80 != 0) {
+			Z80CPU::mainRegisterSet.setFlag(CARRY_FLAG);
+		} else {
+			Z80CPU::mainRegisterSet.resetFlag(CARRY_FLAG);
+		}
+		
+		accumValue = accumValue >> 1;
+		
+		accumValue |= carryOverValue;
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			accumValue
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x20) {
+		Z80CPU::instructionString = "JR NZ ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		Z80CPU::instructionString += convertHex(Z80CPU::retrieveFromAddress());
+		
+		if (!Z80CPU::mainRegisterSet.getFlag(ZERO_FLAG)) {
+			
+			Z80CPU::specialPurposeRegisters.loadProgramCounter(
+				//We minus one as to make up for the next increment in the PC.
+				Z80CPU::specialPurposeRegisters.getProgramCounter() + Z80CPU::retrieveFromAddress() - 1
+			);
+		}
+	} else if (Z80CPU::retrieveFromAddress() == 0x21) {
+		Z80CPU::instructionString = "LD HL, ";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		unsigned short immediateValue = (unsigned short) Z80CPU::retrieveFromAddress();
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		immediateValue |= (unsigned short) (Z80CPU::retrieveFromAddress() << 8);
+		Z80CPU::instructionString += convertHex(immediateValue);
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_HL,
+			immediateValue
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x22) {
+		Z80CPU::instructionString = "LD [";
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		unsigned short addressValue = (unsigned short) Z80CPU::retrieveFromAddress();
+		Z80CPU::specialPurposeRegisters.incrementProgramCounter();
+		addressValue |= (unsigned short) (Z80CPU::retrieveFromAddress() << 8);
+		Z80CPU::instructionString += convertHex(addressValue);
+		Z80CPU::instructionString += "], HL";
+		
+		Z80CPU::mainRAM.write(
+			addressValue,
+			(unsigned char ) Z80CPU::mainRegisterSet.get16BitRegister(REG_HL)
+		);
+		
+		Z80CPU::mainRAM.write(
+			addressValue + 1,
+			(unsigned char ) (Z80CPU::mainRegisterSet.get16BitRegister(REG_HL) >> 8)
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x23) {
+		Z80CPU::instructionString = "INC HL";
+		Z80CPU::mainRegisterSet.load16BitImm(
+			REG_HL,
+			Z80CPU::mainRegisterSet.get16BitRegister(REG_HL) + 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x24) {
+		Z80CPU::instructionString = "INC H";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_H,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_H) + 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() == 0x25) {
+		Z80CPU::instructionString = "DEC H";
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_H,
+			Z80CPU::mainRegisterSet.get8BitRegister(REG_H) - 1
+		);
+	} else if (Z80CPU::retrieveFromAddress() >= 0x80 && Z80CPU::retrieveFromAddress() <= 0x87) {
+		//ADD
+	} else if (Z80CPU::retrieveFromAddress() >= 0x88 && Z80CPU::retrieveFromAddress() <= 0x8f) {
+		//ADC
+		Z80CPU::instructionString = "ADC A, " + registerArray[Z80CPU::retrieveFromAddress() & 0x07];
+		
+		unsigned char valueToLoad;
+		
+		if (Z80CPU::retrieveFromAddress() == 0x8e) {
+			valueToLoad =
+				Z80CPU::mainRegisterSet.get8BitRegister(REG_A) +
+				Z80CPU::mainRAM.read(Z80CPU::mainRegisterSet.get16BitRegister(REG_HL)) +
+				Z80CPU::mainRegisterSet.getFlag(CARRY_FLAG);
+		} else {
+			valueToLoad = 
+				Z80CPU::mainRegisterSet.get8BitRegister(REG_A) + 
+				Z80CPU::mainRegisterSet.get8BitRegister(Z80CPU::retrieveFromAddress() & 0x07) + 
+				Z80CPU::mainRegisterSet.getFlag(CARRY_FLAG);
+		}
+		
+		/*
+			Do the carry:
+		*/
+		if (Z80CPU::mainRegisterSet.get8BitRegister(REG_A) > valueToLoad) {
+			Z80CPU::mainRegisterSet.setFlag(CARRY_FLAG);
+		}
+		
+		/*
+			Do zero
+		*/
+		if (!valueToLoad) {
+			Z80CPU::mainRegisterSet.setFlag(ZERO_FLAG);
+		}
+		
+		/*
+			Do Sign
+		*/
+		if (valueToLoad & 0x80) {
+			Z80CPU::mainRegisterSet.setFlag(SIGN_FLAG);
+		}
+		
+		Z80CPU::mainRegisterSet.load8BitImm(
+			REG_A,
+			valueToLoad
+		);
+	} else if (Z80CPU::retrieveFromAddress() >= 0xa0 && Z80CPU::retrieveFromAddress() <= 0xa7) {
+		//AND
+	} else if (Z80CPU::retrieveFromAddress() >= 0xb8 && Z80CPU::retrieveFromAddress() <= 0xbf) {
+		//CP
+	}
+	

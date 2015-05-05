@@ -30,7 +30,7 @@
 /*
 	file name: z80cpu.hpp
 	date created: 01/06/2014
-	date updated: 16/06/2014
+	date updated: 02/05/2015
 	author: Gareth Richardson
 	description: This is the header file for the model CPU in the debugger.
 */
@@ -60,7 +60,15 @@ class Z80CPU {
 		
 		void toggleReset();
 		
+		/*
+			Prints the Registers for the CPU after an instruction
+			has been processed. It prints it nicely to the console.
+		*/
 		string prettyPrint();
 		
+		/*
+			This retrieves the instruction string of the
+			last processed instruction.
+		*/
 		string getCurrentInstruction();
 };

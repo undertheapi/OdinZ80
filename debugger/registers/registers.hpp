@@ -61,12 +61,12 @@
 /*
 	The flag definitions:
 */
-#define CARRY_FLAG 128
+#define CARRY_FLAG 128 //
 #define ADD_SUBRACT_FLAG 64
 #define PARITY_OVERFLOW_FLAG 16
 #define HALF_CARRY_FLAG 4
-#define ZERO_FLAG 2
-#define SIGN_FLAG 0
+#define ZERO_FLAG 2 //
+#define SIGN_FLAG 0 //
 
 
 class Registers {

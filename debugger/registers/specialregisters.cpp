@@ -38,12 +38,12 @@
 #include "specialregisters.hpp"
 
 void SpecialRegisters::init() {
-	SpecialRegisters::IX;
-	SpecialRegisters::IY;
-	SpecialRegisters::stackPointer;
-	SpecialRegisters::programCounter;
-	SpecialRegisters::interruptVector;
-	SpecialRegisters::memoryRefresh;
+	SpecialRegisters::IX = 0;
+	SpecialRegisters::IY = 0;
+	SpecialRegisters::stackPointer = 0;
+	SpecialRegisters::programCounter = 0;
+	SpecialRegisters::interruptVector = 0;
+	SpecialRegisters::memoryRefresh = 0;
 }
 
 SpecialRegisters::SpecialRegisters() {
@@ -51,11 +51,11 @@ SpecialRegisters::SpecialRegisters() {
 }
 
 void SpecialRegisters::loadIX(unsigned short value) {
-	SpecialRegisters::IX == value;
+	SpecialRegisters::IX = value;
 }
 
 void SpecialRegisters::loadIY(unsigned short value) {
-	SpecialRegisters::IY;
+	SpecialRegisters::IY = value;
 }
 
 void SpecialRegisters::loadStackPointer(unsigned short value) {
@@ -71,7 +71,7 @@ void SpecialRegisters::loadInterruptVector(unsigned char value) {
 }
 
 void SpecialRegisters::loadMemoryRefresh(unsigned char value) {
-	SpecialRegisters::memoryRefresh;
+	SpecialRegisters::memoryRefresh = value;
 }
 
 unsigned short SpecialRegisters::getIX() {

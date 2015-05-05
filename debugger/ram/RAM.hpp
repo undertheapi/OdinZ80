@@ -30,7 +30,7 @@
 /*
 	file name: RAM.hpp
 	date created: 22/02/2012
-	date updated: 10/06/2014
+	date updated: 02/05/2015
 	author: Gareth Richardson
 	description: This this the header file for the RAM object. Use this with
 	the debugger. Can also be used for other CPU simulators and emulators that
@@ -38,6 +38,9 @@
 	Might change this to a none object though.
 */
 
+/*
+	The maximum address reflex the maximum address on a physical Z80 CPU.
+*/
 #define MAX_ADDRESS 0xffff
 
 #define FEED_TYPE unsigned char
@@ -55,4 +58,3 @@ class RAM {
 		void write(unsigned short address, unsigned char value);
 		string memoryFeed(unsigned short start, unsigned short count, FEED_TYPE type);
 };
-

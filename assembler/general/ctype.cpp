@@ -30,7 +30,7 @@
 /*
 	file name: ctype.cpp
 	date created: 09/03/2012
-	date updated: 30/06/2014
+	date updated: 05/05/2015
 	author: Gareth Richardson
 	description: The object for string and character functions that the Odin assembler will use.
 	Used for validation, manipulation and conversion.
@@ -49,7 +49,7 @@ using namespace std;
 	That is a character between A and Z or a and z.
 */
 bool isAlphabetical(CHARACTER value) {
-	return (value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z');
+	return value >= 'a' && value <= 'z' || value >= 'A' && value <= 'Z';
 }
 
 /*
@@ -69,56 +69,52 @@ bool isPrintable(CHARACTER value) {
 }
 
 /*
-	This method checks if a CHARACTER value is a hexidecimal value:
+	This method checks if a CHARACTER value is a hexadecimal value:
 */
 bool isHex(CHARACTER value) {
-	return (value >= '0' && value <= '9') || (value >= 'a' && value <= 'f') || (value >= 'A' && value <= 'F');
+	return isNumerical(value) || value >= 'a' && value <= 'f' || value >= 'A' && value <= 'F';
 }
 
+/*
+	Returns a true if the character is a binary.
+*/
 bool isBinary(CHARACTER value) {
 	return value == '0' || value == '1';
 }
 
 bool isDecimalString(string value) {
-	bool valid = true;
 	int index = 0;
-	while (valid && index < value.size()) {
-		if (!isNumerical(value.at(index))) {
-			valid = false;
-		}
-		index++;
+	while (index < value.size()) {
+		if (!isNumerical(value.at(index)))
+			return false;
+		++index;
 	}
-	return valid;
+	return true;
 }
 
 bool isHexString(string value) {
-	bool valid = true;
 	int index = 0;
-	while (valid && index < value.size()) {
-		if (!isHex(value.at(index))) {
-			valid = false;
-		}
-		index++;
+	while (index < value.size()) {
+		if (!isHex(value.at(index)))
+			return false;
+		++index;
 	}
-	return valid;
+	return true;
 }
 
 bool isBinaryString(string value) {
-	bool valid = true;
 	int index = 0;
-	while (valid && index < value.size()) {
-		if (!isBinary(value.at(index))) {
-			valid = false;
-		}
-		index++;
+	while (index < value.size()) {
+		if (!isBinary(value.at(index)))
+			return false;
+		++index;
 	}
-	return valid;
+	return true;
 }
 
 string integerToString(int value) {
-	if (value == 0) {
+	if (value == 0)
 		return "0";
-	}
 
 	string retValue = "";
 
@@ -132,7 +128,12 @@ string integerToString(int value) {
 
 string convertHex(char value) {
 	string retString = "";
-	char hexArray[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	char hexArray[16] = {
+		'0', '1', '2', '3',
+		'4', '5', '6', '7',
+		'8', '9', 'A', 'B',
+		'C', 'D', 'E', 'F'
+	};
 	retString += hexArray[(int)((value >> 4) & 0x000f)];
 	retString += hexArray[(int)((value) & 0x000f)];
 	return retString;
@@ -169,9 +170,8 @@ string toFirstCharUpper(string value) {
 		retString += value[0];
 	}
 	
-	for (int i = 1; i < value.size(); i++) {
+	for (int i = 1; i < value.size(); i++)
 		retString += value[i];
-	}
 	
 	return retString;
 }

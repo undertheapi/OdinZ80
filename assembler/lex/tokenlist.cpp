@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.cpp
 	date created: 29/08/2012
-	date updated: 05/12/2014
+	date updated: 05/05/2015
 	author: Garth Richardson
 	description: The implementation of the TokenList class. The data structure used is a Queue.
 */
@@ -113,9 +113,9 @@ void TokenList::pop() {
 	any errors.
 */
 TOKEN_TYPE TokenList::peekTokenType() {
-	if (!TokenList::isEmpty()) {
+	if (!TokenList::isEmpty())
 		return TokenList::head->type;
-	}
+	
 	return -1;
 }
 
@@ -128,8 +128,8 @@ string TokenList::peekValue() {
 }
 
 int TokenList::peekLineNumber() {
-	if (!TokenList::isEmpty()) {
+	if (!TokenList::isEmpty())
 		return TokenList::head->lineNumber;
-	}
+	
 	return -1;
 }

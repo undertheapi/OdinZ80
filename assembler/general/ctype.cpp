@@ -84,36 +84,33 @@ bool isBinary(CHARACTER value) {
 
 bool isDecimalString(string value) {
 	int index = 0;
-	while (index < value.size()) {
+	while (index++ < value.size()) {
 		if (!isNumerical(value.at(index)))
 			return false;
-		++index;
 	}
 	return true;
 }
 
 bool isHexString(string value) {
 	int index = 0;
-	while (index < value.size()) {
+	while (index++ < value.size()) {
 		if (!isHex(value.at(index)))
 			return false;
-		++index;
 	}
 	return true;
 }
 
 bool isBinaryString(string value) {
 	int index = 0;
-	while (index < value.size()) {
+	while (index++ < value.size()) {
 		if (!isBinary(value.at(index)))
 			return false;
-		++index;
 	}
 	return true;
 }
 
 string integerToString(int value) {
-	if (value == 0)
+	if (!value)
 		return "0";
 
 	string retValue = "";

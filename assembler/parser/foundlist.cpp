@@ -30,7 +30,7 @@
 /*
 	file name: foundlist.cpp
 	date created: 14/02/2013
-	date updated: 16/04/2015
+	date updated: 05/05/2015
 	author: Gareth Richardson
 	description: All the found addresses are in this list,this is the object file.
 */
@@ -82,9 +82,8 @@ void FoundList::addAddress(string name, unsigned short addr) {
 string FoundList::getName(int index) {
 	int count = 0;
 	AddressNode* pointer = FoundList::head;
-	while (count != index) {
+	while (count++ != index) {
 		pointer = pointer->next;
-		++count;
 	}
 	return pointer->value;
 }
@@ -92,9 +91,8 @@ string FoundList::getName(int index) {
 unsigned short FoundList::getAddress(int index) {
 	int count = 0;
 	AddressNode* pointer = FoundList::head;
-	while (count != index) {
+	while (count++ != index) {
 		pointer = pointer->next;
-		++count;
 	}
 	return pointer->address;
 }
@@ -105,10 +103,9 @@ bool FoundList::doesNameExist(string value) {
 	}
 	bool found = false;
 	int index = 0;
-	while (index < FoundList::size && !found) {
-		if (FoundList::getName(index).compare(value) == 0)
+	while (index++ < FoundList::size && !found) {
+		if (!FoundList::getName(index).compare(value))
 			found = true;
-		++index;
 	}
 	return found;
 }

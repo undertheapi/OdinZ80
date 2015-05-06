@@ -51,9 +51,8 @@ using namespace std;
 string AddressList::getElement(int index) {
 	int count = 0;
 	AddressNode* pointer = AddressList::head;
-	while (count != index) {
+	while (count++ != index) {
 		pointer = pointer->next;
-		++count;
 	}
 	return pointer->value;
 }
@@ -66,9 +65,8 @@ string AddressList::getElement(int index) {
 unsigned short AddressList::getAddress(int index) {
 	int count = 0;
 	AddressNode* pointer = AddressList::head;
-	while (count != index) {
+	while (count++ != index) {
 		pointer = pointer->next;
-		++count;
 	}
 	return pointer->address;
 }
@@ -78,7 +76,7 @@ unsigned short AddressList::getAddress(int index) {
 	Do an array bounds check before giving the index parameter.
 */
 void AddressList::deleteElement(int index) {
-	if (index == 0) {
+	if (!index) {
 		if (AddressList::size == 1) {
 			AddressList::head = NULL;
 		} else {
@@ -88,10 +86,9 @@ void AddressList::deleteElement(int index) {
 		int count = 1;
 		AddressNode* previous = AddressList::head;
 		AddressNode* pointer = AddressList::head->next;
-		while (count != index) {
+		while (count++ != index) {
 			previous = pointer;
 			pointer = pointer->next;
-			++count;
 		}
 		previous->next = pointer->next;
 	}
@@ -138,7 +135,7 @@ string AddressList::getLastName() {
 void AddressList::processAddress(string name, unsigned short newAddress, ByteCode* bCode) {
 	int index = 0;
 	while (index < AddressList::size) {
-		if (AddressList::getElement(index).compare(name) == 0) {
+		if (!AddressList::getElement(index).compare(name)) {
 			bCode->setElement(AddressList::getAddress(index), (unsigned char) newAddress);
 			bCode->setElement(AddressList::getAddress(index) + 1, (unsigned char) (newAddress >> 8));
 			AddressList::deleteElement(index);

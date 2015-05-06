@@ -30,7 +30,7 @@
 /*
 	file name: characterlist.cpp
 	date created: 28/08/2012
-	date updated: 16/06/2014
+	date updated: 05/05/2015
 	author: Gareth Richardson
 	description: This is the object file for the CharacterList class. Implement all
 	the class methods here.
@@ -120,14 +120,14 @@ void CharacterList::finishedFile() {
 bool CharacterList::pop() {
 	if (!CharacterList::isEmpty()) {
 		CharacterList::fileInMemory[CharacterList::currentPosition] = 0;
-		CharacterList::currentPosition++;
-		CharacterList::length--;
+		++CharacterList::currentPosition;
+		--CharacterList::length;
 
 		/*
 			If the list is empty now, we set the values back to the first
 			position of the reserved memory. This is a bug fix.
 		*/
-		if (CharacterList::length == 0)
+		if (!CharacterList::length)
 			CharacterList::currentPosition = 0;
 
 		return true;

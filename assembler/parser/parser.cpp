@@ -249,7 +249,7 @@ void Z80Parser::newLine() {
 }
 
 string intToString(int value) {
-	if (value == 0)
+	if (!value)
 		return "0";
 	
 	string retValue = "";

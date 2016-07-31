@@ -30,7 +30,7 @@
 /*
 	file name: ADCinstr.cpp
 	date created: 17/02/2013
-	date updated: 19/11/2014
+	date updated: 18/05/2015
 	author: Gareth Richardson
 	description: The processor for ADC instructions.
 */
@@ -137,7 +137,7 @@ void Z80Parser::processADC() {
 				Z80Parser::error("Missing plus sign.");
 			}
 		} else {
-			Z80Parser::error("Incorrect useage of the ADC command.");
+			Z80Parser::error("Incorrect usage of the ADC command.");
 		}
 		if (!Z80Parser::checkToken(RIGHT_BRACKET)) {
 			Z80Parser::error("Missing bracket.");

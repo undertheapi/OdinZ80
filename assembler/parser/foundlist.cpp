@@ -30,7 +30,7 @@
 /*
 	file name: foundlist.cpp
 	date created: 14/02/2013
-	date updated: 05/05/2015
+	date updated: 04/03/2016
 	author: Gareth Richardson
 	description: All the found addresses are in this list,this is the object file.
 */
@@ -41,13 +41,17 @@ using namespace std;
 
 #include "foundlist.hpp"
 
-//#define NULL 0
-
 void FoundList::init() {
-	FoundList::head = NULL;
-	FoundList::tail = NULL;
-	
+	FoundList::head = FoundList::tail = NULL;
 	FoundList::size = 0;
+}
+
+AddressNode* FoundList::getNode(int index) {
+	int count = 0;
+	AddressNode* pointer = FoundList::head;
+	while (count++ != index)
+		pointer = pointer->next;
+	return pointer;
 }
 
 FoundList::FoundList() {
@@ -80,33 +84,21 @@ void FoundList::addAddress(string name, unsigned short addr) {
 }
 
 string FoundList::getName(int index) {
-	int count = 0;
-	AddressNode* pointer = FoundList::head;
-	while (count++ != index) {
-		pointer = pointer->next;
-	}
-	return pointer->value;
+	return FoundList::getNode(index)->value;
 }
 
 unsigned short FoundList::getAddress(int index) {
-	int count = 0;
-	AddressNode* pointer = FoundList::head;
-	while (count++ != index) {
-		pointer = pointer->next;
-	}
-	return pointer->address;
+	return FoundList::getNode(index)->address;
 }
 
 bool FoundList::doesNameExist(string value) {
-	if (FoundList::isEmpty()) {
+	if (FoundList::isEmpty())
 		return false;
-	}
-	bool found = false;
 	int index = 0;
-	while (index++ < FoundList::size && !found) {
+	while (index++ < FoundList::size) {
 		if (!FoundList::getName(index).compare(value))
-			found = true;
+			return true;
 	}
-	return found;
+	return false;
 }
 

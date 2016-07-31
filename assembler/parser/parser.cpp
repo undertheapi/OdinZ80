@@ -84,7 +84,7 @@ bool Z80Parser::checkEightBitNumber(unsigned char &number) {
 						while (index > 0) {
 							number += (value[index] - 48) * base;
 							base *= 10;
-							index--;
+							--index;
 						}
 						Z80Parser::tList->pop();
 						return true;
@@ -103,7 +103,7 @@ bool Z80Parser::checkEightBitNumber(unsigned char &number) {
 								number += (value[index] - 48) * base;
 							}
 							base *= 16;
-							index--;
+							--index;
 						}
 						Z80Parser::tList->pop();
 						return true;
@@ -116,7 +116,7 @@ bool Z80Parser::checkEightBitNumber(unsigned char &number) {
 						while (index > 0) {
 							number += (value[index] - 48) * base;
 							base *= 2;
-							index--;
+							--index;
 						}
 						Z80Parser::tList->pop();
 						return true;
@@ -146,7 +146,7 @@ bool Z80Parser::checkSixteenBitNumber(unsigned short &number) {
 						while (index > 0) {
 							number += (value[index] - 48) * base;
 							base *= 10;
-							index--;
+							--index;
 						}
 						Z80Parser::tList->pop();
 						return true;
@@ -167,7 +167,7 @@ bool Z80Parser::checkSixteenBitNumber(unsigned short &number) {
 								number += (value[index] - 48) * base;
 							}
 							base *= 16;
-							index--;
+							--index;
 						}
 						Z80Parser::tList->pop();
 						return true;
@@ -183,7 +183,7 @@ bool Z80Parser::checkSixteenBitNumber(unsigned short &number) {
 						while (index > 0) {
 							number += (value[index] - 48) * base;
 							base *= 2;
-							index--;
+							--index;
 						}
 						Z80Parser::tList->pop();
 						return true;
@@ -234,7 +234,7 @@ void Z80Parser::addAddress(string atom) {
 		while (index < Z80Parser::fList.getSize()) {
 			if (Z80Parser::fList.getName(index).compare(atom) == 0)
 				break;
-			index++;
+			++index;
 		}
 		unsigned short num16 = Z80Parser::fList.getAddress(index);
 		Z80Parser::addCode((unsigned char) num16, (unsigned char) (num16 >> 8));
@@ -289,7 +289,7 @@ void Z80Parser::run() {
 						if (Z80Parser::checkEightBitNumber(retValue)) {
 							if (Z80Parser::checkToken(NEW_LINE)) {
 								Z80Parser::addCode(retValue);
-								break;
+								break; // Break out of while loop.
 							} else if (Z80Parser::checkToken(COMMA)) {
 								Z80Parser::addCode(retValue);
 							} else {
@@ -361,7 +361,7 @@ void Z80Parser::run() {
 						if (Z80Parser::checkToken(NEW_LINE)) {
 							while (count != 0) {
 								Z80Parser::addCode(byteValue);
-								count--;
+								--count;
 							}
 						} else {
 							Z80Parser::error("REP is two parameters then a new line.");
@@ -371,7 +371,7 @@ void Z80Parser::run() {
 						if (Z80Parser::checkToken(NEW_LINE)) {
 							while (count != 0) {
 								Z80Parser::addCode((unsigned char) shortValue, (unsigned char) (shortValue >> 8));
-								count--;
+								--count;
 							}
 						} else {
 							Z80Parser::error("REP is two parameters then a new line.");

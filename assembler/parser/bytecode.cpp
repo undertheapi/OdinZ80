@@ -30,7 +30,7 @@
 /*
 	file name: bytecode.cpp
 	date created: 28/09/2012
-	date updated: 05/05/2015
+	date updated: 06/05/2015
 	author: Gareth Richardson
 	description: This is the machine code, the output of the assembler.
 */
@@ -80,9 +80,8 @@ void ByteCode::setElement(int index, unsigned char value) {
 	if (index >= 0 && index < ByteCode::size) {
 		int counter = 0;
 		ByteNodePtr tempNode = ByteCode::head;
-		while (counter++ != index) {
+		while (counter++ != index)
 			tempNode = tempNode->next;
-		}
 		tempNode->byte = value;
 	} else {
 		ByteCode::pushElement(value);
@@ -92,9 +91,8 @@ void ByteCode::setElement(int index, unsigned char value) {
 unsigned char ByteCode::getElement(int index) {
 	int counter = 0;
 	ByteNodePtr tempNode = ByteCode::head;
-	while (counter++ != index) {
+	while (counter++ != index)
 		tempNode = tempNode->next;
-	}
 	return tempNode->byte;
 }
 

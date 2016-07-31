@@ -30,7 +30,7 @@
 /*
 	file name: characterlist.cpp
 	date created: 28/08/2012
-	date updated: 05/05/2015
+	date updated: 06/05/2015
 	author: Gareth Richardson
 	description: This is the object file for the CharacterList class. Implement all
 	the class methods here.
@@ -47,7 +47,7 @@ bool CharacterList::isValidCharacter(CHARACTER value) {
 
 void CharacterList::init() {
 	/*
-		All the variables are initalised to 0.
+		All the variables are initialised to 0.
 	*/
 	CharacterList::length = CharacterList::currentPosition = CharacterList::errorState = 0;
 
@@ -97,7 +97,7 @@ bool CharacterList::push(CHARACTER charValue) {
 	}
 	if (charValue != 0x0d) {
 		CharacterList::fileInMemory[currentPosition] = charValue;
-		CharacterList::length++, CharacterList::currentPosition++;
+		++CharacterList::length, ++CharacterList::currentPosition;
 	}
 	return true;
 }

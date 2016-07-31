@@ -30,7 +30,7 @@
 /*
 	file name: registers.cpp
 	date created: 31/05/2014
-	date updated: 23/06/2014
+	date updated: 11/09/2105
 	author: Gareth Richardson
 	description: The object file for the registers class.
 */
@@ -42,9 +42,8 @@ void Registers::init() {
 		We are clearing (resetting) the registers. In real life the registers can be set to whatever
 		was previously in them.
 	*/
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 8; i++)
 		Registers::registerArray[i] = 0;
-	}
 }
 
 Registers::Registers() {
@@ -111,8 +110,7 @@ Registers &Registers::operator =(const Registers& regObj) {
 
 Registers Registers::duplicate() {
 	Registers retObj;
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 8; i++)
 		retObj.load8BitImm(i, Registers::registerArray[i]);
-	}
 	return retObj;
 }

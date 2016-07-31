@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.cpp
 	date created: 29/08/2012
-	date updated: 05/05/2015
+	date updated: 06/05/2015
 	author: Garth Richardson
 	description: The implementation of the TokenList class. The data structure used is a Queue.
 */
@@ -42,8 +42,7 @@ using namespace std;
 #include "tokenlist.hpp"
 
 void TokenList::init() {
-	TokenList::head = NULL;
-	TokenList::tail = NULL;
+	TokenList::head = TokenList::tail = NULL;
 }
 
 TokenList::TokenList() {

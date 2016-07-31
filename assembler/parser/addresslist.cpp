@@ -30,7 +30,7 @@
 /*
 	file name: addresslist.cpp
 	date created: 14/02/2013
-	date updated: 16/04/2015
+	date updated: 06/05/2015
 	author: Gareth Richardson
 	description: This is a list of addresses not found yet.
 */
@@ -51,9 +51,8 @@ using namespace std;
 string AddressList::getElement(int index) {
 	int count = 0;
 	AddressNode* pointer = AddressList::head;
-	while (count++ != index) {
+	while (count++ != index)
 		pointer = pointer->next;
-	}
 	return pointer->value;
 }
 
@@ -65,9 +64,8 @@ string AddressList::getElement(int index) {
 unsigned short AddressList::getAddress(int index) {
 	int count = 0;
 	AddressNode* pointer = AddressList::head;
-	while (count++ != index) {
+	while (count++ != index)
 		pointer = pointer->next;
-	}
 	return pointer->address;
 }
 

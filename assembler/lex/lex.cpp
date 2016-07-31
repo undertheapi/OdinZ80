@@ -30,7 +30,7 @@
 /*
 	file name:		lex.cpp
 	date created:	29/08/2012
-	date updated:	16/04/2015
+	date updated:	18/04/2015
 	author:			Gareth Richardson
 	description:	This is the Lexical Analyser object code for the Odin assembler.
 */
@@ -104,7 +104,8 @@ TokenNodePtr Lex::getToken() {
 	}
 	
 	/*
-		This is here to fix a bug in the program
+		This is here to fix a bug in the program.
+		If the line is commented out, the Assembler will accept it.
 	*/
 	if (!Lex::cList->isEmpty() && Lex::cList->peekValue()  == ';') {
 		Lex::cList->pop();
@@ -435,6 +436,12 @@ TokenNodePtr Lex::getToken() {
 		Lex::cList->pop();
 	} else if (Lex::cList->peekValue() == '*') {
 		newNode->type = MULTIPLY;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == '/') {
+		newNode->type = DIVISION;
+		Lex::cList->pop();
+	} else if (Lex::cList->peekValue() == '%') {
+		newNode->type = REMAINDER;
 		Lex::cList->pop();
 	} else {
 		/*

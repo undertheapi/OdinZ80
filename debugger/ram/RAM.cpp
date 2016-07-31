@@ -30,7 +30,7 @@
 /*
 	file name: RAM.cpp
 	date created: 22/02/2012
-	date updated: 19/06/2014
+	date updated: 11/09/2015
 	author: Gareth Richardson
 	description: The object file for the RAM class.
 */
@@ -43,8 +43,14 @@ using namespace std;
 
 #include "RAM.hpp"
 
+/*
+	In this constructor we are going to be clearing the data
+	and assuming it will be filled with 0x00. In the real world
+	this would not occur.
+*/
 RAM::RAM() {
-	// empty constructor
+	for (int pointer = 0; pointer <= MAX_ADDRESS; ++pointer)
+		RAM::write(pointer, 0);
 }
 
 unsigned char RAM::read(unsigned short address) {
@@ -66,11 +72,11 @@ string RAM::memoryFeed(unsigned short start, unsigned short count, FEED_TYPE typ
 			feedString += "\n";
 		}
 	} else if (type == BIN_FEED) {
-		
+
 	} else if (type == DEC_FEED) {
-		
+
 	} else if (type == OCT_FEED) {
-		
+
 	} else {
 		//get into an error state.
 		//Try not to get to this situation.
@@ -78,4 +84,3 @@ string RAM::memoryFeed(unsigned short start, unsigned short count, FEED_TYPE typ
 	}
 	return feedString;
 }
-

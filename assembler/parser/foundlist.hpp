@@ -30,7 +30,7 @@
 /*
 	file name: foundlist.hpp
 	date created: 14/02/2013
-	date updated: 06/03/2013
+	date updated: 04/03/2016
 	author: Gareth Richardson
 	description: All the found addresses are in this list.
 */
@@ -56,6 +56,11 @@ class FoundList {
 			the constructor.
 		*/
 		void init();
+		
+		/*
+			Get a node from a specified index.
+		*/
+		AddressNode* getNode(int);
 	public:
 		FoundList();
 		

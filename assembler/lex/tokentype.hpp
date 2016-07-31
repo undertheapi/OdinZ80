@@ -154,19 +154,21 @@
 #define PLUS 98
 #define MINUS 99
 #define MULTIPLY 100
+#define DIVISION 101
+#define REMAINDER 102 // This is the % symbol
 
 /*
 	This are the JMP condition Tokens:
 	(Note that the C "Carry" condition type is also the same as the C register,
 	so, it has been declared above in the Register section of this file).
 */
-#define M 101
-#define NC 102
-#define NZ 103
-#define P 104
-#define PE 105
-#define PO 106
-#define Z 107
+#define M 103
+#define NC 104
+#define NZ 105
+#define P 106
+#define PE 107
+#define PO 108
+#define Z 109
 
 /*
 	Other Token Types here:

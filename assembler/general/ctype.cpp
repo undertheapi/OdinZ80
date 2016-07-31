@@ -167,8 +167,8 @@ string toFirstCharUpper(string value) {
 		retString += value[0];
 	}
 	
-	for (int i = 1; i < value.size(); i++)
-		retString += value[i];
+	for (char c : value)
+		retString += c;
 	
 	return retString;
 }

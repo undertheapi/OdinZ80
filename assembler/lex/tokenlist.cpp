@@ -58,11 +58,10 @@ bool TokenList::isEmpty() {
 	This is used in the Lexical Analyser.
 */
 void TokenList::push(TokenNodePtr obj) {
-	if (TokenList::isEmpty()) {
-		TokenList::head = TokenList::tail = obj;
-	} else {
-		TokenList::tail->next = TokenList::tail = obj;
-	}
+  if (TokenList::isEmpty())
+    TokenList::head = TokenList::tail = obj;
+  else
+    TokenList::tail->next = TokenList::tail = obj;
 }
 
 /*
@@ -71,12 +70,10 @@ void TokenList::push(TokenNodePtr obj) {
 	the Assembly Source Code.
 */
 void TokenList::pushFront(TokenNodePtr obj) {
-	if (TokenList::isEmpty()) {
-		TokenList::head = TokenList::tail = obj;
-	} else {
-		obj->next = TokenList::tail;
-		TokenList::head = obj;
-	}
+  if (TokenList::isEmpty()
+    TokenList::head = TokenList::tail = obj;
+  else
+    obj->next = TokenList::tail, TokenList::head = obj;
 }
 
 /*

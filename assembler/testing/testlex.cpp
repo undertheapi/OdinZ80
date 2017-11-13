@@ -44,8 +44,10 @@ using namespace std;
 #include "../character/characterlist.hpp"
 #include "../lex/tokenlist.hpp"
 #include "../lex/lex.hpp"
+#include "../general/ctype.hpp"
 
 void testADC() {
+	printf("\t%s\n", toFirstCharUpper("adc").c_str());
 	printf("**Testing ADC tokens in the Lexical Analyser.\n");
 	CharacterList cList;
 	char array[] = "ADC Adc adc ";
@@ -585,7 +587,7 @@ void testDirectives() {
 	Lex lexObj(&cList, &tList);
 
 	lexObj.run();
-	
+
 	assert(tList.peekTokenType() == DB);
 	tList.pop();
 	assert(tList.peekTokenType() == DB);

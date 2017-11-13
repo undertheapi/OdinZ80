@@ -30,7 +30,7 @@
 /*
 	file name:		lex.cpp
 	date created:	29/08/2012
-	date updated:	18/04/2015
+	date updated:	13/11/2017
 	author:			Gareth Richardson
 	description:	This is the Lexical Analyser object code for the Odin assembler.
 */
@@ -60,12 +60,28 @@ Lex::Lex(CharacterList* cList, TokenList* tList) {
 }
 
 bool Lex::checkKeyword(string value, string checker) {
-	if (!toUpper(checker).compare(value) || 
-		!toLower(checker).compare(value) || 
-		!toFirstCharUpper(checker).compare(value)) {
+	return !toUpper(checker).compare(value) ||
+	!toLower(checker).compare(value) ||
+!toFirstCharUpper(checker).compare(value);
+	/*if
+	(
+		!toUpper(checker).compare(value) ||
+		!toLower(checker).compare(value) ||
+	!toFirstCharUpper(checker).compare(value))
+		 {
 		return true;
 	}
 	return false;
+	if (!toUpper(checker).compare(value)) {
+		return true;
+	}
+	if (!toLower(checker).compare(value)) {
+		return true;
+	}
+	if (!toFirstCharUpper(checker).compare(value)) {
+		return true;
+	}
+	return false;*/
 }
 
 TokenNodePtr Lex::getToken() {
@@ -102,7 +118,7 @@ TokenNodePtr Lex::getToken() {
 
 		return newNode;
 	}
-	
+
 	/*
 		This is here to fix a bug in the program.
 		If the line is commented out, the Assembler will accept it.
@@ -124,9 +140,9 @@ TokenNodePtr Lex::getToken() {
 			retValue += Lex::cList->peekValue();
 			Lex::cList->pop();
 		}
-		
+
 		// int keywordIndex = 0;
-		
+
 		// while (keywordIndex != 91) {
 			// if (Lex::checkKeyword(retValue, keywordArray[keywordIndex])) {
 				// newNode->type = keywordIndex;
@@ -136,144 +152,144 @@ TokenNodePtr Lex::getToken() {
 			// }
 			// ++keywordIndex;
 		// }
-		
+
 		/*
 			Here have some sort of token type checking to check for keywords. There has to be a more "effective" way
 			of doing this.
 			If the string does not match anything here, it will return a Token Type of ATOM.
 		*/
-		
-		if (!retValue.compare("ADC") || !retValue.compare("Adc") || !retValue.compare("adc")) {
+
+		if (Lex::checkKeyword(retValue, "adc")) {
 			newNode->type = ADC;
-		} else if (!retValue.compare("ADD") || !retValue.compare("Add") || !retValue.compare("add")) {
+		} else if (Lex::checkKeyword(retValue, "add")) {
 			newNode->type = ADD;
-		} else if (!retValue.compare("AND") || !retValue.compare("And") || !retValue.compare("and")) {
+		} else if (Lex::checkKeyword(retValue, "and")) {
 			newNode->type = AND;
-		} else if (!retValue.compare("BIT") || !retValue.compare("Bit") || !retValue.compare("bit") || !retValue.compare("BT") || !retValue.compare("Bt") || !retValue.compare("bt")) {
+		} else if (Lex::checkKeyword(retValue, "bit") || Lex::checkKeyword(retValue, "bt")) {
 			newNode->type = BIT;
-		} else if (!retValue.compare("CALL") || !retValue.compare("Call") || !retValue.compare("call")) {
+		} else if (Lex::checkKeyword(retValue, "call")) {
 			newNode->type = CALL;
-		} else if (!retValue.compare("CCF") || !retValue.compare("Ccf") || !retValue.compare("ccf")) {
+		} else if (Lex::checkKeyword(retValue, "ccf")) {
 			newNode->type = CCF;
-		} else if (!retValue.compare("CP") || !retValue.compare("Cp") || !retValue.compare("cp")) {
+		} else if (Lex::checkKeyword(retValue, "cp")) {
 			newNode->type = CP;
-		} else if (!retValue.compare("CPD") || !retValue.compare("Cpd") || !retValue.compare("cpd")) {
+		} else if (Lex::checkKeyword(retValue, "cpd")) {
 			newNode->type = CPD;
-		}  else if (!retValue.compare("CPDR") || !retValue.compare("Cpdr") || !retValue.compare("cpdr")) {
+		}  else if (Lex::checkKeyword(retValue, "cpdr")) {
 			newNode->type = CPDR;
-		} else if (!retValue.compare("CPI") || !retValue.compare("Cpi") || !retValue.compare("cpi")) {
+		} else if (Lex::checkKeyword(retValue, "cpi")) {
 			newNode->type = CPI;
-		} else if (!retValue.compare("CPIR") || !retValue.compare("Cpir") || !retValue.compare("cpir")) {
+		} else if (Lex::checkKeyword(retValue, "cpir")) {
 			newNode->type = CPIR;
-		} else if (!retValue.compare("CPL") || !retValue.compare("Cpl") || !retValue.compare("cpl")) {
+		} else if (Lex::checkKeyword(retValue, "cpl")) {
 			newNode->type = CPL;
-		} else if (!retValue.compare("DAA") || !retValue.compare("Daa") || !retValue.compare("daa")) {
+		} else if (Lex::checkKeyword(retValue, "daa")) {
 			newNode->type = DAA;
-		} else if (!retValue.compare("DEC") || !retValue.compare("Dec") || !retValue.compare("dec")) {
+		} else if (Lex::checkKeyword(retValue, "dec")) {
 			newNode->type = DEC;
-		} else if (!retValue.compare("DI") || !retValue.compare("Di") || !retValue.compare("di")) {
+		} else if (Lex::checkKeyword(retValue, "di")) {
 			newNode->type = DI;
-		} else if (!retValue.compare("EI") || !retValue.compare("Ei") || !retValue.compare("ei")) {
+		} else if (Lex::checkKeyword(retValue, "ei")) {
 			newNode->type = EI;
-		} else if (!retValue.compare("EX") || !retValue.compare("Ex") || !retValue.compare("ex")) {
+		} else if (Lex::checkKeyword(retValue, "ex")) {
 			newNode->type = EX;
-		} else if (!retValue.compare("EXX") || !retValue.compare("Exx") || !retValue.compare("exx")) {
+		} else if (Lex::checkKeyword(retValue, "exx")) {
 			newNode->type = EXX;
-		} else if (!retValue.compare("HALT") || !retValue.compare("Halt") || !retValue.compare("halt") || !retValue.compare("HLT") || !retValue.compare("Hlt") || !retValue.compare("hlt")) {
+		} else if (Lex::checkKeyword(retValue, "halt") || Lex::checkKeyword(retValue, "hlt")) {
 			newNode->type = HALT;
-		} else if (!retValue.compare("IM") || !retValue.compare("Im") || !retValue.compare("im")) {
+		} else if (Lex::checkKeyword(retValue, "im")) {
 			newNode->type = IM;
-		} else if (!retValue.compare("IN") || !retValue.compare("In") || !retValue.compare("in")) {
+		} else if (Lex::checkKeyword(retValue, "in")) {
 			newNode->type = IN;
-		} else if (!retValue.compare("INC") || !retValue.compare("Inc") || !retValue.compare("inc")) {
+		} else if (Lex::checkKeyword(retValue, "inc")) {
 			newNode->type = INC;
-		} else if (!retValue.compare("IND") || !retValue.compare("Ind") || !retValue.compare("ind")) {
+		} else if (Lex::checkKeyword(retValue, "ind")) {
 			newNode->type = IND;
-		} else if (!retValue.compare("INDR") || !retValue.compare("Indr") || !retValue.compare("indr")) {
+		} else if (Lex::checkKeyword(retValue, "indr")) {
 			newNode->type = INDR;
-		} else if (!retValue.compare("INI") || !retValue.compare("Ini") || !retValue.compare("ini")) {
+		} else if (Lex::checkKeyword(retValue, "ini")) {
 			newNode->type = INI;
-		} else if (!retValue.compare("INIR") || !retValue.compare("Inir") || !retValue.compare("inir")) {
+		} else if (Lex::checkKeyword(retValue, "inir")) {
 			newNode->type = INIR;
-		} else if (!retValue.compare("JP") || !retValue.compare("Jp") || !retValue.compare("jp") || !retValue.compare("JMP") || !retValue.compare("Jmp") || !retValue.compare("jmp")) {
+		} else if (Lex::checkKeyword(retValue, "jp") || Lex::checkKeyword(retValue, "jmp")) {
 			newNode->type = JP;
-		} else if (!retValue.compare("JR") || !retValue.compare("Jr") || !retValue.compare("jr")) {
+		} else if (Lex::checkKeyword(retValue, "jr")) {
 			newNode->type = JR;
-		} else if (!retValue.compare("LD") || !retValue.compare("Ld") || !retValue.compare("ld")) {
+		} else if (Lex::checkKeyword(retValue, "ld")) {
 			newNode->type = LD;
-		} else if (!retValue.compare("LDD") || !retValue.compare("Ldd") || !retValue.compare("ldd")) {
+		} else if (Lex::checkKeyword(retValue, "ldd")) {
 			newNode->type = LDD;
-		} else if (!retValue.compare("LDDR") || !retValue.compare("Lddr") || !retValue.compare("lddr")) {
+		} else if (Lex::checkKeyword(retValue, "lddr")) {
 			newNode->type = LDDR;
-		} else if (!retValue.compare("LDI") || !retValue.compare("Ldi") || !retValue.compare("ldi") || !retValue.compare("LDDI") || !retValue.compare("Lddi") || !retValue.compare("lddi")) {
+		} else if (Lex::checkKeyword(retValue, "ldi") || Lex::checkKeyword(retValue, "lddi")) {
 			newNode->type = LDI;
-		} else if (!retValue.compare("LDIR") || !retValue.compare("Ldir") || !retValue.compare("ldir")) {
+		} else if (Lex::checkKeyword(retValue, "ldir")) {
 			newNode->type = LDIR;
-		} else if (!retValue.compare("NEG") || !retValue.compare("Neg") || !retValue.compare("neg")) {
+		} else if (Lex::checkKeyword(retValue, "neg")) {
 			newNode->type = NEG;
-		} else if (!retValue.compare("NOP") || !retValue.compare("Nop") || !retValue.compare("nop")) {
+		} else if (Lex::checkKeyword(retValue, "nop")) {
 			newNode->type = NOP;
-		} else if (!retValue.compare("OR") || !retValue.compare("or") || !retValue.compare("or")) {
+		} else if (Lex::checkKeyword(retValue, "or")) {
 			newNode->type = OR;
-		} else if (!retValue.compare("OTDR") || !retValue.compare("OTDR") || !retValue.compare("otdr")) {
+		} else if (Lex::checkKeyword(retValue, "otdr")) {
 			newNode->type = OTDR;
-		} else if (!retValue.compare("OTIR") || !retValue.compare("OTiR") || !retValue.compare("otir")) {
+		} else if (Lex::checkKeyword(retValue, "otir")) {
 			newNode->type = OTIR;
-		} else if (!retValue.compare("OUT") || !retValue.compare("Out") || !retValue.compare("out")) {
+		} else if (Lex::checkKeyword(retValue, "out")) {
 			newNode->type = OUT;
-		} else if (!retValue.compare("OUTD") || !retValue.compare("Outd") || !retValue.compare("outd")) {
+		} else if (Lex::checkKeyword(retValue, "outd")) {
 			newNode->type = OUTD;
-		} else if (!retValue.compare("OUTI") || !retValue.compare("Outi") || !retValue.compare("outi")) {
+		} else if (Lex::checkKeyword(retValue, "outi")) {
 			newNode->type = OUTI;
-		} else if (!retValue.compare("POP") || !retValue.compare("Pop") || !retValue.compare("pop")) {
+		} else if (Lex::checkKeyword(retValue, "pop")) {
 			newNode->type = POP;
-		} else if (!retValue.compare("PUSH") || !retValue.compare("Push") || !retValue.compare("push")) {
+		} else if (Lex::checkKeyword(retValue, "push")) {
 			newNode->type = PUSH;
-		} else if (!retValue.compare("RES") || !retValue.compare("Res") || !retValue.compare("res")) {
+		} else if (Lex::checkKeyword(retValue, "res")) {
 			newNode->type = RES;
-		} else if (!retValue.compare("RET") || !retValue.compare("Ret") || !retValue.compare("ret")) {
+		} else if (Lex::checkKeyword(retValue, "ret")) {
 			newNode->type = RET;
-		} else if (!retValue.compare("RETI") || !retValue.compare("Reti") || !retValue.compare("reti")) {
+		} else if (Lex::checkKeyword(retValue, "reti")) {
 			newNode->type = RETI;
-		} else if (!retValue.compare("RETN") || !retValue.compare("Retn") || !retValue.compare("retn")) {
+		} else if (Lex::checkKeyword(retValue, "retn")) {
 			newNode->type = RETN;
-		} else if (!retValue.compare("RL") || !retValue.compare("rl") || !retValue.compare("rl")) {
+		} else if (Lex::checkKeyword(retValue, "rl")) {
 			newNode->type = RL;
-		} else if (!retValue.compare("RLA") || !retValue.compare("Rla") || !retValue.compare("rla")) {
+		} else if (Lex::checkKeyword(retValue, "rla")) {
 			newNode->type = RLA;
-		} else if (!retValue.compare("RLC") || !retValue.compare("Rlc") || !retValue.compare("rlc")) {
+		} else if (Lex::checkKeyword(retValue, "rlc")) {
 			newNode->type = RLC;
-		} else if (!retValue.compare("RLCA") || !retValue.compare("Rlca") || !retValue.compare("rlca")) {
+		} else if (Lex::checkKeyword(retValue, "rlca")) {
 			newNode->type = RLCA;
-		} else if (!retValue.compare("RLD") || !retValue.compare("Rld") || !retValue.compare("rld")) {
+		} else if (Lex::checkKeyword(retValue, "rld")) {
 			newNode->type = RLD;
-		} else if (!retValue.compare("RR") || !retValue.compare("rr") || !retValue.compare("rr")) {
+		} else if (Lex::checkKeyword(retValue, "rr")) {
 			newNode->type = RR;
-		} else if (!retValue.compare("RRA") || !retValue.compare("Rra") || !retValue.compare("rra")) {
+		} else if (Lex::checkKeyword(retValue, "rra")) {
 			newNode->type = RRA;
-		} else if (!retValue.compare("RRC") || !retValue.compare("Rrc") || !retValue.compare("rrc")) {
+		} else if (Lex::checkKeyword(retValue, "rrc")) {
 			newNode->type = RRC;
-		} else if (!retValue.compare("RRCA") || !retValue.compare("Rrca") || !retValue.compare("rrca")) {
+		} else if (Lex::checkKeyword(retValue, "rrca")) {
 			newNode->type = RRCA;
-		} else if (!retValue.compare("RRD") || !retValue.compare("Rrd") || !retValue.compare("rrd")) {
+		} else if (Lex::checkKeyword(retValue, "rrd")) {
 			newNode->type = RRD;
-		} else if (!retValue.compare("RST") || !retValue.compare("Rst") || !retValue.compare("rst")) {
+		} else if (Lex::checkKeyword(retValue, "rst")) {
 			newNode->type = RST;
-		} else if (!retValue.compare("SBC") || !retValue.compare("Sbc") || !retValue.compare("sbc") || !retValue.compare("SUBC") || !retValue.compare("Subc") || !retValue.compare("subc")) {
+		} else if (Lex::checkKeyword(retValue, "sbc") || Lex::checkKeyword(retValue, "subc")) {
 			newNode->type = SUBC;
-		} else if (!retValue.compare("SCF") || !retValue.compare("Scf") || !retValue.compare("scf")) {
+		} else if (Lex::checkKeyword(retValue, "scf")) {
 			newNode->type = SCF;
-		} else if (!retValue.compare("SET") || !retValue.compare("Set") || !retValue.compare("set")) {
+		} else if (Lex::checkKeyword(retValue, "set")) {
 			newNode->type = SET;
-		} else if (!retValue.compare("SLA") || !retValue.compare("Sla") || !retValue.compare("sla")) {
+		} else if (Lex::checkKeyword(retValue, "sla")) {
 			newNode->type = SLA;
-		} else if (!retValue.compare("SRA") || !retValue.compare("Sra") || !retValue.compare("sra")) {
+		} else if (Lex::checkKeyword(retValue, "sra")) {
 			newNode->type = SRA;
-		} else if (!retValue.compare("SRL") || !retValue.compare("Srl") || !retValue.compare("srl")) {
+		} else if (Lex::checkKeyword(retValue, "srl")) {
 			newNode->type = SRL;
-		} else if (!retValue.compare("SUB") || !retValue.compare("Sub") || !retValue.compare("sub")) {
+		} else if (Lex::checkKeyword(retValue, "sub")) {
 			newNode->type = SUB;
-		} else if (!retValue.compare("XOR") || !retValue.compare("Xor") || !retValue.compare("xor")) {
+		} else if (Lex::checkKeyword(retValue, "xor")) {
 			newNode->type = XOR;
 		} else if (!retValue.compare("A") || !retValue.compare("a")) {
 			newNode->type = A;
@@ -291,73 +307,73 @@ TokenNodePtr Lex::getToken() {
 			newNode->type = H;
 		} else if (!retValue.compare("L") || !retValue.compare("l")) {
 			newNode->type = L;
-		} else if (!retValue.compare("BC") || !retValue.compare("bc") || !retValue.compare("Bc")) {
+		} else if (Lex::checkKeyword(retValue, "bc")) {
 			newNode->type = BC;
-		} else if (!retValue.compare("DE") || !retValue.compare("de") || !retValue.compare("De")) {
+		} else if (Lex::checkKeyword(retValue, "de")) {
 			newNode->type = DE;
-		} else if (!retValue.compare("HL") || !retValue.compare("hl") || !retValue.compare("Hl")) {
+		} else if (Lex::checkKeyword(retValue, "hl")) {
 			newNode->type = HL;
 		} else if (!retValue.compare("I") || !retValue.compare("i")) {
 			newNode->type = I;
 		} else if (!retValue.compare("R") || !retValue.compare("r")) {
 			newNode->type = R;
-		} else if (!retValue.compare("IX") || !retValue.compare("ix") || !retValue.compare("Ix")) {
+		} else if (Lex::checkKeyword(retValue, "ix")) {
 			newNode->type = IX;
-		} else if (!retValue.compare("IY") || !retValue.compare("iy") || !retValue.compare("Iy")) {
+		} else if (Lex::checkKeyword(retValue, "iy")) {
 			newNode->type = IY;
-		} else if (!retValue.compare("PC") || !retValue.compare("pc") || !retValue.compare("Pc")) {
+		} else if (Lex::checkKeyword(retValue, "pc")) {
 			newNode->type = PC;
-		} else if (!retValue.compare("SP") || !retValue.compare("sp") || !retValue.compare("Sp")) {
+		} else if (Lex::checkKeyword(retValue, "sp")) {
 			newNode->type = SP;
-		} else if (!retValue.compare("AF") || !retValue.compare("af") || !retValue.compare("Af")) {
+		} else if (Lex::checkKeyword(retValue, "af")) {
 			newNode->type = AF;
-		} else if (!retValue.compare("CPU") || !retValue.compare("Cpu") || !retValue.compare("cpu")) {
+		} else if (Lex::checkKeyword(retValue, "cpu")) {
 			newNode->type = CPU;
-		} else if (!retValue.compare("DB") || !retValue.compare("Db") || !retValue.compare("db") || !retValue.compare("BYTE") || !retValue.compare("Byte") || !retValue.compare("byte")) {
+		} else if (Lex::checkKeyword(retValue, "db") || Lex::checkKeyword(retValue, "byte")) {
 			newNode->type = DB;
-		} else if (!retValue.compare("DW") || !retValue.compare("Dw") || !retValue.compare("dw") || !retValue.compare("WORD") || !retValue.compare("Word") || !retValue.compare("word")) {
+		} else if (Lex::checkKeyword(retValue, "dw") || Lex::checkKeyword(retValue, "word")) {
 			newNode->type = DW;
-		} else if (!retValue.compare("DDW") || !retValue.compare("Ddw") || !retValue.compare("ddw") || !retValue.compare("DWORD") || !retValue.compare("Dword") || !retValue.compare("dword")) {
+		} else if (Lex::checkKeyword(retValue, "ddw") || Lex::checkKeyword(retValue, "dword")) {
 			newNode->type = DDW;
-		} else if (!retValue.compare("ORG") || !retValue.compare("Org") || !retValue.compare("org")) {
+		} else if (Lex::checkKeyword(retValue, "org")) {
 			newNode->type = ORG;
-		} else if (!retValue.compare("REP") || !retValue.compare("Rep") || !retValue.compare("rep")) {
+		} else if (Lex::checkKeyword(retValue, "rep")) {
 			newNode->type = REP;
-		} else if (!retValue.compare("SPECREP") || !retValue.compare("Specrep") || !retValue.compare("specrep")) {
+		} else if (Lex::checkKeyword(retValue, "specrep")) {
 			newNode->type = SPECREP;
 		} else if (!retValue.compare("M") || !retValue.compare("m")) {
 			newNode->type = M;
-		} else if (!retValue.compare("NC") || !retValue.compare("nc") || !retValue.compare("Nc")) {
+		} else if (Lex::checkKeyword(retValue, "nc")) {
 			newNode->type = NC;
-		} else if (!retValue.compare("NZ") || !retValue.compare("nz") || !retValue.compare("Nz")) {
+		} else if (Lex::checkKeyword(retValue, "nz")) {
 			newNode->type = NZ;
 		} else if (!retValue.compare("P") || !retValue.compare("p")) {
 			newNode->type = P;
-		} else if (!retValue.compare("PE") || !retValue.compare("pe") || !retValue.compare("Pe")) {
+		} else if (Lex::checkKeyword(retValue, "pe")) {
 			newNode->type = PE;
-		} else if (!retValue.compare("PO") || !retValue.compare("po") || !retValue.compare("Po")) {
+		} else if (Lex::checkKeyword(retValue, "po")) {
 			newNode->type = PO;
 		} else if (!retValue.compare("Z") || !retValue.compare("z")) {
 			newNode->type = Z;
-		} else if (!retValue.compare("EQU") || !retValue.compare("Equ") || !retValue.compare("equ")) {
+		} else if (Lex::checkKeyword(retValue, "equ")) {
 			newNode->type = DIR_EQU;
 		} else {
-			
+
 				//if it is not a reserved word, it is an ATOM:
-			
+
 			newNode->type = ATOM;
 			newNode->value = retValue;
 		}
-		
+
 	} else if (Lex::cList->peekValue() == '.') {
 		retValue = Lex::cList->peekValue();
 		Lex::cList->pop();
-		
+
 		while (!Lex::cList->isEmpty() && isAlphabetical(Lex::cList->peekValue())) {
 			retValue += Lex::cList->peekValue();
 			Lex::cList->pop();
 		}
-		
+
 		if (!retValue.compare(".")) {
 			newNode->type = DOT_POINT;
 		} else {

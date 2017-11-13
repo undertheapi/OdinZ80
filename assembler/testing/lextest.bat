@@ -1,7 +1,7 @@
 g++ ../lex/tokenlist.cpp -c
 g++ ../lex/lex.cpp -c
 g++ ../character/characterlist.cpp -c
-g++ ../general/ctype.cpp -c
+g++ ../general/ctype.cpp -c -std=c++11
 g++ testlex.cpp -c
 g++ tokenlist.o lex.o characterlist.o ctype.o testlex.o -o unittest.exe
 unittest

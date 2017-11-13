@@ -30,7 +30,7 @@
 /*
 	file name: tokenlist.cpp
 	date created: 29/08/2012
-	date updated: 06/05/2015
+	date updated: 13/11/2017
 	author: Garth Richardson
 	description: The implementation of the TokenList class. The data structure used is a Queue.
 */
@@ -70,7 +70,7 @@ void TokenList::push(TokenNodePtr obj) {
 	the Assembly Source Code.
 */
 void TokenList::pushFront(TokenNodePtr obj) {
-  if (TokenList::isEmpty()
+  if (TokenList::isEmpty())
     TokenList::head = TokenList::tail = obj;
   else
     obj->next = TokenList::tail, TokenList::head = obj;
@@ -111,7 +111,7 @@ void TokenList::pop() {
 TOKEN_TYPE TokenList::peekTokenType() {
 	if (!TokenList::isEmpty())
 		return TokenList::head->type;
-	
+
 	return -1;
 }
 
@@ -126,6 +126,6 @@ string TokenList::peekValue() {
 int TokenList::peekLineNumber() {
 	if (!TokenList::isEmpty())
 		return TokenList::head->lineNumber;
-	
+
 	return -1;
 }

@@ -276,6 +276,8 @@ void checkErrorStates() {
 
 	assert(cList.errorState == LIST_EMPTY | INVALID_CHAR | LIST_FULL);
 	printf("\tError state is correct. LIST_EMPTY, INVALID_CAHR and LIST_FULL are all set.\n");
+
+	
 }
 
 int main() {

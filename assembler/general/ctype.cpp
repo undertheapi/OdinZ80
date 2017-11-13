@@ -30,7 +30,7 @@
 /*
 	file name: ctype.cpp
 	date created: 09/03/2012
-	date updated: 05/05/2015
+	date updated: 13/11/2017
 	author: Gareth Richardson
 	description: The object for string and character functions that the Odin assembler will use.
 	Used for validation, manipulation and conversion.
@@ -82,6 +82,10 @@ bool isBinary(CHARACTER value) {
 	return value == '0' || value == '1';
 }
 
+/*
+	Validates if the character given is a Decimal value
+	From '0' -> '9'
+*/
 bool isDecimalString(string value) {
 	int index = 0;
 	while (index++ < value.size()) {
@@ -138,38 +142,36 @@ string convertHex(char value) {
 
 string toUpper(string value) {
 	string retString = "";
-	for (int i = 0; i < value.size(); i++) {
-		if (value[i] >= 'a' && value[i] <= 'z') {
-			retString += value[i] - 32;
-		} else {
-			retString += value[i];
-		}
-	}
+	for (char c : value)
+		if (c >= 'a' && c <= 'z')
+			retString += c - 32;
+		else
+			retString += c;
+
 	return retString;
 }
 
 string toLower(string value) {
 	string retString = "";
-	for (int i = 0; i < value.size(); i++) {
-		if (value[i] >= 'A' && value[i] <= 'Z') {
-			retString += value[i] + 32;
-		} else {
-			retString += value[i];
-		}
-	}
+	for (char c : value)
+		if (c >= 'A' && c <= 'Z')
+			retString += c + 32;
+		else
+			retString += c;
+
+	return retString;
 }
 
 string toFirstCharUpper(string value) {
 	string retString = "";
-	if (value[0] >= 'a' && value[0] <= 'z') {
+	if (value[0] >= 'a' && value[0] <= 'z')
 		retString += value[0] - 32;
-	} else {
+	else
 		retString += value[0];
-	}
-	
-	for (char c : value)
-		retString += c;
-	
+
+	int index = 1;
+	while (index < value.size())
+		retString += value[index++];
+
 	return retString;
 }
-

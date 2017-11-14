@@ -30,7 +30,7 @@
 /*
 	file name:		lex.cpp
 	date created:	29/08/2012
-	date updated:	13/11/2017
+	date updated:	14/11/2017
 	author:			Gareth Richardson
 	description:	This is the Lexical Analyser object code for the Odin assembler.
 */
@@ -60,28 +60,10 @@ Lex::Lex(CharacterList* cList, TokenList* tList) {
 }
 
 bool Lex::checkKeyword(string value, string checker) {
-	return !toUpper(checker).compare(value) ||
-	!toLower(checker).compare(value) ||
-!toFirstCharUpper(checker).compare(value);
-	/*if
-	(
-		!toUpper(checker).compare(value) ||
-		!toLower(checker).compare(value) ||
-	!toFirstCharUpper(checker).compare(value))
-		 {
-		return true;
-	}
-	return false;
-	if (!toUpper(checker).compare(value)) {
-		return true;
-	}
-	if (!toLower(checker).compare(value)) {
-		return true;
-	}
-	if (!toFirstCharUpper(checker).compare(value)) {
-		return true;
-	}
-	return false;*/
+	return
+				!CTYPE::toUpper(checker).compare(value) ||
+				!CTYPE::toLower(checker).compare(value) ||
+				!CTYPE::toFirstCharUpper(checker).compare(value);
 }
 
 TokenNodePtr Lex::getToken() {
@@ -134,9 +116,9 @@ TokenNodePtr Lex::getToken() {
 	*/
 	string retValue = "";
 
-	if (isAlphabetical(Lex::cList->peekValue())) {
+	if (CTYPE::isAlphabetical(Lex::cList->peekValue())) {
 
-		while (!Lex::cList->isEmpty() && (Lex::cList->peekValue() == '_' || isAlphabetical(Lex::cList->peekValue()) || isNumerical(Lex::cList->peekValue()))) {
+		while (!Lex::cList->isEmpty() && (Lex::cList->peekValue() == '_' || CTYPE::isAlphabetical(Lex::cList->peekValue()) || CTYPE::isNumerical(Lex::cList->peekValue()))) {
 			retValue += Lex::cList->peekValue();
 			Lex::cList->pop();
 		}
@@ -369,7 +351,7 @@ TokenNodePtr Lex::getToken() {
 		retValue = Lex::cList->peekValue();
 		Lex::cList->pop();
 
-		while (!Lex::cList->isEmpty() && isAlphabetical(Lex::cList->peekValue())) {
+		while (!Lex::cList->isEmpty() && CTYPE::isAlphabetical(Lex::cList->peekValue())) {
 			retValue += Lex::cList->peekValue();
 			Lex::cList->pop();
 		}
@@ -391,13 +373,13 @@ TokenNodePtr Lex::getToken() {
 				newNode->value = retValue;
 			}
 		}
-	} else if (isNumerical(Lex::cList->peekValue()) || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#' || Lex::cList->peekValue() == '%') {
+	} else if (CTYPE::isNumerical(Lex::cList->peekValue()) || Lex::cList->peekValue() == '$' || Lex::cList->peekValue() == '#' || Lex::cList->peekValue() == '%') {
 		newNode->type = NUMBER;
 		newNode->value = Lex::getNumber();
 	} else if (Lex::cList->peekValue() == '\"') {
 		Lex::cList->pop();
 		while (Lex::cList->peekValue() != '\"' && !Lex::errorState) {
-			if (isPrintable(Lex::cList->peekValue())) {
+			if (CTYPE::isPrintable(Lex::cList->peekValue())) {
 				retValue += Lex::cList->peekValue();
 			} else if (Lex::cList->isEmpty()) {
 				/*
@@ -414,7 +396,7 @@ TokenNodePtr Lex::getToken() {
 				*/
 				Lex::errorState = true;
 				Lex::errorString = "Found an invalid character within a string at ";
-				Lex::errorString += integerToString(Lex::lineNumber);
+				Lex::errorString += CTYPE::integerToString(Lex::lineNumber);
 			}
 			Lex::cList->pop();
 		}
@@ -467,9 +449,9 @@ TokenNodePtr Lex::getToken() {
 		Lex::errorState = true;
 		Lex::errorString = "An invalid character is in the source code at ";
 		int lineNumber = Lex::lineNumber;
-		Lex::errorString += integerToString(lineNumber);
+		Lex::errorString += CTYPE::integerToString(lineNumber);
 		Lex::errorString += " ";
-		Lex::errorString += convertHex(Lex::cList->peekValue());
+		Lex::errorString += CTYPE::convertHex(Lex::cList->peekValue());
 		Lex::cList->pop();
 	}
 
@@ -506,7 +488,7 @@ string Lex::getNumber() {
 					case 'D':
 						retValue += 'd';
 						Lex::cList->pop();
-						while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
+						while (!Lex::cList->isEmpty() && CTYPE::isNumerical(Lex::cList->peekValue())) {
 							retValue += Lex::cList->peekValue();
 							Lex::cList->pop();
 						}
@@ -517,7 +499,7 @@ string Lex::getNumber() {
 					case 'h':
 						retValue += 'h';
 						Lex::cList->pop();
-						while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+						while (!Lex::cList->isEmpty() && CTYPE::isHex(Lex::cList->peekValue())) {
 							retValue += Lex::cList->peekValue();
 							Lex::cList->pop();
 						}
@@ -528,7 +510,7 @@ string Lex::getNumber() {
 					case 'Y':
 						retValue += 'b';
 						Lex::cList->pop();
-						while (!Lex::cList->isEmpty() && isBinary(Lex::cList->peekValue())) {
+						while (!Lex::cList->isEmpty() && CTYPE::isBinary(Lex::cList->peekValue())) {
 							retValue += Lex::cList->peekValue();
 							Lex::cList->pop();
 						}
@@ -536,7 +518,7 @@ string Lex::getNumber() {
 					default:
 						string tempValue = "d";
 						//Lex::cList->pop();
-						while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
+						while (!Lex::cList->isEmpty() && CTYPE::isNumerical(Lex::cList->peekValue())) {
 							retValue += Lex::cList->peekValue();
 							Lex::cList->pop();
 						}
@@ -549,7 +531,7 @@ string Lex::getNumber() {
 		case '#':
 			retValue += 'h';
 			Lex::cList->pop();
-			while (!Lex::cList->isEmpty() && isHex(Lex::cList->peekValue())) {
+			while (!Lex::cList->isEmpty() && CTYPE::isHex(Lex::cList->peekValue())) {
 				retValue += Lex::cList->peekValue();
 				Lex::cList->pop();
 			}
@@ -557,7 +539,7 @@ string Lex::getNumber() {
 		case '%':
 			retValue += 'b';
 			Lex::cList->pop();
-			while (!Lex::cList->isEmpty() && isBinary(Lex::cList->peekValue())) {
+			while (!Lex::cList->isEmpty() && CTYPE::isBinary(Lex::cList->peekValue())) {
 				retValue += Lex::cList->peekValue();
 				Lex::cList->pop();
 			}
@@ -566,7 +548,7 @@ string Lex::getNumber() {
 			/* because we have already done validation earlier on, we have a number between 1 -> 9 */
 			//Lex::cList->pop();
 			retValue += 'd';
-			while (!Lex::cList->isEmpty() && isNumerical(Lex::cList->peekValue())) {
+			while (!Lex::cList->isEmpty() && CTYPE::isNumerical(Lex::cList->peekValue())) {
 				retValue += Lex::cList->peekValue();
 				Lex::cList->pop();
 			}

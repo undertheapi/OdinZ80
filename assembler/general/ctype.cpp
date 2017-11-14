@@ -48,7 +48,7 @@ using namespace std;
 	This is a custom method that checks that a CHARACTER is an alphabetical character.
 	That is a character between A and Z or a and z.
 */
-bool isAlphabetical(CHARACTER value) {
+bool CTYPE::isAlphabetical(CHARACTER value) {
 	return value >= 'a' && value <= 'z' || value >= 'A' && value <= 'Z';
 }
 
@@ -56,7 +56,7 @@ bool isAlphabetical(CHARACTER value) {
 	This is another custom method class that checks that a character is numerical in
 	the decimal sense. Between 0 and 9.
 */
-bool isNumerical(CHARACTER value) {
+bool CTYPE::isNumerical(CHARACTER value) {
 	return value >= '0' && value <= '9';
 }
 
@@ -64,21 +64,21 @@ bool isNumerical(CHARACTER value) {
 	This method checks if the character value is a printable character. That is, it is not
 	the first 32 ASCII values AND not the DEL character.
 */
-bool isPrintable(CHARACTER value) {
+bool CTYPE::isPrintable(CHARACTER value) {
 	return value >= 32 && value <= 126;
 }
 
 /*
 	This method checks if a CHARACTER value is a hexadecimal value:
 */
-bool isHex(CHARACTER value) {
-	return isNumerical(value) || value >= 'a' && value <= 'f' || value >= 'A' && value <= 'F';
+bool CTYPE::isHex(CHARACTER value) {
+	return CTYPE::isNumerical(value) || value >= 'a' && value <= 'f' || value >= 'A' && value <= 'F';
 }
 
 /*
 	Returns a true if the character is a binary.
 */
-bool isBinary(CHARACTER value) {
+bool CTYPE::isBinary(CHARACTER value) {
 	return value == '0' || value == '1';
 }
 
@@ -86,34 +86,34 @@ bool isBinary(CHARACTER value) {
 	Validates if the character given is a Decimal value
 	From '0' -> '9'
 */
-bool isDecimalString(string value) {
+bool CTYPE::isDecimalString(string value) {
 	int index = 0;
 	while (index++ < value.size()) {
-		if (!isNumerical(value.at(index)))
+		if (!CTYPE::isNumerical(value.at(index)))
 			return false;
 	}
 	return true;
 }
 
-bool isHexString(string value) {
+bool CTYPE::isHexString(string value) {
 	int index = 0;
 	while (index++ < value.size()) {
-		if (!isHex(value.at(index)))
+		if (!CTYPE::isHex(value.at(index)))
 			return false;
 	}
 	return true;
 }
 
-bool isBinaryString(string value) {
+bool CTYPE::isBinaryString(string value) {
 	int index = 0;
 	while (index++ < value.size()) {
-		if (!isBinary(value.at(index)))
+		if (!CTYPE::isBinary(value.at(index)))
 			return false;
 	}
 	return true;
 }
 
-string integerToString(int value) {
+string CTYPE::integerToString(int value) {
 	if (!value)
 		return "0";
 
@@ -127,7 +127,7 @@ string integerToString(int value) {
 	return retValue;
 }
 
-string convertHex(char value) {
+string CTYPE::convertHex(char value) {
 	string retString = "";
 	char hexArray[16] = {
 		'0', '1', '2', '3',
@@ -140,7 +140,7 @@ string convertHex(char value) {
 	return retString;
 }
 
-string toUpper(string value) {
+string CTYPE::toUpper(string value) {
 	string retString = "";
 	for (char c : value)
 		if (c >= 'a' && c <= 'z')
@@ -151,7 +151,7 @@ string toUpper(string value) {
 	return retString;
 }
 
-string toLower(string value) {
+string CTYPE::toLower(string value) {
 	string retString = "";
 	for (char c : value)
 		if (c >= 'A' && c <= 'Z')
@@ -162,7 +162,7 @@ string toLower(string value) {
 	return retString;
 }
 
-string toFirstCharUpper(string value) {
+string CTYPE::toFirstCharUpper(string value) {
 	string retString = "";
 	if (value[0] >= 'a' && value[0] <= 'z')
 		retString += value[0] - 32;

@@ -30,45 +30,49 @@
 /*
 	file name: ctype.hpp
 	date created: 09/03/2012
-	date updated: 23/10/2014
+	date updated: 14/11/2017
 	author: Gareth Richardson
 	description: The header file for the ctype functions.
 */
 
-bool isAlphabetical(CHARACTER value);
+namespace CTYPE {
+  /*
+    This method checks if a character is alphabetical.
+  */
+  bool isAlphabetical(CHARACTER value);
 
-/*
-	This is another custom method class that checks that a character is numerical in
-	the decimal sense. Between 0 and 9.
-*/
-bool isNumerical(CHARACTER value);
+  /*
+  	This is another custom method class that checks that a character is numerical in
+  	the decimal sense. Between 0 and 9.
+  */
+  bool isNumerical(CHARACTER value);
 
-/*
-	This method checks if the character value is a printable character. That is, it is not
-	the first 32 ASCII values AND not the DEL character.
-*/
-bool isPrintable(CHARACTER value);
+  /*
+  	This method checks if the character value is a printable character. That is, it is not
+  	the first 32 ASCII values AND not the DEL character.
+  */
+  bool isPrintable(CHARACTER value);
 
-/*
-	This method checks if a CHARACTER value is a hexadecimal value:
-*/
-bool isHex(CHARACTER value);
+  /*
+  	This method checks if a CHARACTER value is a hexadecimal value:
+  */
+  bool isHex(CHARACTER value);
 
-bool isBinary(CHARACTER value);
+  bool isBinary(CHARACTER value);
 
-bool isDecimalString(string value);
+  bool isDecimalString(string value);
 
-bool isHexString(string value);
+  bool isHexString(string value);
 
-bool isBinaryString(string value);
+  bool isBinaryString(string value);
 
-string integerToString(int value);
+  string integerToString(int value);
 
-string convertHex(char value);
+  string convertHex(char value);
 
-string toUpper(string value);
+  string toUpper(string value);
 
-string toLower(string value);
+  string toLower(string value);
 
-string toFirstCharUpper(string value);
-
+  string toFirstCharUpper(string value);
+}

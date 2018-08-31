@@ -74,30 +74,53 @@ int SYMBOL_TABLE::addSymbol(string* strObj) {
 		SYMBOL_TABLE::tableTail = SYMBOL_TABLE::tableHead;
 		return 0;
 	} else if (SYMBOL_TABLE::tableHead == SYMBOL_TABLE::tableTail) {
-		if (SYMBOL_TABLE::tableHead->symbol->compare(strObj->c_str()) == 0) {
+		if (SYMBOL_TABLE::tableHead->symbol->compare(strObj->c_str()) == 0)
 			return SYMBOL_TABLE::indexCount;
-		} else {
-			SYMBOL_TABLE::tableTail = generateNode(strObj, -1, NULL);
-			SYMBOL_TABLE::tableHead->nextNode = SYMBOL_TABLE::tableTail;
-			return ++SYMBOL_TABLE::indexCount;
-		}
+
+		SYMBOL_TABLE::tableTail = generateNode(strObj, -1, NULL);
+		SYMBOL_TABLE::tableHead->nextNode = SYMBOL_TABLE::tableTail;
+		return ++SYMBOL_TABLE::indexCount;
 	} else {
 		int index = SYMBOL_TABLE::checkSymbol(strObj);
 		if (index != -1)
 			return index;
 		
-		SYMBOL_NODE* pointer = new SYMBOL_NODE;
-		pointer->symbol = strObj;
-		pointer->mappedValue = -1;
-		pointer->nextNode = NULL;
-		SYMBOL_TABLE::tableTail->nextNode = pointer;
+		SYMBOL_TABLE::tableTail->nextNode = generateNode(strObj, -1, NULL);
 		SYMBOL_TABLE::tableTail = SYMBOL_TABLE::tableTail->nextNode;
 		return ++SYMBOL_TABLE::indexCount;
 	}
 }
 
-/*
-int SYMBOL_TABLE::getValue(int index) {
-	
+int SYMBOL_TABLE::addSymbol(string* strObj, int value) {
+	int index = SYMBOL_TABLE::addSymbol(strObj);
+	SYMBOL_TABLE::setSymbolValue(index, int value);
+	return index;
 }
-*/
+
+
+int SYMBOL_TABLE::getValue(int index) {
+	int count = 0;
+	
+	SYMBOL_NODE* pointer = SYMBOL_TABLE::tableHead;
+	
+	while (count++ != index)
+		pointer = pointer->nextNode;
+	
+	return pointer->mappedValue;
+}
+
+
+bool SYMBOL_TABLE::setSymbolValue(int index, int value) {
+	if (index < 0 && index >= SYMBOL_TABLE::indexCount)
+		return false;
+	
+	int count = 0;
+	
+	SYMBOL_NODE* pointer = SYMBOL_TABLE::tableHead;
+	
+	while (count++ != index)
+		pointer = pointer->nextNode;
+	
+	pointer->mappedValue = value;
+	return true;
+}

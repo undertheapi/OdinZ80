@@ -58,12 +58,18 @@ class SYMBOL_TABLE {
 		int addSymbol(string*);
 		
 		/*
+			Adds a symbol AND its mapped integer value to the symbol table.
+		*/
+		int addSymbol(string*, int);
+		
+		/*
 			gets the value from the index. Returns a -1 if it is empty OR out of index.
 		*/
-		// int getValue(int);
+		int getValue(int);
 		
 		/*
 			Sets the value of the symbol based on the index. 
+			Returns a false if the index was out of bounds. 
 		*/
-		// bool setSymbolValue(int, int);
+		bool setSymbolValue(int, int);
 };
